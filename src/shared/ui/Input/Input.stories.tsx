@@ -1,0 +1,41 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { Input } from "./Input";
+
+const meta: Meta<typeof Input> = {
+  title: "Shared/Input",
+  component: Input,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Input>;
+
+export const Default: Story = {
+  args: {
+    label: "Текст",
+    placeholder: "Введите текст",
+  },
+};
+
+export const WithValue: Story = {
+  args: {
+    label: "Текст",
+    defaultValue: "Молодёжная",
+  },
+};
+
+export const Error: Story = {
+  args: {
+    label: "Текст",
+    defaultValue: "Молодёжная",
+    error: "Ошибка",
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: "Текст",
+    placeholder: "Введите текст",
+    disabled: true,
+  },
+};
