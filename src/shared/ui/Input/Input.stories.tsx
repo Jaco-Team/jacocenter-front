@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 import { Input } from "./Input";
 
 const meta: Meta<typeof Input> = {
   title: "Shared/Input",
   component: Input,
+  args: {
+    value: "",
+  },
 };
 
 export default meta;
@@ -14,28 +18,76 @@ export const Default: Story = {
   args: {
     label: "Текст",
     placeholder: "Введите текст",
+    error: "",
+    helperText: "",
+    disabled: false,
+    type: "text",
+  },
+  render: (args) => {
+    const [value, setValue] = useState(args.value ?? "");
+
+    return (
+      <Input
+        {...args}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
   },
 };
 
 export const WithValue: Story = {
   args: {
     label: "Текст",
-    defaultValue: "Молодёжная",
+    value: "Молодёжная",
+  },
+  render: (args) => {
+    const [value, setValue] = useState(args.value ?? "");
+
+    return (
+      <Input
+        {...args}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
   },
 };
 
 export const Error: Story = {
   args: {
     label: "Текст",
-    defaultValue: "Молодёжная",
+    value: "Молодёжная",
     error: "Ошибка",
+  },
+  render: (args) => {
+    const [value, setValue] = useState(args.value ?? "");
+
+    return (
+      <Input
+        {...args}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
   },
 };
 
 export const Disabled: Story = {
   args: {
     label: "Текст",
-    placeholder: "Введите текст",
+    value: "Недоступно",
     disabled: true,
+  },
+  render: (args) => {
+    const [value] = useState(args.value ?? "");
+
+    return (
+      <Input
+        {...args}
+        value={value}
+        onChange={() => {}}
+      />
+    );
   },
 };

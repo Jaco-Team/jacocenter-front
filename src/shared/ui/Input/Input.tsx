@@ -4,15 +4,36 @@ import "./Input.styles.css";
 import Image from "next/image";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ value, onChange, label, error, helperText, ...props }, ref) => {
+  (
+    {
+      value,
+      onChange,
+      type = "text",
+      label,
+      error,
+      helperText,
+      id,
+      ...props
+    },
+    ref
+  ) => {
+    const inputId = id ?? `input-${Math.random().toString(36).slice(2)}`;
+
     return (
       <div className="input-root">
-        {label && <label className="input-label">{label}</label>}
+        {label && (
+          <label htmlFor={inputId} className="input-label">
+            {label}
+          </label>
+        )}
 
         <input
           ref={ref}
+          id={inputId}
+          type={type}
           value={value}
           onChange={onChange}
+          aria-invalid={!!error}
           className={`input-field ${error ? "input-error" : ""}`}
           {...props}
         />
@@ -20,22 +41,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {error ? (
           <div className="input-message error">
             <Image
-              src='/icons/warning-triangle.svg'
-              alt='Ошибка'
+              src="/icons/warning-triangle.svg"
+              alt="Ошибка"
               width={14}
               height={14}
-            ></Image>
+            />
             <span>{error}</span>
           </div>
         ) : (
           helperText && (
             <div className="input-message helper">
               <Image
-                src='/icons/checkmark-success.svg'
-                alt='Успешно'
+                src="/icons/checkmark-success.svg"
+                alt="Успешно"
                 width={14}
                 height={14}
-              ></Image>
+              />
               <span>{helperText}</span>
             </div>
           )
