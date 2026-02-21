@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -10,6 +10,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* TODO(zang3tsu88): Тест класс для иконки */
+  --text-icon-lg: 32px;
 }
 
 @media (prefers-color-scheme: dark) {
