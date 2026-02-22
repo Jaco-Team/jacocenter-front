@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { NavLink } from './NavLink';
-import WriteIcon from './write.svg?react';
 
+import { NavLink } from './NavLink';
+import WriteIcon from '@/../public/icons/write.svg?react';
+
+console.log(WriteIcon);
 const meta: Meta<typeof NavLink> = {
   title: 'UI/NavLink',
   component: NavLink,

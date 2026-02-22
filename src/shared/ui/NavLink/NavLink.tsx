@@ -1,12 +1,10 @@
 'use client';
 import Link from 'next/link';
-import type { NavLinkProps } from './NavLink.types';
 import { usePathname } from 'next/navigation';
+import type { NavLinkProps } from './NavLink.types';
 
-// TODO(zang3tsu88): Решить icon будет reactNode или ComponentType - icon or <Icon/>
 export function NavLink({
   href,
-  // icon: Icon,
   icon,
   children,
   size = 'lg',
@@ -22,8 +20,7 @@ export function NavLink({
       href={href}
       className={`flex flex-col items-center justify-center gap-2 py-5 px-3 rounded-xl text-[#5E5E5E] ring hover:ring-[#C9C9C9] active:ring-2 active:ring-[#61A444] focus-visible:outline-[#C9C9C9] focus-visible:outline focus-visible:outline-offset-2 transition-all ${sizeStyles} ${className} ${isActiveStyles}`}
     >
-      <div className={`text-icon-lg ${isActive ? 'text-[#61A444]' : ''} `}>
-        {/* <Icon /> */}
+      <div className={`text-[32px] ${isActive ? 'text-[#61A444]' : ''} `}>
         {icon}
       </div>
 

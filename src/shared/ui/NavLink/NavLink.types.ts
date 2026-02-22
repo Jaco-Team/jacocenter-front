@@ -6,7 +6,6 @@ export type NavLinkSize = 'sm' | 'lg';
 export interface NavLinkProps extends LinkProps {
   /** Какая иконка у кнопки? */
   icon: React.ReactNode;
-  // icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   /** Какой размер у кнопки? */
   size?: NavLinkSize;
   /** Какие стили применить? */
