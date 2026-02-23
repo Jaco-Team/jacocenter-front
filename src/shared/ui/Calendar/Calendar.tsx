@@ -5,13 +5,18 @@ import { ru } from "date-fns/locale";
 import { format, isBefore, startOfDay } from "date-fns";
 import "./Calendar.styles.css";
 import { CalendarProps } from "./Calendar.types";
+import LeftArrowIcon from "../../../../public/icons/arrow-left.svg?react";
+import RightArrowIcon from "../../../../public/icons/arrow-right.svg?react";
 
+// Функция для капитализации первой буквы
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
+// Кастомный заголовок со стрелками по бокам
 function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
   const locale = props.locale || ru;
 
+  // Извлекаем дату месяца из пропсов (или берём текущую)
   let monthDate: Date;
   if (props.calendarMonth?.date instanceof Date) {
     monthDate = props.calendarMonth.date;
@@ -21,6 +26,7 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
     monthDate = new Date();
   }
 
+  // Формат "Месяц, ГГГГ" с заглавной буквы
   const monthYear = capitalize(format(monthDate, "LLLL, yyyy", { locale }));
 
   return (
@@ -32,9 +38,7 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
         onClick={() => previousMonth && goToMonth(previousMonth)}
         aria-label="Предыдущий месяц"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" />
-        </svg>
+        <LeftArrowIcon className="nav-icon" />
       </button>
       <span className="caption-label">{monthYear}</span>
       <button
@@ -44,9 +48,7 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
         onClick={() => nextMonth && goToMonth(nextMonth)}
         aria-label="Следующий месяц"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20" />
-        </svg>
+        <RightArrowIcon className="nav-icon" />
       </button>
     </div>
   );
@@ -55,6 +57,7 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
 export const Calendar = ({ value, onChange, ...props }: CalendarProps) => {
   const today = startOfDay(new Date());
 
+  // Модификатор для прошедших дат (до сегодняшнего дня включительно? нет, именно до сегодня)
   const modifiers = {
     past: (date: Date) => isBefore(date, today),
   };
@@ -63,10 +66,10 @@ export const Calendar = ({ value, onChange, ...props }: CalendarProps) => {
     past: "rdp-day_past",
   };
 
-  // Форматтер для дней недели: возвращаем с заглавной буквы
+  // Форматтер для дней недели: заглавные буквы (Пн, Вт, Ср...)
   const formatters = {
     formatWeekdayName: (date: Date) => {
-      const day = format(date, "EEEEEE", { locale: ru }); // получаем "пн", "вт" и т.д.
+      const day = format(date, "EEEEEE", { locale: ru }); // "пн", "вт", ...
       return capitalize(day);
     },
   };
