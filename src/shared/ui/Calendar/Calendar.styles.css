@@ -1,78 +1,82 @@
 @reference "../../../app/globals.css";
 
 .calendar-root {
-  @apply bg-white p-4 rounded-2xl shadow-sm border border-gray-100 w-fit;
+  @apply bg-white rounded-xl border border-[#E5E5E5] w-fit;
+  /* убраны внутренние отступы, только внешняя рамка */
 }
 
-/* Корневой элемент календаря */
 .rdp-root {
   --rdp-cell-size: 40px;
 }
 
-/* Сетка месяцев (если несколько месяцев) */
-.rdp-months {
-  @apply flex justify-center;
+/* Кастомная шапка */
+.custom-caption {
+  @apply flex items-center justify-between w-full px-2 pt-2;
 }
 
-/* Месяц */
-.rdp-month {
-  @apply space-y-4;
+.custom-caption .nav-button {
+  @apply h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent;
 }
 
-/* Навигация */
-.rdp-nav {
-  @apply flex items-center gap-2 justify-between mb-4;
-}
-.rdp-nav button {
-  @apply h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition;
+.custom-caption .nav-button svg {
+  @apply text-[#3C3B3B]; /* цвет иконок */
 }
 
-/* Заголовок месяца */
-.rdp-month_caption {
-  @apply flex justify-between items-center px-2;
-}
-.rdp-caption_label {
-  @apply text-lg font-medium text-gray-900;
+.custom-caption .caption-label {
+  @apply text-lg font-medium text-[#3C3B3B];
 }
 
-/* Таблица (сетка) */
+/* Таблица */
 .rdp-month_grid {
   @apply w-full border-collapse table;
 }
 
-/* Строки заголовков и дней */
 .rdp-weekdays,
 .rdp-week {
   @apply table-row;
 }
 
-/* Ячейки заголовков (дни недели) */
+/* Дни недели */
 .rdp-weekday {
-  @apply table-cell w-10 text-sm text-gray-400 font-normal;
+  @apply table-cell w-10 text-sm text-[#5E5E5E] font-normal;
 }
 
-/* Ячейки дней */
+/* Ячейки дней (без внутренних границ) */
 .rdp-day {
   @apply table-cell w-10 h-10 text-center text-sm p-0;
 }
 
-/* Кнопка внутри ячейки */
+/* Кнопка внутри ячейки (основной цвет текста) */
 .rdp-day_button {
-  @apply w-10 h-10 flex items-center justify-center rounded-full transition;
+  @apply w-full h-full flex items-center justify-center transition text-[#3C3B3B];
 }
 
-/* Состояния дней */
-.rdp-today .rdp-day_button {
-  @apply bg-gray-200 text-gray-900;
+/* Прошедшие даты */
+.rdp-day_past .rdp-day_button {
+  @apply text-[#A6A6A6];
 }
+
+/* Сегодняшний день */
+.rdp-today .rdp-day_button {
+  @apply bg-[#E5E5E5] text-[#3C3B3B] rounded-full;
+}
+
+/* Выбранный день */
 .rdp-selected .rdp-day_button {
   @apply bg-green-400 text-white hover:bg-green-500;
 }
+
+/* Дни из другого месяца */
 .rdp-outside .rdp-day_button {
-  @apply text-gray-300;
+  @apply text-[#5E5E5E];
 }
+.rdp-outside .rdp-day_button:hover {
+  @apply bg-transparent;
+}
+
+/* Отключённые дни */
 .rdp-disabled .rdp-day_button {
-  @apply text-gray-300 opacity-50;
+  @apply text-[#A6A6A6] opacity-50;
 }
 
 /* Фокус */
