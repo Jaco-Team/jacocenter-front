@@ -6,11 +6,12 @@ import { format, isBefore, startOfDay } from "date-fns";
 import "./Calendar.styles.css";
 import { CalendarProps } from "./Calendar.types";
 
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
 function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
   const locale = props.locale || ru;
 
-  // Извлекаем дату месяца из пропсов (или fallback)
   let monthDate: Date;
   if (props.calendarMonth?.date instanceof Date) {
     monthDate = props.calendarMonth.date;
@@ -20,8 +21,7 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
     monthDate = new Date();
   }
 
-  // Формат с запятой: "Месяц, YYYY"
-  const monthYear = format(monthDate, "LLLL, yyyy", { locale });
+  const monthYear = capitalize(format(monthDate, "LLLL, yyyy", { locale }));
 
   return (
     <div className="custom-caption">
@@ -32,7 +32,6 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
         onClick={() => previousMonth && goToMonth(previousMonth)}
         aria-label="Предыдущий месяц"
       >
-        {/* SVG можно заменить на <Image /> если нужно */}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" />
         </svg>
@@ -56,13 +55,20 @@ function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
 export const Calendar = ({ value, onChange, ...props }: CalendarProps) => {
   const today = startOfDay(new Date());
 
-  // Модификатор для прошедших дат (до сегодня)
   const modifiers = {
     past: (date: Date) => isBefore(date, today),
   };
 
   const modifiersClassNames = {
     past: "rdp-day_past",
+  };
+
+  // Форматтер для дней недели: возвращаем с заглавной буквы
+  const formatters = {
+    formatWeekdayName: (date: Date) => {
+      const day = format(date, "EEEEEE", { locale: ru }); // получаем "пн", "вт" и т.д.
+      return capitalize(day);
+    },
   };
 
   return (
@@ -76,6 +82,7 @@ export const Calendar = ({ value, onChange, ...props }: CalendarProps) => {
         hideNavigation
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
+        formatters={formatters}
         components={{
           MonthCaption: CustomCaption,
         }}
