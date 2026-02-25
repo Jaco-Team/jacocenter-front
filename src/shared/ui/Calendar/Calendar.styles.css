@@ -41,7 +41,7 @@ tr.rdp-week td {
 }
 
 /* Кнопка внутри ячейки: круглая, 36x36, отступы 6px */
-tr.rdp-week td .rdp-day_button {
+.rdp-day_button {
   @apply w-9 h-9 m-1.5 flex items-center justify-center rounded-full transition text-[#3C3B3B] text-base; /* 36px */
 }
 
