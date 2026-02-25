@@ -1,0 +1,49 @@
+  @reference '../../../app/globals.css';
+
+  .base {
+    @apply inline-flex items-center justify-center gap-2.5 px-2 py-2.5
+    w-full rounded-xl font-medium cursor-pointer
+    focus:outline-none disabled:pointer-events-none;
+  }
+
+  .icon {
+    @apply inline-block items-center justify-center gap-2.5 px-3 py-2
+    w-full rounded-xl font-medium cursor-pointer
+    focus:outline-none disabled:pointer-events-none;
+  }
+
+  .primary {
+    @apply bg-green-500 text-white hover:bg-green-600 
+    active:bg-green-800 disabled:bg-gray-200;
+  }
+
+  .secondary {
+    @apply bg-white text-green-500 border border-gray-300 
+    hover:border-gray-700
+    active:border-gray-700 active:text-green-600
+    disabled:border-gray-400 disabled:text-gray-300
+  }
+
+  .error {
+    @apply bg-red-600 text-white;
+  }
+
+  .sm {
+    @apply w-19 h-11;
+  }
+
+  .md {
+    @apply w-42 h-11;
+  }
+
+  .lg {
+    @apply w-88 h-11;
+  }
+
+  .icon-md {
+    @apply w-12 h-12;
+  }
+
+  .icon-sm {
+    @apply w-11 h-11;
+  }
