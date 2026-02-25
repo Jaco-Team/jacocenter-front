@@ -7,17 +7,14 @@ export const Button: React.FC<IButtonUIProps> = ({
   theme,
   size,
   children,
+  type = 'button',
+  onClick,
   className,
   ...props
 }) => {
   return (
     <button
-      className={clsx(
-        variant,
-        theme,
-        size,
-        className
-      )}
+      className={clsx(variant, theme, size, className)}
       {...props}
     >
       {children}
