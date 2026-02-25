@@ -1,0 +1,37 @@
+@reference "../../../app/globals.css";
+
+.modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-overlay;
+}
+
+.modal-container {
+  @apply bg-base rounded-xl overflow-hidden min-w-[260px]; 
+}
+
+.modal-header {
+  @apply flex items-center justify-between h-[52px] px-[20px] gap-[12px];
+}
+
+.modal-header-default {
+  @apply bg-primary-light;
+}
+
+.modal-header-accent {
+  @apply bg-error;
+}
+
+.modal-header-default .modal-header-title {
+  @apply text-text-base;
+}
+
+.modal-header-accent .modal-header-title {
+  @apply text-base; 
+}
+
+.modal-header-close {
+  @apply cursor-pointer;
+}
+
+.modal-content {
+  @apply pt-[12px] py-[20px] pb-[20px];
+}
