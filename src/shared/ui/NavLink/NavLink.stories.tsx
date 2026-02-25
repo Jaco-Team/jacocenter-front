@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { NavLink } from './NavLink';
 import WriteIcon from '@/../public/icons/write.svg?react';
 
 console.log(WriteIcon);
 const meta: Meta<typeof NavLink> = {
-  title: 'UI/NavLink',
+  title: 'Shared/NavLink',
   component: NavLink,
   tags: ['autodocs'],
 
