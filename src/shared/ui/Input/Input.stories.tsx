@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+
 import { useState } from "react";
 import { Input } from "./Input";
+import { Meta, StoryObj } from "@storybook/nextjs";
 
 const meta: Meta<typeof Input> = {
   title: "Shared/Input",
