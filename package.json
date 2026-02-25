@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -webpack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -11,6 +11,10 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@storybook/nextjs": "^10.2.12",
+>>>>>>> dev
     "clsx": "^2.1.1",
     "next": "16.1.6",
     "react": "19.2.3",
@@ -25,6 +29,7 @@
     "@storybook/nextjs-vite": "^10.2.8",
     "@storybook/react": "^10.2.8",
     "@storybook/react-vite": "^10.2.8",
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -38,10 +43,15 @@
     "eslint-plugin-storybook": "^10.2.8",
     "playwright": "^1.58.2",
     "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "storybook": "^10.2.8",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vite": "^7.3.1",
+<<<<<<< HEAD
+=======
+    "vite-plugin-svgr": "^4.5.0",
+>>>>>>> dev
     "vitest": "^4.0.18"
   }
 }
