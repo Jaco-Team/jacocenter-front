@@ -1,10 +1,14 @@
-declare module '*.svg' {
-  import { FC, SVGProps } from 'react'
-  const content: FC<SVGProps<SVGElement>>
-  export default content
+// импорт иконок как компонента
+declare module '*.svg?react' {
+  import React from 'react';
+  const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
 }
 
-declare module '*.svg?url' {
-  const content: any
-  export default content
+// Обычный импорт SVG (как картинки)
+declare module '*.svg' {
+  import { StaticImageData } from 'next/image';
+
+  const content: StaticImageData;
+  export default content;
 }
