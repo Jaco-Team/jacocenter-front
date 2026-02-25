@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -10,17 +10,11 @@ const nextConfig: NextConfig = {
     );
 
     config.module.rules.push(
-      // Reapply the existing rule, but only for svg imports ending in ?url
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
-      },
-      // Convert all other *.svg imports to React components
+      // Convert all *.svg?react imports to React components
       {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
+        resourceQuery: /react/,
         use: [
           {
             loader: '@svgr/webpack',
@@ -28,11 +22,17 @@ const nextConfig: NextConfig = {
               icon: true,
               replaceAttrValues: {
                 '#A6A6A6': 'currentColor',
-                '#a6a6a6': 'currentColor', // replaces svg colors to currentColor. But its case sensitive!
+                '#a6a6a6': 'currentColor',
               },
             },
           },
         ],
+      },
+      // Reapply the existing rule, but only for svg imports
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: { not: [/react/] },
       },
     );
 
