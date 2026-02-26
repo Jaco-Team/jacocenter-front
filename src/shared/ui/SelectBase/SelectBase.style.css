@@ -1,0 +1,35 @@
+@reference '../../../app/globals.css';
+
+.select-base {
+  @apply relative w-full min-w-42;
+}
+
+.select-base__trigger {
+  @apply flex items-center justify-between
+         w-full h-11 px-3
+         hover:border border-green-700 rounded-xl
+         active:border-green-950
+         bg-white
+         text-[16px]
+         cursor-pointer
+}
+
+.select-base--open {
+  @apply border border-green-700 
+}
+
+.select-base__placeholder {
+  @apply text-gray-400;
+}
+
+.select-base__value {
+  @apply text-gray-900;
+}
+
+.select-base__chevron {
+  @apply transition-transform duration-300 ease-in-out;
+}
+
+.select-base__chevron--open {
+  @apply rotate-180;
+}
