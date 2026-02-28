@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { OrderDish } from './OrderDish';
+import { useState } from 'react';
 
 const meta: Meta<typeof OrderDish> = {
   title: 'entities/Order/OrderDish',
@@ -10,12 +11,34 @@ const meta: Meta<typeof OrderDish> = {
     onDecrease: { action: 'decreased' },
     onDelete: { action: 'deleted' },
   },
+  args: {
+    name: 'Сет Атлантида',
+    count: 1,
+    price: 2550,
+    oldPrice: 3550,
+    discountText: 'Скидка',
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof OrderDish>;
 
-export const Default: Story = {
+export const Default: Story = {};
+
+export const Interactive: Story = {
+  render: (args) => {
+    const [count, setCount] = useState(args.count);
+
+    return (
+      <OrderDish
+        {...args}
+        count={count}
+        onIncrease={() => setCount((prev) => prev + 1)}
+        onDecrease={() => setCount((prev) => prev - 1)}
+        onDelete={() => alert('Удалено из корзины!')}
+      />
+    );
+  },
   args: {
     name: 'Сет Атлантида',
     count: 1,
