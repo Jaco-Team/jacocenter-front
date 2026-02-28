@@ -61,7 +61,7 @@ export function OrderDish({
           onClick={onDelete}
           className="bg-base text-text-secondary disabled:text-disabled hover:border-bg-base active:bg-bg-base-light flex h-10 w-10 items-center justify-center rounded-lg border border-transparent transition disabled:hover:border-transparent"
         >
-          <XIcon className="rounded-full" />
+          <XIcon />
         </button>
       </div>
     </article>
