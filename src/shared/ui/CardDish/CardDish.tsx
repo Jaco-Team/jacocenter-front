@@ -3,6 +3,7 @@ import './CardDish.style.css';
 import { ICardDishProps } from './CardDish.types';
 
 export const CardDish: React.FC<ICardDishProps> = ({
+  id,
   name,
   price,
   currency = 'p.',
