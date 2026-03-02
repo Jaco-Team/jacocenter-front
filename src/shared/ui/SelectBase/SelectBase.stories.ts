@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SelectBase } from './SelectBase';
+import { useState } from 'react';
 
-const meta: Meta<typeof SelectBase> = {
+const meta = {
   title: 'UI/SelectBase',
   component: SelectBase,
   tags: ['autodocs'],
@@ -18,11 +19,11 @@ const meta: Meta<typeof SelectBase> = {
     isOpen: {
       control: 'boolean',
     },
-    onToggle: {
-      action: 'toggled',
+    options: {
+      control: { type: 'object' },
     },
   },
-};
+} satisfies Meta<typeof SelectBase>;
 
 export default meta;
 
@@ -41,6 +42,7 @@ export const Open: Story = {
     placeholder: 'Город',
     value: '',
     isOpen: true,
+    options:['Тольятти', 'Москва', 'Санкт-Петербург', 'Казань', 'Самара', 'Сочи', 'Тула'],
   },
 };
 

@@ -3,5 +3,7 @@ export interface ISelectBaseProps {
   placeholder?: string;
   isOpen?: boolean;
   className?: string;
+  options: string[];
   onToggle?: () => void;
+  onSelect: (value: string) => void;
 }
