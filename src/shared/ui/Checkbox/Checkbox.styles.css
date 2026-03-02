@@ -1,0 +1,91 @@
+@reference "../../../app/globals.css";
+
+.checkbox-root {
+  @apply inline-flex items-center;
+}
+
+.checkbox-input {
+  @apply absolute opacity-0 w-0 h-0 pointer-events-none;
+}
+
+.checkbox-label-container {
+  @apply flex items-center gap-2 cursor-pointer;
+}
+
+/* --- Квадрат чекбокса --- */
+.checkbox-control {
+  @apply w-[34px] h-[34px] rounded-lg border border-[#E5E5E5] flex items-center justify-center relative;
+  background: transparent;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* Псевдоэлемент для серой галочки (hover/active) */
+.checkbox-control::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #E5E5E5;
+  mask-image: url('/icons/checkmark-success.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+/* Hover: показываем серую галочку (только если не выбран) */
+.checkbox-label-container:hover .checkbox-control:not(.checked)::before {
+  opacity: 1;
+}
+
+/* Active (нажатие) */
+.checkbox-label-container:active .checkbox-control {
+  border-color: #AEE3A8;
+}
+.checkbox-label-container:active .checkbox-control:not(.checked)::before {
+  opacity: 1;
+  background-color: #BABABA;
+}
+
+/* Selected: убираем псевдоэлемент, показываем зелёную галочку через Image */
+.checkbox-control.checked::before {
+  content: none;
+}
+
+/* --- Disabled state --- */
+.checkbox-input:disabled + .checkbox-label-container {
+  cursor: default; /* стандартный курсор, не pointer */
+}
+
+.checkbox-input:disabled + .checkbox-label-container .checkbox-control {
+  background-color: #E5E5E5; /* заливка цветом бордера */
+  border-color: #E5E5E5;
+  pointer-events: none; /* отключаем все hover/active эффекты на квадрате */
+}
+
+/* Отключаем hover-эффекты для disabled (переопределяем) */
+.checkbox-input:disabled + .checkbox-label-container:hover .checkbox-control {
+  border-color: #E5E5E5; /* оставляем таким же, как в обычном disabled */
+  background-color: #E5E5E5;
+}
+.checkbox-input:disabled + .checkbox-label-container:hover .checkbox-control::before {
+  opacity: 0; /* не показываем серую галочку при hover */
+}
+
+/* Если при disabled чекбокс выбран, делаем галочку полупрозрачной (опционально) */
+.checkbox-input:disabled + .checkbox-label-container .checkbox-control.checked img {
+  opacity: 0.5;
+}
+
+/* --- Текст --- */
+.checkbox-label {
+  @apply text-[16px] text-[#5E5E5E] leading-none;
+}
+
+/* --- Фокус (доступность) --- */
+.checkbox-input:focus-visible + .checkbox-label-container .checkbox-control {
+  @apply ring-2 ring-green-400 ring-offset-2;
+}
+
+/* Для disabled фокус не нужен, но можно оставить как есть */
