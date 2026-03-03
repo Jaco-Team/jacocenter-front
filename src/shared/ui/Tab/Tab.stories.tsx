@@ -14,103 +14,90 @@ const meta = {
       control: "radio",
       options: ["default", "underline"],
     },
+    active: { control: "boolean" },
+    title: { control: "text" },
   },
 } satisfies Meta<typeof Tab>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Базовый пример с двумя табами (контролируемый)
-export const Default: Story = {
+// Одиночный неактивный таб
+export const Inactive: Story = {
   args: {
-    items: ["Таб 1", "Таб 2"],
+    title: "Таб",
+    active: false,
     variant: "default",
-  },
-  render: function Render(args) {
-    const [activeIndex, setActiveIndex] = useState(0);
-    return <Tab {...args} activeIndex={activeIndex} onChange={setActiveIndex} />;
   },
 };
 
-export const Underline: Story = {
+// Одиночный активный таб
+export const Active: Story = {
   args: {
-    items: ["Таб A", "Таб B"],
+    title: "Таб",
+    active: true,
+    variant: "default",
+  },
+};
+
+// Вариант underline
+export const UnderlineInactive: Story = {
+  args: {
+    title: "Таб",
+    active: false,
     variant: "underline",
   },
-  render: function Render(args) {
-    const [activeIndex, setActiveIndex] = useState(0);
-    return <Tab {...args} activeIndex={activeIndex} onChange={setActiveIndex} />;
-  },
 };
 
-// Пример с тремя табами (проверка гибкости)
-export const ThreeItems: Story = {
+export const UnderlineActive: Story = {
   args: {
-    items: ["Первый", "Второй", "Третий"],
-    variant: "default",
-  },
-  render: function Render(args) {
-    const [activeIndex, setActiveIndex] = useState(0);
-    return <Tab {...args} activeIndex={activeIndex} onChange={setActiveIndex} />;
+    title: "Таб",
+    active: true,
+    variant: "underline",
   },
 };
 
-// Пример с контейнером (вариант default)
-export const WithContainer: Story = {
+// Группа табов (пример использования)
+export const Group: Story = {
   render: function Render() {
     const [activeIndex, setActiveIndex] = useState(0);
-    const items = ["Шаг 1", "Шаг 2"];
+    const items = ["Доставка", "Самовывоз"];
 
     return (
-      <div style={{ width: "400px" }}>
-        <Tab
-          items={items}
-          activeIndex={activeIndex}
-          onChange={setActiveIndex}
-          variant="default"
-        />
-        <div
-          style={{
-            backgroundColor: "#f9f9f9",
-            border: "1px solid #ddd",
-            borderRadius: "0 0 8px 8px", // скругление только снизу, сверху встык с табами
-            padding: "20px",
-            minHeight: "150px",
-          }}
-        >
-          <p>Содержимое шага {activeIndex + 1}</p>
-          <p>Здесь может быть форма или информация.</p>
-        </div>
+      <div style={{ display: "flex", gap: "12px", width: "400px" }}>
+        {items.map((title, index) => (
+          <Tab
+            key={index}
+            title={title}
+            active={index === activeIndex}
+            onClick={() => setActiveIndex(index)}
+            variant="default"
+            style={{ flex: 1 }} // для равномерного растягивания
+          />
+        ))}
       </div>
     );
   },
 };
 
-// Пример с underline и растягиванием на всю ширину
-export const UnderlineWithContainer: Story = {
+// Группа underline
+export const UnderlineGroup: Story = {
   render: function Render() {
     const [activeIndex, setActiveIndex] = useState(0);
     const items = ["Вкладка 1", "Вкладка 2"];
 
     return (
-      <div style={{ width: "500px" }}>
-        <Tab
-          items={items}
-          activeIndex={activeIndex}
-          onChange={setActiveIndex}
-          variant="underline"
-        />
-        <div
-          style={{
-            backgroundColor: "#ffffff",
-            border: "1px solid #e5e5e5",
-            borderTop: "none", // убираем верхнюю границу, чтобы табы "приклеились"
-            padding: "20px",
-            minHeight: "120px",
-          }}
-        >
-          <p>Контент для {items[activeIndex]}</p>
-        </div>
+      <div style={{ display: "flex", width: "500px" }}>
+        {items.map((title, index) => (
+          <Tab
+            key={index}
+            title={title}
+            active={index === activeIndex}
+            onClick={() => setActiveIndex(index)}
+            variant="underline"
+            style={{ flex: 1 }}
+          />
+        ))}
       </div>
     );
   },

@@ -1,40 +1,32 @@
 @reference "../../../app/globals.css";
 
-/* Корневой контейнер для табов */
-.tabs-root {
-  @apply flex w-full;
+/* Базовые стили для одного таба */
+.tab {
+  @apply cursor-pointer select-none transition-colors;
 }
 
-/* Вариант default: табы с отступами и скруглением только сверху */
-.tabs-default {
-  @apply gap-3 w-full;
+/* Вариант default */
+.tab-default {
+  @apply px-4 py-2 text-[20px] rounded-t-lg text-center;
 }
 
-.tabs-default .tab-item {
-  @apply flex-1 px-4 py-2 text-[20px] rounded-t-lg cursor-pointer transition-colors text-center;
-}
-
-.tabs-default .tab-item.inactive {
-  @apply bg-[var(--color-bg-base-light)] text-[var(--color-text-secondary)];
-}
-
-.tabs-default .tab-item.active {
+.tab-default.active {
   @apply bg-[var(--color-primary-light)] text-[var(--color-text-base)];
 }
 
-/* Вариант underline: табы растянуты, без отступов */
-.tabs-underline {
-  @apply w-full;
+.tab-default.inactive {
+  @apply bg-[var(--color-bg-base-light)] text-[var(--color-text-secondary)];
 }
 
-.tabs-underline .tab-item {
-  @apply flex-1 px-4 py-2 text-[16px] text-center cursor-pointer transition-colors border-b-2 border-transparent;
+/* Вариант underline */
+.tab-underline {
+  @apply px-4 py-2 text-[16px] text-center border-b-2 border-transparent;
 }
 
-.tabs-underline .tab-item.inactive {
-  @apply text-[var(--color-text-subtle)];
-}
-
-.tabs-underline .tab-item.active {
+.tab-underline.active {
   @apply text-[var(--color-primary)] border-b-2 border-[var(--color-primary)];
+}
+
+.tab-underline.inactive {
+  @apply text-[var(--color-text-subtle)];
 }
