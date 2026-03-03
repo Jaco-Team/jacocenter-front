@@ -41,7 +41,7 @@ export const Default: Story = {
       setSelected(Number(id)); // преобразуем в число, т.к. id числовые
     };
     return (
-      <div style={{ width: "600px", padding: "8px" }}>
+      <div style={{ width: "704px", padding: "8px" }}>
         <Categories {...args} selectedId={selected} onSelect={handleSelect} />
       </div>
     );
@@ -60,7 +60,7 @@ export const WithSelected: Story = {
       setSelected(Number(id));
     };
     return (
-      <div style={{ width: "600px", padding: "8px" }}>
+      <div style={{ width: "704px", padding: "8px" }}>
         <Categories {...args} selectedId={selected} onSelect={handleSelect} />
       </div>
     );
