@@ -1,0 +1,60 @@
+@reference '../../../app/globals.css';
+
+.select-base {
+  @apply relative w-full min-w-42;
+}
+
+.select-base__trigger {
+  @apply flex items-center justify-between
+         w-full h-11 px-3
+         border border-transparent outline-none rounded-xl
+         active:border-[var(--color-button-primary-pressed)]
+         bg-[var(--color-base)]
+         text-[16px]
+         cursor-pointer duration-300 ease-in-out
+}
+.select-base__trigger:hover {
+  @apply border-[var(--color-button-primary-hover)]
+}
+
+.select-base--open {
+  @apply border border-[var(--color-primary)];
+}
+
+.select-base__placeholder {
+  @apply text-[var(--color-text-muted)]
+}
+
+.select-base__value {
+  @apply text-[var(--color-text-base)];
+}
+
+.select-base__chevron {
+  @apply transition-transform;
+}
+
+.select-base__chevron--open {
+  @apply rotate-180;
+}
+
+.select-base__dropdown {
+  @apply absolute top-full left-0 mt-1 w-full gap-1 py-3
+         bg-[var(--color-base)] border border-[var(--color-status-cooking)] rounded-xl
+         shadow-[var(--shadow-card-dish)] z-20 overflow-hidden;
+}
+
+.select-base__option {
+  @apply  px-3 py-[10px] cursor-pointer
+}
+
+.select-base__option:hover {
+  @apply text-[var(--color-button-primary-hover)]
+}
+
+.select-base__option:active {
+  @apply text-[var(--color-button-primary-pressed)]
+}
+
+.select-base__option--all {
+  @apply text-[var(--color-primary)];
+}
