@@ -1,8 +1,10 @@
 @reference "../../../app/globals.css";
 
 .category-card {
-  @apply inline-block px-3 py-3 text-center text-[var(--color-text-base)] rounded-xl cursor-pointer select-none border border-transparent;
+  @apply inline-flex items-center justify-center px-3 py-3 text-center text-[var(--color-text-base)] rounded-xl cursor-pointer select-none border border-transparent;
   transition: background-color 0.2s, border-color 0.2s;
+  width: min-content;
+  max-width: 100%;
 }
 
 .category-card.selected {
