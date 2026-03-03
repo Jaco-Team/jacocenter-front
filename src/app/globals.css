@@ -38,6 +38,9 @@
   --color-status-queue: #F3F3F3;
   --color-status-ready: #C9C9C9;
   --color-status-cooking: #F3F3F3;
+
+  /*Тени*/
+  --shadow-card-dish: 0 4px 4px 4px rgba(60, 59, 59, 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
