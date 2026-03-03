@@ -1,0 +1,5 @@
+@reference "../../../../app/globals.css";
+
+.categories-container {
+  @apply bg-white p-4 flex flex-wrap gap-4 rounded-b-xl justify-center;
+}
