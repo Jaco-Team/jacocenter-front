@@ -1,28 +1,51 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { NavPanel } from './NavPanel';
+import { navPanelMock } from '../utils/mock';
 
-const meta: Meta<typeof NavPanel> = {
+const routes = navPanelMock.map(item => item.href);
+
+type NavPanelStoryArgs = React.ComponentProps<typeof NavPanel> & {
+  pathname: string;
+};
+
+const meta: Meta<NavPanelStoryArgs> = {
   title: 'Widgets/NavPanel',
   component: NavPanel,
-  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+  },
+  argTypes: {
+    pathname: {
+      control: { type: 'select' },
+      options: routes,
+      description: 'Текущий URL',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof NavPanel>;
+
+type Story = StoryObj<NavPanelStoryArgs>;
 
 export const Default: Story = {
-  render: () => {
-    // отключила клики по иконкам, чтобы не было перехода на несуществующую страницу и storybook  не перезагружался
-    const stopNavigation = (e: React.MouseEvent) => {
-      e.preventDefault();
-    };
-    return (
-      <div className='bg-bg-base' onClick={stopNavigation}>
-        <NavPanel />
-      </div>
-  );
-  }
+  args: {
+    pathname: '/clients',
+  },
+  decorators: [
+    (Story, context) => {
+      context.parameters.nextjs = {
+        appDirectory: true,
+        navigation: {
+          pathname: context.args.pathname,
+        },
+      };
+
+      return <Story key={context.args.pathname} />;
+    },
+  ],
+  render: () => (
+    <div className="bg-bg-base">
+      <NavPanel />
+    </div>
+  ),
 };
