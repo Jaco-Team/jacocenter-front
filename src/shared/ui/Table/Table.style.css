@@ -1,0 +1,61 @@
+@reference '../../../app/globals.css';
+
+.table-main {
+  @apply bg-base rounded-xl;
+}
+
+.table-secondary {
+  @apply border border-bg-base;
+}
+
+.table-header-wrapper {
+  @apply w-full h-0 sticky top-0;
+}
+
+.table-header {
+  @apply flex;
+}
+
+.table-header-default {
+  @apply bg-primary-light divide-x divide-bg-base-light;
+}
+
+.table-header-secondary {
+  @apply bg-bg-base divide-x divide-base;
+}
+
+.table-header-cell {
+  @apply flex items-center justify-center;
+}
+
+.table-header-cell-active-default {
+  @apply border-b border-r border-primary;
+}
+
+.table-cell {
+  @apply flex items-center justify-center text-center text-text-secondary;
+}
+
+.table-cell .label-s-regular-12 {
+  @apply text-text-base;
+}
+
+.table-cell-default {
+  @apply border-t border-base bg-clip-padding;
+}
+
+.table-cell-clickable {
+  @apply cursor-pointer;
+}
+
+.table-cell-hovered {
+  @apply bg-bg-base-light;
+}
+
+.table-cell-pressed {
+  @apply bg-bg-base;
+}
+
+.table-cell-active {
+  @apply bg-bg-base-light text-text-base shadow-[inset_0_-1px_0_0] shadow-bg-base;
+}
