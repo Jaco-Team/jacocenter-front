@@ -11,16 +11,18 @@ export const Categories = ({
   className = "",
 }: CategoriesProps) => {
   return (
-    <div className={`categories-container ${className}`}>
+    <ul className={`categories-container ${className}`}>
       {items.map((item) => (
-        <CategoryCard
-          key={item.id}
-          isSelected={item.id === selectedId}
-          onClick={() => onSelect?.(item.id)}
-        >
-          {item.name}
-        </CategoryCard>
+        <li key={item.id} className="categories-item">
+          <CategoryCard
+            key={item.id}
+            isSelected={item.id === selectedId}
+            onClick={() => onSelect?.(item.id)}
+          >
+            {item.name}
+          </CategoryCard>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
