@@ -2,6 +2,7 @@ import type { OrderDishProps } from './OrderDish.types';
 import XIcon from '@/../public/icons/x_circle.svg?react';
 import MinusIcon from '@/../public/icons/minus.svg?react';
 import PlusIcon from '@/../public/icons/plus.svg?react';
+import { Text } from '@/shared/ui/Typography/Typography';
 
 export function OrderDish({
   name,
@@ -13,8 +14,11 @@ export function OrderDish({
   onDecrease,
   onDelete,
 }: OrderDishProps) {
+  
+  const formatPrice = (value: number) => value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(',', '.');
+
   return (
-    <article className="border-bg-base-light bg-base flex h-18 w-full items-center justify-between gap-4 border-b py-4">
+    <article className="border-bg-base-light bg-base flex h-18 w-full items-center justify-between gap-2 border-b py-4">
       {/* Левый блок */}
       <div className="flex items-center gap-1">
         <button
@@ -37,23 +41,23 @@ export function OrderDish({
 
       {/* Центральный блок*/}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <span className="text-text-secondary truncate">{name}</span>
+        <Text className="text-text-secondary truncate">{name}</Text>
         {discountText && (
-          <span className="text-text-secondary text-xs">{discountText}</span>
+          <Text variant="label-s-regular-12" className="text-text-secondary pt-1">{discountText}</Text>
         )}
       </div>
 
       {/* Правый блок */}
       <div className="flex items-center gap-2">
         <div className="flex flex-col items-end">
-          <span className="text-text-secondary font-medium">
-            {price.toLocaleString()} ₽
-          </span>
+          <Text className="text-text-secondary">
+            {formatPrice(price)}
+          </Text>
 
           {oldPrice && (
-            <span className="text-text-secondary text-xs line-through">
-              {oldPrice.toLocaleString()} ₽
-            </span>
+            <Text variant="label-s-regular-12" className="text-text-secondary line-through pt-1">
+              {formatPrice(oldPrice)}
+            </Text>
           )}
         </div>
 
