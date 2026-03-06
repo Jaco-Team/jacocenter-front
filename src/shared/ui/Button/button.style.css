@@ -13,8 +13,8 @@
   }
 
   .primary {
-    @apply bg-green-500 text-white hover:bg-green-600 
-    active:bg-green-800 disabled:bg-gray-200;
+    @apply bg-primary text-bg-base-light hover:bg-button-primary-hover
+    active:bg-button-primary-pressed disabled:bg-disabled;
   }
 
   .secondary {
