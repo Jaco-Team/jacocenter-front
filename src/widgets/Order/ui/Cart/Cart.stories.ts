@@ -1,6 +1,7 @@
 'use client';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Cart } from './Cart';
+import { ORDER_STEP } from '@/utils/constants';
 
 const mockItems = [
   {
@@ -88,7 +89,7 @@ const meta: Meta= {
       control: { type: 'number' },
     },
     step: {
-      control: { type: 'select' }, options: [1, 2],
+      control: { type: 'select' }, options: [ORDER_STEP.CART, ORDER_STEP.DELIVERY],
     },
     onIncrease: { action: 'increase' },
     onDecrease: { action: 'decrease' },
@@ -106,7 +107,7 @@ export const Default: Story = {
   args: {
     items: mockItems,
     deliveryPrice: 0,
-    step: 1,
+    step: ORDER_STEP.CART,
   },
 };
 
@@ -114,7 +115,7 @@ export const WithoutDiscount: Story = {
   args: {
     items: mockItemsWithoutDiscount,
     deliveryPrice: 0,
-    step: 2,
+    step: ORDER_STEP.DELIVERY,
   },
 };
 
@@ -135,7 +136,7 @@ export const WithDelivery: Story = {
       count: 2,
     },],
     deliveryPrice: 250,
-    step: 2,
+    step: ORDER_STEP.DELIVERY,
   },
 };
 
@@ -143,8 +144,6 @@ export const Empty: Story = {
   args: {
     items: [],
     deliveryPrice: 0,
-    step: 1,
+    step: ORDER_STEP.CART,
   },
 };
-
-

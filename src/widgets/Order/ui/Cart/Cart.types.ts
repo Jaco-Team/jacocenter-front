@@ -1,3 +1,5 @@
+import { ORDER_STEP } from "@/utils/constants";
+
 export interface CartProps {
   items: CartItem[];
   deliveryPrice?: number;
@@ -7,7 +9,7 @@ export interface CartProps {
   onDecrease: (id: string) => void;
   onDelete: (id: string) => void;
   onNext: () => void;
-  step: number;
+  step: ORDER_STEP;
 }
 
 export interface CartItem {

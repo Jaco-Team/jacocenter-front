@@ -2,6 +2,7 @@ import { OrderDish } from '@/entities/Order/ui/OrderDish';
 import { Button } from '@/shared/ui/Button/Button';
 import { Text } from '@/shared/ui/Typography/Typography';
 import { CartProps } from './Cart.types';
+import { ORDER_STEP } from '@/utils/constants';
 
 export function Cart({
   items,
@@ -36,21 +37,21 @@ export function Cart({
       <section className="flex h-[640px] py-5 flex-col rounded-2xl bg-white text-text-secondary">
         
         <header className="px-3 mb-4 h-10 flex justify-between items-center">
-          <button
-            type="button"
+          <Button
+            variant="text"
+            theme="primary"
             onClick={onOpenOrderInfo}
-            className="cursor-pointer text-primary hover:text-button-primary-hover active:text-button-primary-pressed"
           >
             <Text className="underline underline-offset-[3px]">Весь заказ</Text>
-          </button>
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant="text"
+            theme="error"
             onClick={onCancel}
-            className="cursor-pointer text-error hover:text-button-accent-hover active:text-button-accent-pressed"
           >
             <Text>Отменить заказ</Text>
-          </button>
+          </Button>
         </header>
 
         <ul className="flex-1 overflow-y-auto">
@@ -110,9 +111,10 @@ export function Cart({
         variant="base"
         theme="primary"
         onClick={onNext}
-        className="mt-3"
+        className="mt-3 h-[44px]"
       >
-        <Text variant="body-m-medium-16" className="text-bg-base-light">{step === 1 ? "Далее" : "Оформить заказ"}</Text>
+        <Text 
+          variant="body-m-medium-16" className="text-bg-base-light">{step === ORDER_STEP.CART ? "Далее" : "Оформить заказ"}</Text>
       </Button>
     </aside>
   );
