@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useId } from "react";
 import { InputProps } from "./Input.types";
 import "./Input.styles.css";
 import Image from "next/image";
@@ -17,7 +17,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id ?? `input-${Math.random().toString(36).slice(2)}`;
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
 
     return (
       <div className="input-root">

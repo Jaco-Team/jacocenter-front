@@ -1,0 +1,20 @@
+@reference "../../../app/globals.css";
+
+.category-card {
+  @apply inline-flex items-center justify-center px-3 py-3 text-center text-[var(--color-text-base)] rounded-xl cursor-pointer select-none border border-transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+  width: min-content;
+  max-width: 100%;
+}
+
+.category-card.selected {
+  @apply border border-[var(--color-primary)];
+}
+
+.category-card:not(.selected):hover {
+  @apply bg-[var(--color-bg-base-light)] text-[var(--color-text-secondary)];
+}
+
+.category-card:not(.selected):active {
+  @apply bg-[var(--color-bg-base)] text-[var(--color-text-base)];
+}
