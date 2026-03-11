@@ -80,7 +80,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
       (
         <ul 
           ref={listRef}
-          className="max-h-[216px] bg-base rounded-xl overflow-auto p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
+          className="max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
           {filtered.map((item, index) => (
             <li
               key={item.id}
@@ -89,7 +89,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
                 setIsOpen(false);
                 setActiveIndex(-1);
               }}
-              className={`h-10 px-2 flex items-center ${activeIndex === index ? "bg-bg-base-light text-text-base" : "hover:bg-bg-base-light"}`}
+              className={`h-10 px-2 flex items-center rounded-lg ${activeIndex === index ? "bg-bg-base-light text-text-base" : "hover:bg-bg-base-light"}`}
             >
               <Text>{item.name}</Text>
             </li>
