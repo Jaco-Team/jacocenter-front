@@ -15,6 +15,8 @@ export const Button: React.FC<IButtonUIProps> = ({
   return (
     <button
       className={clsx(variant, theme, size, className)}
+      type={type}
+      onClick={onClick}
       {...props}
     >
       {children}

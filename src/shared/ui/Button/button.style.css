@@ -12,9 +12,30 @@
     focus:outline-none disabled:pointer-events-none;
   }
 
+  .text {
+     @apply cursor-pointer border-none;
+  }
+
+  .text.primary {
+    @apply bg-transparent text-primary 
+    hover:bg-transparent hover:text-button-primary-hover 
+    active:text-button-primary-pressed 
+    disabled:text-disabled disabled:bg-transparent;
+  }
+
+  .text.secondary {
+    @apply bg-transparent text-text-secondary hover:text-text-secondary;
+  }
+
+  .text.error {
+    @apply bg-transparent text-error 
+    hover:text-button-accent-hover 
+    active:text-button-accent-pressed;
+  }
+
   .primary {
-    @apply bg-green-500 text-white hover:bg-green-600 
-    active:bg-green-800 disabled:bg-gray-200;
+    @apply bg-primary text-bg-base-light hover:bg-button-primary-hover
+    active:bg-button-primary-pressed disabled:bg-disabled;
   }
 
   .secondary {
