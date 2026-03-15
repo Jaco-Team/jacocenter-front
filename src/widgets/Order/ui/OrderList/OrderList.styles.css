@@ -1,0 +1,70 @@
+@reference "../../../../app/globals.css";
+
+/* Основной контейнер */
+.order-list {
+  @apply bg-[#F3F3F3] rounded-xl pt-3 pr-5 pb-5 pl-5;
+}
+
+.order-list.wide {
+  @apply pb-[84px];
+}
+
+/* Заголовок */
+.order-list h2 {
+  @apply text-[20px] font-medium text-[#5E5E5E] mb-3;
+}
+
+/* Таблица заказа */
+.order-table {
+  @apply w-full;
+}
+
+/* Строка таблицы */
+.order-row {
+  @apply flex items-center;
+}
+
+/* Название — занимает всё оставшееся место */
+.order-name {
+  @apply flex-1;
+}
+
+/* Ячейки количества и цены — фиксированная ширина 72px, текст по центру */
+.order-quantity,
+.order-price {
+  @apply w-[72px] text-center flex-shrink-0;
+}
+
+/* Заголовки колонок */
+.order-header {
+  @apply text-[12px] text-[#5E5E5E] pb-2 border-b border-[#E5E5E5];
+}
+
+/* Контейнер для списка товаров */
+.order-items {
+  @apply mt-2;
+}
+
+/* Элемент товара */
+.order-item {
+  @apply py-1 border-b border-[#E5E5E5] text-[16px] text-[#5E5E5E];
+}
+
+/* Разделитель после списка товаров */
+.order-divider {
+  @apply mt-6 border-b border-[#C9C9C9];
+}
+
+/* Блок итоговой суммы */
+.order-total h3 {
+  @apply flex-1 font-medium;
+}
+
+/* Цена итого */
+.order-total .order-price {
+  @apply font-medium;
+}
+
+.order-total {
+  @apply flex items-center mt-3 text-[16px] text-[#5E5E5E];
+}
