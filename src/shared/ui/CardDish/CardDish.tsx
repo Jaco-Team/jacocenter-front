@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import './CardDish.style.css';
 import { ICardDishProps } from './CardDish.types';
+import { Tooltip } from '../Tooltip/Tooltip';
+import { Typography } from '../Typography/Typography';
 
 export const CardDish: React.FC<ICardDishProps> = ({
   id,
@@ -23,21 +25,26 @@ export const CardDish: React.FC<ICardDishProps> = ({
         </span>
       </div>
 
-      <div className='card-dish-info'>
-        <Image
-          src='/icons/info.svg'
-          alt='Информация'
-          width={20}
-          height={20}
-          className='card-dish-icon'
-        />
-
-        {description && (
-          <div className='card-dish-tooltip'>
-            {description}
+      {description &&
+        <Tooltip
+          content={
+            <Typography variant='label-s-regular-12'>
+              {description}
+            </Typography>
+          }
+          placement='top'
+          className='mb-3'>
+          <div className='card-dish-info'>
+            <Image
+              src='/icons/info.svg'
+              alt='Информация'
+              width={20}
+              height={20}
+              className='card-dish-icon'
+            />
           </div>
-        )}
-      </div>
+        </Tooltip>
+      }
     </button>
   )
 }
