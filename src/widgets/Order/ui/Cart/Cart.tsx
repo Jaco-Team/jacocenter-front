@@ -3,6 +3,8 @@ import { Button } from '@/shared/ui/Button/Button';
 import { Text } from '@/shared/ui/Typography/Typography';
 import { CartProps } from './Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
+import { useState } from 'react';
+import { ModalOrderDelete } from '@/features/order/ModalOrderDelete/ModalOrderDelete';
 
 export function Cart({
   items,
@@ -15,6 +17,8 @@ export function Cart({
   onCancel,
   step
 }: CartProps) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const sumWithoutDiscount = items.reduce((acc, item) => {
       const price = item.oldPrice ?? item.price;
       return acc + price * item.count;
@@ -48,7 +52,7 @@ export function Cart({
           <Button
             variant="text"
             theme="error"
-            onClick={onCancel}
+            onClick={() => setIsDeleteModalOpen(true)}
           >
             <Text>Отменить заказ</Text>
           </Button>
@@ -116,6 +120,15 @@ export function Cart({
         <Text 
           variant="body-m-medium-16" className="text-bg-base-light">{step === ORDER_STEP.CART ? "Далее" : "Оформить заказ"}</Text>
       </Button>
+
+      <ModalOrderDelete 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)}
+        onCancelOrder={() => {
+          onCancel?.();
+          setIsDeleteModalOpen(false);
+        }}
+      />
     </aside>
   );
 }
