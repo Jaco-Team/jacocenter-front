@@ -1,0 +1,21 @@
+@reference "../../../app/globals.css";
+
+.modal-warning-content {
+  @apply w-[352px] mx-5 mt-[8px] text-text-secondary;
+}
+
+.warning-group {
+  @apply flex items-center gap-[16px] h-[72px] mt-5 pb-3 pl-5;
+}
+
+.warning-text {
+  @apply inline-block w-[272px] h-[60px];
+}
+
+.buttons-group {
+  @apply flex gap-[16px] pt-5;
+}
+
+.button {
+  @apply h-[44px];
+}
