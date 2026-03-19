@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 import { StopOrder } from './StopOrder';
 
 const meta = {
   title: 'Features/StopOrder',
   component: StopOrder,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'centered',
-  },
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div style={{ width: 400 }}>
@@ -27,13 +24,9 @@ const sampleOptions = [
 ];
 
 export const Active: Story = {
-  render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return <StopOrder {...args} isOpen={isOpen} onToggle={() => setIsOpen(p => !p)} />;
-  },
-  args: { options: sampleOptions, isActive: true },
+  args: { options: sampleOptions },
 };
 
 export const Inactive: Story = {
-  args: { options: sampleOptions, isActive: false },
+  args: { options: [] },
 };

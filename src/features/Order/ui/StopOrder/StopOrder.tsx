@@ -1,24 +1,29 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./StopOrder.styles.css";
 import { StopOrderProps } from "./StopOrder.types";
 
 export const StopOrder = ({
   options,
-  isActive = false,
-  isOpen = false,
-  onToggle,
   className = '',
 }: StopOrderProps) => {
+  const isActive = options.length > 0;
+  const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
+  const handleToggle = () => {
+    if (isActive) setIsOpen(prev => !prev);
+  };
+
   useEffect(() => {
+    if (!isActive) setIsOpen(false);
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) onToggle?.();
+      if (e.key === "Escape") setIsOpen(false);
     };
     const handleClickOutside = (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        if (isOpen) onToggle?.();
+        setIsOpen(false);
       }
     };
 
@@ -28,14 +33,14 @@ export const StopOrder = ({
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onToggle]);
+  }, [isActive]);
 
   return (
     <div ref={rootRef} className={`stop-order ${className}`}>
       <button
         type="button"
         className={`stop-order__trigger ${isActive ? 'stop-order__trigger--active' : ''} ${isActive && isOpen ? 'stop-order__trigger--open' : ''}`}
-        onClick={isActive ? onToggle : undefined}
+        onClick={handleToggle}
         aria-expanded={isOpen}
         disabled={!isActive}
       >
@@ -60,4 +65,3 @@ export const StopOrder = ({
     </div>
   );
 };
-
