@@ -13,6 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       error,
       helperText,
       id,
+      className = "",
       ...props
     },
     ref
@@ -35,7 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           value={value}
           onChange={onChange}
           aria-invalid={!!error}
-          className={`input-field ${error ? "input-error" : ""}`}
+          className={`input-field ${error ? "input-error" : ""} ${className}`}
           {...props}
         />
 

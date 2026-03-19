@@ -1,0 +1,21 @@
+@reference '../../../../../app/globals.css';
+
+.nearest-time-container {
+  @apply mt-5;
+}
+
+.nearest-time-active {
+  @apply text-text-secondary;
+}
+
+.nearest-time-disabled {
+  @apply text-text-subtle;
+}
+
+.nearest-time-label {
+  @apply block;
+}
+
+.nearest-time-value {
+  @apply block mt-3;
+}

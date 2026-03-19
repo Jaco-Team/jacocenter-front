@@ -1,0 +1,33 @@
+@reference '../../../../../app/globals.css';
+
+.delivery-form {
+  @apply w-[704px] h-[542px] bg-base rounded-b-xl;
+}
+
+.delivery-form-main {
+  @apply h-[358px] bg-base flex gap-3 pt-1 pb-3;
+}
+
+.delivery-form-column {
+  @apply px-3 w-[346px];
+}
+
+.tabs-container {
+  @apply flex h-[36px];
+}
+
+.tab {
+  @apply w-[161px] cursor-pointer; 
+}
+
+.tab.tab-default {
+  @apply text-text-subtle hover:text-text-subtle;
+}
+
+.tab.tab-active {
+  @apply border-primary text-primary hover:text-primary;
+}
+
+.tab.tab-active-muted {
+  @apply border-disabled text-text-subtle;
+}

@@ -1,0 +1,49 @@
+@reference '../../../../../app/globals.css';
+
+.delivery-container {
+  @apply mt-1;
+}
+
+.delivery-address {
+  @apply relative h-[80px];
+}
+
+.icon-search {
+  @apply absolute left-3 top-[34px] group-focus-within:hidden;
+}
+
+.delivery-buttons-group {
+  @apply flex flex-row gap-3 pt-[13px];
+}
+
+.icon-map {
+  @apply mx-auto block;
+}
+
+.delivery-address-details {
+  @apply flex gap-[11px] my-[16px];
+}
+
+.delivery-address-details-input {
+  @apply w-[72px] text-center placeholder:translate-y-2 placeholder:text-bg-base [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield];
+}
+
+.intercom-label {
+  @apply text-text-secondary;
+}
+
+.intercom-buttons {
+  @apply flex gap-3 h-[36px];
+}
+
+.intercom-buttons .button-default {
+  @apply border-bg-base;
+}
+
+.button-active {
+  @apply bg-primary-light text-text-secondary hover:bg-primary-light;
+}
+
+.button-default {
+  @apply text-text-subtle hover:text-text-subtle;
+}

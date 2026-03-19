@@ -5,15 +5,15 @@
 }
 
 .input-label {
-  @apply text-sm text-gray-500;
+  @apply text-xs text-text-secondary;
 }
 
 .input-field {
-  @apply w-full border border-neutral-300 rounded-md px-3 py-2 outline-none;
+  @apply w-full border border-disabled rounded-xl px-3 py-2 outline-none;
 }
 
 .input-error {
-  @apply border-red-500;
+  @apply border-error;
 }
 
 .input-message {
@@ -21,23 +21,23 @@
 }
 
 .input-message.error {
-  @apply text-red-500;
+  @apply text-error bg-transparent;
 }
 
 .input-message.helper {
-  @apply text-lime-600;
+  @apply text-primary;
 }
 
 .input-field {
-  @apply w-full border rounded-md px-3 py-2 outline-none transition-colors;
+  @apply w-full border rounded-xl px-3 py-2 outline-none transition-colors;
 }
 
 .input-field:not(:disabled):hover {
-  @apply border-lime-500;
+  @apply border-button-primary-hover;
 }
 
 .input-field:not(:disabled):focus {
-  @apply border-lime-500 ring-1 ring-lime-500;
+  @apply border-primary ring-1 ring-primary;
 }
 
 .input-field:disabled {

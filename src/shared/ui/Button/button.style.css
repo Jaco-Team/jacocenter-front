@@ -13,7 +13,7 @@
   }
 
   .text {
-     @apply cursor-pointer border-none;
+     @apply cursor-pointer border-b-[1.5px] border-transparent;
   }
 
   .text.primary {
@@ -39,10 +39,10 @@
   }
 
   .secondary {
-    @apply bg-white text-green-500 border border-gray-300 
-    hover:border-gray-700
-    active:border-gray-700 active:text-green-600
-    disabled:border-gray-400 disabled:text-gray-300
+    @apply bg-white text-primary border border-disabled
+    hover:border-text-muted hover:text-button-primary-hover
+    active:border-text-subtle active:text-button-primary-pressed
+    disabled:border-disabled disabled:text-disabled
   }
 
   .error {

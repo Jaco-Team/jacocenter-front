@@ -1,0 +1,21 @@
+@reference '../../../../../app/globals.css';
+
+.by-time-container {
+  @apply flex flex-col items-end;
+}
+
+.input-date {
+  @apply relative mt-1 w-full placeholder:text-text-muted;
+}
+
+.icon-calendar {
+  @apply flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10;
+}
+
+.input-time {
+  @apply relative mt-[22px] mb-[10px] w-full h-[80px] placeholder:text-accent;
+}
+
+.button-save-time {
+  @apply w-[156px];
+}
