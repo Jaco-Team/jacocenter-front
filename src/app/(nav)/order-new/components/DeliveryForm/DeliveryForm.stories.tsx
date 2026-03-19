@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { DeliveryForm } from "./DeliveryForm";
-import { DeliveryState, PickupState, TimeState, PaymentState } from "./DeliveryForm.types";
+import { DeliveryState } from "../DeliveryTab/DeliveryTab.types";
+import { PickupState } from "../PickupTab/PickupTab.types";
+import { TimeState } from "../ByTimeTab/ByTimeTab.types";
+import { PaymentState } from "../PaymentBlock/PaymentBlock.types";
 
 const meta: Meta<typeof DeliveryForm> = {
   title: "Order-new/DeliveryForm",

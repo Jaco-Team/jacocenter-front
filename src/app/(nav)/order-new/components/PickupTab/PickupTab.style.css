@@ -1,0 +1,37 @@
+@reference '../../../../../app/globals.css';
+
+.pickup-container {
+  @apply mt-1;
+}
+
+.select-cafe {
+  @apply relative h-[80px];
+}
+
+.pickup-cafe-list {
+  @apply absolute top-[70px] z-10 w-[322px] bg-base rounded-xl mt-1 p-3 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-base;
+}
+
+.pickup-cafe-list-expanded {
+  @apply h-[244px] overflow-y-auto;
+}
+
+.pickup-cafe-item {
+  @apply h-10 mb-1 flex items-center hover:text-button-primary-hover;
+}
+
+.pickup-cafe-item-active {
+  @apply text-button-primary-hover;
+}
+
+.button-all-cafes {
+  @apply h-11 flex items-center text-primary cursor-pointer;
+}
+
+.pickup-buttons-group {
+  @apply flex flex-row gap-3 pt-[13px];
+}
+
+.clear-button {
+  @apply flex items-center justify-center absolute cursor-pointer w-10 h-10;
+}
