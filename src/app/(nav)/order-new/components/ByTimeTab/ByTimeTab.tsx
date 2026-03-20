@@ -5,9 +5,13 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
 import { IMask, useIMask, ReactMaskOpts } from "react-imask";
 import "./ByTimeTab.style.css";
+import { useState } from "react";
+import { ModalTimeSelect } from "@/features/order/ui/ModalTimeSelect/ModalTimeSelect";
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
+
+  const [isTimeSelectOpen, setIsTimeSelectOpen] = useState(false);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(setDate, () => setIsTimeSaved(false));
   const { ref: timeRef, setValue: setTimeValue } = useTimeMask(setTime, () => setIsTimeSaved(false));
@@ -25,60 +29,73 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   };
 
   return (
-    <div className="by-time-container">
-      <div className="input-date">
-        <Input 
-          ref={dateRef} 
-          value={date} 
-          onChange={(e) => setDate(e.target.value)} 
-          label="Дата" 
-          placeholder="Выберите дату" 
-          className="placeholder:text-text-muted"
-        />
-
-        <button type="button" className="icon-calendar">
-          <Image
-            src="/icons/calendar.svg"
-            alt="Календарь"
-            width={20}
-            height={20}
+    <>
+      <div className="by-time-container">
+        <div className="input-date">
+          <Input 
+            ref={dateRef} 
+            value={date} 
+            onChange={(e) => setDate(e.target.value)} 
+            label="Дата" 
+            placeholder="Выберите дату" 
+            className="placeholder:text-text-muted"
           />
-        </button>
 
-        {date && (<ClearButton onClick={handleClearDate} className="top-[24px] right-[52px]"/>)}
+          <button type="button" className="icon-calendar">
+            <Image
+              src="/icons/calendar.svg"
+              alt="Календарь"
+              width={20}
+              height={20}
+            />
+          </button>
+
+          {date && (<ClearButton onClick={handleClearDate} className="top-[24px] right-[52px]"/>)}
         
+        </div>
+        <div className="input-time">
+          <Input 
+            ref={timeRef} 
+            value={time} 
+            onChange={() => {}} 
+            label="Время" 
+            placeholder="Выберите время"
+            helperText={isTimeSaved ? "Время доставки сохранено" : ""}
+            className="placeholder:text-text-muted"
+          />
+
+          <button 
+            type="button" 
+            onClick={() => setIsTimeSelectOpen(true)}
+            className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
+            <Image
+              src="/icons/arrow-down.svg"
+              alt="Стрелка"
+              width={20}
+              height={20}
+            />    
+          </button> 
+
+          {time && (<ClearButton onClick={handleClearTime} className="top-[24px] right-[52px]"/>)}
+        </div>
+
+        <Button 
+          variant="base" 
+          theme={time && date && !isTimeSaved ? "primary" : "secondary"} 
+          onClick={() => setIsTimeSaved(true)} 
+          className="button-save-time">
+          <Text>Сохранить время</Text>
+        </Button>
       </div>
-      <div className="input-time">
-        <Input 
-          ref={timeRef} 
-          value={time} 
-          onChange={() => {}} 
-          label="Время" 
-          placeholder="Выберите время"
-          helperText={isTimeSaved ? "Время доставки сохранено" : ""}
-          className="placeholder:text-text-muted"
-        />
-
-        <button type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
-          <Image
-            src="/icons/arrow-down.svg"
-            alt="Стрелка"
-            width={20}
-            height={20}
-          />    
-        </button> 
-
-        {time && (<ClearButton onClick={handleClearTime} className="top-[24px] right-[52px]"/>)}
-      </div>
-
-      <Button 
-        variant="base" 
-        theme={time && date && !isTimeSaved ? "primary" : "secondary"} 
-        onClick={() => setIsTimeSaved(true)} 
-        className="button-save-time">
-        <Text>Сохранить время</Text>
-      </Button>
-    </div>
+      
+      <ModalTimeSelect 
+        isOpen={isTimeSelectOpen} 
+        onClose={() => setIsTimeSelectOpen(false)}
+        onTimeSelect={(value: string) => {
+          setTime(value);
+        }}
+      />
+    </>
   );
 };
 
