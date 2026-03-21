@@ -37,7 +37,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           aria-invalid={!!error}
           className={`input-field ${error ? "input-error" : ""} ${className}`}
-          className={`input-field ${error ? "input-error" : ""} ${className}`}
           {...props}
         />
 
