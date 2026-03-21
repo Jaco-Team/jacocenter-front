@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface IAuthFormProps {
+export interface IBaseFormProps {
   title: string;
   subTitle?: () => ReactNode;
   inputs?: () => ReactNode;

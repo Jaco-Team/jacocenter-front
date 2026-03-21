@@ -1,11 +1,11 @@
 import React from 'react';
-import './AuthForm.styles.css';
-import { IAuthFormProps } from './AuthForm.types';
+import './BaseForm.styles.css';
+import { IBaseFormProps } from './BaseForm.types';
 import Image from 'next/image';
 import { Button } from '@/shared/ui/Button/Button';
 import { Typography } from '@/shared/ui/Typography/Typography';
 
-export const AuthForm: React.FC<IAuthFormProps> = ({
+export const BaseForm: React.FC<IBaseFormProps> = ({
   title,
   subTitle,
   inputs,
