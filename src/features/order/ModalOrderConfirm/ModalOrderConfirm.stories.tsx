@@ -71,3 +71,24 @@ export const WithManyItems: Story = {
     totalPrice: 1500,
   },
 };
+
+export const WithFewItems: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+      <ModalOrderConfirm
+        {...args}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    );
+  },
+  args: {
+    ...Default.args,
+    items: [
+      { name: 'Филадельфия Лайт', quantity: 1, price: 339 },
+      { name: 'Васаби', quantity: 2, price: 18 },
+    ],
+    totalPrice: 357,
+  },
+};
