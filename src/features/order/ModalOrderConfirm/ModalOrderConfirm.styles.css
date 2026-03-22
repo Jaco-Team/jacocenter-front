@@ -1,7 +1,8 @@
 @reference "../../../app/globals.css";
 
 .modal-order-confirm__content {
-  @apply flex gap-3 px-5 pt-3;
+  @apply grid gap-3 px-5 pt-3;
+  grid-template-columns: 200px 1fr;
 }
 
 /* Левая колонка */
@@ -31,7 +32,8 @@
 
 /* Правая колонка */
 .modal-order-confirm__right {
-  @apply flex flex-col gap-3 flex-1;
+  @apply flex flex-col gap-3;
+  max-height: 530px;
 }
 
 /* Кнопки */
@@ -49,13 +51,5 @@
 }
 
 .modal-order-confirm__order-list {
-  @apply flex-1;
-}
-
-.modal-order-confirm__order-list .order-table {
-  @apply flex flex-col h-full;
-}
-
-.modal-order-confirm__order-list .order-items {
-  @apply flex-1 overflow-y-auto;
+  @apply flex-1 min-h-0;
 }
