@@ -92,3 +92,58 @@ export const WithFewItems: Story = {
     totalPrice: 357,
   },
 };
+
+export const WithoutOptional: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+      <ModalOrderConfirm
+        {...args}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    );
+  },
+  args: {
+    ...Default.args,
+    promocode: undefined,
+    comment: undefined,
+  },
+};
+
+export const WithPromoOnly: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+      <ModalOrderConfirm
+        {...args}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    );
+  },
+  args: {
+    ...Default.args,
+    promocode: 'ПТЮИУЦУ6',
+    promocodeDescription: 'Бесплатный ролл Жако. С Днем Рождения!)',
+    comment: undefined,
+  },
+};
+
+export const WithCommentOnly: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+      <ModalOrderConfirm
+        {...args}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    );
+  },
+  args: {
+    ...Default.args,
+    promocode: undefined,
+    comment: 'Позвонить за 30 минут для заказа пропуска',
+  },
+};
