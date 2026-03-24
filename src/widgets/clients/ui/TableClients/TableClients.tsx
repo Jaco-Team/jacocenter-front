@@ -45,7 +45,7 @@ export const TableClients = ({ searchPhone }: TableClientsProps) => {
       height={592}
       rowHeight={56}
       rowGap={8}
-      // foundRow={foundRow === -1 ? null : foundRow}
+      foundRow={foundRow === -1 ? null : foundRow}
     />
   );
 }
