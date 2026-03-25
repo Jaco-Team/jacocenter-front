@@ -1,0 +1,26 @@
+import { OrderItem } from '@/widgets/Order/ui/OrderList/OrderList.types';
+
+export interface ModalOrderConfirmProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onCancel: () => void;
+  onEdit: () => void;
+  onConfirm: () => void;
+
+  /** Заголовок модалки, например "Заказ № 800602 от 23 октября 2025" */
+  title: string;
+
+  // Левая колонка
+  deliveryTime: string;        // "Время ожидания 0:45-1:15"
+  clientPhone: string;         // "+7 (999) 999-99-99"
+  address: string;             // "г. Тольятти, ул. Ленинградская, 27..."
+  intercom: string;            // "работает" | "не работает" | любая строка
+  payment: string;             // "Наличный расчёт\nСдача с 5 000 рублей"
+  promocode?: string;          // опционально
+  promocodeDescription?: string;
+  comment?: string;            // опционально
+
+  // Правая колонка
+  items: OrderItem[];
+  totalPrice: number;
+}

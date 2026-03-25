@@ -9,7 +9,7 @@
 }
 
 .custom-caption {
-  @apply flex items-center justify-between w-full p-[15px];
+  @apply flex items-center justify-between w-full p-[8px];
 }
 
 .custom-caption .nav-button {
@@ -17,7 +17,7 @@
 }
 
 .custom-caption .caption-label {
-  @apply text-base font-medium text-[#3C3B3B]; /* 16px */
+  @apply text-text-base font-medium text-[#3C3B3B]; /* 16px */
 }
 
 .rdp-month_grid {
@@ -42,7 +42,8 @@ tr.rdp-week td {
 
 /* Кнопка внутри ячейки: круглая, 36x36, отступы 6px */
 .rdp-day_button {
-  @apply w-9 h-9 m-1.5 flex items-center justify-center rounded-full transition text-[#3C3B3B] text-base; /* 36px */
+  @apply w-9 h-9 m-1 flex items-center justify-center rounded-full transition text-[#3C3B3B] text-text-base; /* 36px */
+  @apply hover:border hover:border-primary active:border active:border-primary active:bg-bg-base-light;
 }
 
 /* Прошедшие даты */
@@ -57,13 +58,13 @@ tr.rdp-week td.rdp-today .rdp-day_button {
 
 /* Выбранный день (зелёный) */
 tr.rdp-week td.rdp-selected .rdp-day_button {
-  @apply bg-green-400 text-white;
+  @apply bg-primary-light text-text-base;
 }
 
 /* Ховер для выбранного дня (зелёный темнеет) */
-tr.rdp-week td.rdp-selected .rdp-day_button:hover {
+/* tr.rdp-week td.rdp-selected .rdp-day_button:hover {
   @apply bg-green-500;
-}
+} */
 
 /* Дни из другого месяца (по умолчанию светло-серые) */
 tr.rdp-week td.rdp-outside .rdp-day_button {
@@ -115,5 +116,5 @@ tr.rdp-week:last-child td {
 }
 
 .nav-icon {
-  @apply text-green-500; /* цвет по умолчанию */
+  @apply text-primary; /* цвет по умолчанию */
 }

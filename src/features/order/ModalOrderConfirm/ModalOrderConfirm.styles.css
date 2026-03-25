@@ -1,0 +1,55 @@
+@reference "../../../app/globals.css";
+
+.modal-order-confirm__content {
+  @apply grid gap-3 px-5 pt-3;
+  grid-template-columns: 200px 1fr;
+}
+
+/* Левая колонка */
+.modal-order-confirm__info {
+  @apply flex flex-col gap-3 w-[200px] flex-shrink-0;
+}
+
+.modal-order-confirm__info-title {
+  @apply text-[20px] font-medium text-[#5E5E5E];
+}
+
+.modal-order-confirm__field {
+  @apply flex flex-col gap-0.5;
+}
+
+.modal-order-confirm__field-label {
+  @apply text-[14px] font-medium text-[#5E5E5E];
+}
+
+.modal-order-confirm__field-value {
+  @apply text-[14px] text-[#5E5E5E] whitespace-pre-line;
+}
+
+.modal-order-confirm__field-value--accent {
+  @apply text-[var(--color-primary)];
+}
+
+/* Правая колонка */
+.modal-order-confirm__right {
+  @apply flex flex-col gap-3;
+  max-height: 530px;
+}
+
+/* Кнопки */
+.modal-order-confirm__actions {
+  @apply flex items-center justify-between px-5 pb-5 pt-0;
+}
+
+.modal-order-confirm__actions-left {
+  @apply flex items-center gap-3;
+}
+
+/* Кнопки без фиксированной ширины */
+.modal-order-confirm__btn {
+  @apply px-5 h-11 rounded-xl font-medium cursor-pointer whitespace-nowrap;
+}
+
+.modal-order-confirm__order-list {
+  @apply flex-1 min-h-0;
+}

@@ -34,4 +34,5 @@ export interface TableProps<T> {
   variant?: 'default' | 'secondary';
   fontVariant?: TypographyVariant;
   rowGap?: number;
+  foundRow?: number | null;
 }
