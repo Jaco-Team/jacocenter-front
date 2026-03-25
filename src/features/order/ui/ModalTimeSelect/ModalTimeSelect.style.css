@@ -8,16 +8,6 @@
   @apply flex gap-4 mt-2;
 }
 
-.period-button {
-  @apply w-[170px] h-[40px] p-0 bg-bg-base-light text-text-secondary border border-transparent 
-  hover:text-primary hover:border-bg-base-light hover:bg-base
-  active:text-primary active:border-disabled hover:bg-base;
-}
-
-.period-button-active {
-  @apply bg-primary-light;
-}
-
 .time-slots-container {
   @apply pt-4;
 }
@@ -26,25 +16,14 @@
   @apply w-[512px] py-3 px-[25px] mt-1 mb-3 rounded-xl border border-primary-light grid grid-cols-4 gap-y-3 gap-x-2;
 }
 
-.time-slots-button {
-  @apply  w-[109px] h-[40px] p-0 border-b border-bg-base-light border-t-transparent border-x-transparent cursor-pointer text-text-secondary 
-  hover:border-bg-base-light 
-  active:border-disabled active:text-primary;
-}
-
-.time-slots-button-active {
-  @apply w-[109px] h-[40px] p-0 border-[1.5px] border-primary text-text-secondary 
-  hover:border-primary hover:text-text-secondary;
-}
-
 .time-slots-btns-group {
   @apply flex justify-end gap-4;
 }
 
 .time-select-cancel-btn {
-  @apply w-[103px] text-error hover:text-error;
+  @apply w-[103px] border-bg-base text-error hover:text-error;
 }
 
 .time-select-confirm-btn {
-  @apply w-[220px];
+  @apply w-[220px] border-bg-base;
 }
