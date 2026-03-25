@@ -2,7 +2,8 @@
 
 /* Основной контейнер */
 .order-list {
-  @apply bg-[#F3F3F3] rounded-xl pt-3 pr-5 pb-5 pl-5;
+  @apply bg-[#F3F3F3] rounded-xl pt-3 pr-5 pb-5 pl-5
+         flex flex-col;
 }
 
 .order-list.wide {
@@ -16,7 +17,7 @@
 
 /* Таблица заказа */
 .order-table {
-  @apply w-full;
+  @apply w-full flex flex-col flex-1 min-h-0;
 }
 
 /* Строка таблицы */
@@ -37,12 +38,12 @@
 
 /* Заголовки колонок */
 .order-header {
-  @apply text-[12px] text-[#5E5E5E] pb-2 border-b border-[#E5E5E5];
+  @apply text-[12px] text-[#5E5E5E] pb-2 border-b border-[#E5E5E5] flex-shrink-0;
 }
 
 /* Контейнер для списка товаров */
 .order-items {
-  @apply mt-2;
+  @apply mt-2 flex-1 overflow-y-auto min-h-0;
 }
 
 /* Элемент товара */
@@ -52,7 +53,7 @@
 
 /* Разделитель после списка товаров */
 .order-divider {
-  @apply mt-6 border-b border-[#C9C9C9];
+  @apply mt-auto border-b border-[#C9C9C9] flex-shrink-0;
 }
 
 /* Блок итоговой суммы */
@@ -60,11 +61,10 @@
   @apply flex-1 font-medium;
 }
 
-/* Цена итого */
 .order-total .order-price {
   @apply font-medium;
 }
 
 .order-total {
-  @apply flex items-center mt-3 text-[16px] text-[#5E5E5E];
+  @apply flex items-center mt-3 text-[16px] text-[#5E5E5E] flex-shrink-0;
 }
