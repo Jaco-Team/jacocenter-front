@@ -1,12 +1,12 @@
+import { IMask, useIMask, ReactMaskOpts } from "react-imask";
+import "./ByTimeTab.style.css";
+import { useState } from "react";
 import { Input } from "@/shared/ui/Input/Input";
 import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
-import { IMask, useIMask, ReactMaskOpts } from "react-imask";
-import "./ByTimeTab.style.css";
-import { useState } from "react";
-import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
+import { ModalCalendar } from "@/features/Order/ui/ModalCalendar/ModalCalendar";
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
