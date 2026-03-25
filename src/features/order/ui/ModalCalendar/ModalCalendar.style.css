@@ -1,0 +1,37 @@
+@reference "../../../../app/globals.css";
+
+.day-select-container {
+  @apply w-[376px] h-[520px] px-5;
+}
+.days-tab-group {
+  @apply flex gap-3 pt-[4px] pb-4;
+}
+
+.days-tab {
+  @apply bg-bg-base-light text-text-secondary border border-transparent h-[44px]
+  hover:border-transparent hover:text-primary hover:bg-base 
+  active:bg-base active:text-primary active:font-medium;
+}
+.days-tab-active {
+  @apply bg-base border border-primary text-text-base;
+}
+
+.days-tab:active .body-m-regular-16 {
+  @apply font-medium;
+}
+
+.calendar-label {
+  @apply block mb-3 text-text-secondary;
+}
+
+.modal-calendar-buttons {
+  @apply flex gap-3 pt-4;
+}
+
+.modal-calendar-cancel-btn {
+  @apply text-error border-bg-base hover:text-error;
+}
+
+.modal-calendar-select-btn {
+  @apply border-bg-base;
+}
