@@ -5,37 +5,7 @@ import { Tooltip } from "@/shared/ui/Tooltip/Tooltip";
 import { Text } from "@/shared/ui/Typography/Typography";
 import Image from "next/image";
 import { Promocode } from "./PromocodeList.types";
-
-const promocodesData: Promocode[]  = [
-  {
-    promocode: "Супер жор в день рождения Again!",
-    status: "Активен",
-    expiresAt: "2026-02-21",
-    isApplied: false,
-    description: "Промокод действует до 21.02.2026 при заказе новинок из меню: пицца Сливочный лосось, сет Карнавал, ролл Парусник",
-  },
-  {
-    promocode: "Супер жор в день рождения!",
-    status: "Активен",
-    expiresAt: "2026-02-15",
-    isApplied: false,
-    description: "Промокод действует до 15.02.2026 при заказе от 949 р.",
-  },
-  {
-    promocode: "Хрюк",
-    status: "Не действителен",
-    expiresAt: "2025-12-15",
-    isApplied: false,
-    description: "Акция действует с понедельника по пятницу на доставку, самовывоз и заказы в кафе до 15.12.2025 г.",
-  },
-  {
-    promocode: "Трям с друзьями!",
-    status: "Использован",
-    expiresAt: "2025-09-20",
-    isApplied: true,
-    description: "Акция действует ежедневно до 20.09.2025 г. на доставку, самовывоз и заказы в кафе",
-  },
-];
+import { promocodesData } from "../../utils/mocks";
 
 const columns: Column<Promocode>[] = [
   { 
@@ -45,7 +15,7 @@ const columns: Column<Promocode>[] = [
     render: (value: string, row: Promocode) => (
       <div className="flex items-center gap-1 w-full pl-3 pr-1">
         <button type="button" className="w-10 h-10 flex items-center justify-center cursor-pointer transition-transform active:scale-80" onClick={() => navigator.clipboard.writeText(value)}>
-          <Image src="/icons/orders.svg" alt="Скопировать промокод" height={15} width={15}/>
+          <Image src="/icons/orders.svg" alt="Скопировать промокод" height={19} width={15}/>
         </button>
         <Text className="flex-1 text-left">{value}</Text>
         <Tooltip content={row.description}>
@@ -72,7 +42,7 @@ const columns: Column<Promocode>[] = [
   { 
     key: 'isApplied', 
     title: 'Применён', 
-    width: 168, 
+    width: 176, 
     render: (value) => <Text>{value ? "Да" : "Нет"}</Text>,
   },
 ];
