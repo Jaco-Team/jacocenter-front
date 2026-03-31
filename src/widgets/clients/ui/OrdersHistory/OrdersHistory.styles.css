@@ -1,0 +1,26 @@
+@reference "../../../../app/globals.css";
+
+.orders-history__content {
+  @apply flex flex-col gap-3 px-4 overflow-x-hidden;
+}
+
+.orders-history__table-wrapper {
+  @apply rounded-xl overflow-hidden;
+  border: 1px solid var(--color-bg-base);
+}
+
+.orders-history__subtitle {
+  @apply text-[14px] text-[#5E5E5E];
+}
+
+.orders-history__icon {
+  @apply cursor-pointer flex items-center justify-center w-full;
+}
+
+.orders-history__icon--muted {
+  @apply opacity-40 pointer-events-none;
+}
+
+.orders-history__table-wrapper .table-secondary {
+  border: none !important;
+}
