@@ -2,12 +2,7 @@ import { Table } from "@/shared/ui/Table/Table";
 import { Column } from "@/shared/ui/Table/Table.types";
 import { Client, TableClientsProps } from "./TableClients.types";
 import Image from "next/image";
-
-const clients: Client[] = Array.from({ length: 99 }, (_, i) => ({
-  name: `Иванов Иван Иванович ${i + 1}`,
-  phone: `+7 999 000 00-${String(i + 1).padStart(2, '0')}`,
-  address: `Москва, ул. Ленина, д. 1, подъезд 1, кв. ${i + 1}`,
-}));
+import { clients } from "../../utils/constants";
 
 const columns: Column<Client>[] = [
   { key: 'name', title: 'Имя', width: 168 },
