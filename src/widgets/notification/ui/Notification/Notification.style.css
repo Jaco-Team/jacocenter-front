@@ -1,4 +1,4 @@
-@reference "../../../app/globals.css";
+@reference "../../../../app/globals.css";
 
 .notification-container {
   @apply w-full fixed top-0 z-10 flex items-center justify-center h-[68px];

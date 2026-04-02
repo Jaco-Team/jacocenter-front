@@ -4,7 +4,6 @@ export type NotificationConfig = {
 }
 
 export type NotificationProps = {
+  id: string;
   zoneName:string; 
-  isOpen: boolean; 
-  onClose:()=>void
 }

@@ -1,18 +1,19 @@
 import { Text } from "@/shared/ui/Typography/Typography";
 import { NotificationProps, NotificationConfig } from "./Notification.types";
 import './Notification.style.css';
+import { useNotificationStore } from "../../store/Notification/Notification";
 
 const withNotification = ({ variant, text }: NotificationConfig) => {
-  return function Notification({ zoneName, isOpen, onClose }: NotificationProps) {
-    if (!isOpen) return null;
-
+  return function Notification({ id, zoneName }: NotificationProps) {
+    const removeAlert = useNotificationStore((state) => state.removeAlert);
+    
     return (
       <div className={`notification-container ${variant}`}>
         <div className="notification-text">
           <Text variant="heading-l-regular-20">{zoneName}</Text>
           <Text variant="heading-l-regular-20">{text}</Text>
         </div>
-        <CloseButton onClick={onClose}/>
+        <CloseButton onClick={() => removeAlert(id)}/>
       </div>
     );
   };
