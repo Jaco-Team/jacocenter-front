@@ -1,41 +1,33 @@
-import { useState } from "react";
 import { useSearchFormStore } from "@/entities/client/store/searchForm/searchForm";
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
+import React from "react";
 
 export const SearchForm = () => {
-  const { search, foundClientId, reset } = useSearchFormStore();
-  const [phone, setPhone] = useState("");
-  const [searched, setSearched] = useState(false);
+  const { phone, searched, setPhone, foundClientId, search } = useSearchFormStore();
 
-  const handleSearch = () => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (phone.length !== 10) return;
-    search(phone);
-    setSearched(true);
-  };
-
-  const handleChange = (val: string) => {
-    setPhone(val);
-    setSearched(false);
-    reset();
+    search();
   };
 
   return (
-    <div className="flex gap-3 w-[352px]">
+    <form onSubmit={handleSubmit} className="flex gap-3 w-[352px]">
       <div className="w-[264px] h-16">
         <InputPhone
           value={phone}
           withSearchIcon
-          onChange={handleChange}
+          onChange={setPhone}
           error={ searched && foundClientId === null ? "Клиент с таким номером не найден" : undefined }
           helperText={ foundClientId !== null ? "Клиент есть в базе" : undefined }
         />
       </div>
 
-      <Button variant="base" theme={phone.length === 10 && !searched ? "primary" : "secondary"} size="sm" onClick={handleSearch}>
+      <Button type="submit" variant="base" theme={phone.length === 10 && !searched ? "primary" : "secondary"} size="sm">
         <Text variant="body-m-medium-16">Найти</Text>
       </Button>
-    </div>
+    </form>
   );
 };
