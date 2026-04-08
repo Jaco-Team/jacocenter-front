@@ -16,14 +16,14 @@ export const mockCategories: CategoryItem[] = [
 ];
 
 export const mockDishes: ICardDishProps[] = [
-  { id: '1', name: 'Сет Амазония', price: 2769 },
-  { id: '2', name: 'Сет Атлантида', price: 2769 },
-  { id: '3', name: 'Сет Водопад', price: 2769 },
-  { id: '4', name: 'Сет Вулкан', price: 2769 },
-  { id: '5', name: 'Сет Мадейра', price: 2769 },
-  { id: '6', name: 'Сет Сицилия', price: 2769 },
-  { id: '7', name: 'Сет Карнавал', price: 2769 },
-  { id: '8', name: 'Сет Мадагаскар', price: 2769 },
+  { id: '1', name: 'Сет Амазония', price: 2769, description: 'Лосось, тунец, угорь, огурец, сливочный сыр' },
+  { id: '2', name: 'Сет Атлантида', price: 2769, description: 'Лосось, авокадо, огурец, сливочный сыр' },
+  { id: '3', name: 'Сет Водопад', price: 2769, description: 'Тунец, огурец, авокадо, кунжут' },
+  { id: '4', name: 'Сет Вулкан', price: 2769, description: 'Запечённый лосось, сливочный сыр, огурец' },
+  { id: '5', name: 'Сет Мадейра', price: 2769, description: 'Креветка, авокадо, огурец, икра тобико' },
+  { id: '6', name: 'Сет Сицилия', price: 2769, description: 'Угорь, огурец, сливочный сыр, кунжут' },
+  { id: '7', name: 'Сет Карнавал', price: 2769, description: 'Лосось, тунец, авокадо, огурец' },
+  { id: '8', name: 'Сет Мадагаскар', price: 2769, description: 'Запечённые роллы с лососем и сыром' },
 ];
 
 export const mockStopOrders = [

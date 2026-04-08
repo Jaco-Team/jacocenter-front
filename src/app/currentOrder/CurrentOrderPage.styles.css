@@ -1,0 +1,54 @@
+@reference "../../app/globals.css";
+
+.current-order {
+  @apply flex h-screen;
+}
+
+.current-order__main {
+  @apply flex flex-1 flex-col overflow-hidden;
+}
+
+.current-order__header {
+  @apply flex items-center gap-3 px-3 pt-3;
+}
+
+.current-order__header-city {
+  @apply w-[160px] flex-shrink-0;
+}
+
+.current-order__header-phone {
+  @apply w-[200px] flex-shrink-0;
+}
+
+.current-order__header-promocode {
+  @apply flex items-center gap-1 flex-1;
+}
+
+.current-order__header-promocode-input {
+  @apply flex-1;
+}
+
+.current-order__header-tooltip-btn {
+  @apply w-8 h-8 flex items-center justify-center 
+         text-text-muted rounded-full border border-text-muted text-sm;
+}
+
+.current-order__stop-order {
+  @apply px-3 pt-3 pb-4;
+}
+
+.current-order__tabs {
+  @apply flex px-3 gap-3;
+}
+
+.current-order__tab {
+  @apply flex-1;
+}
+
+.current-order__content {
+  @apply flex-1 overflow-y-auto px-3;
+}
+
+.current-order__search {
+  @apply my-3 relative;
+}

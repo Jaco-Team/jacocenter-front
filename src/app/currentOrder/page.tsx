@@ -22,6 +22,8 @@ import {
   mockCities,
 } from "./mocks";
 import { DeliveryForm } from "../(nav)/order-new/components/DeliveryForm/DeliveryForm";
+import "./CurrentOrderPage.styles.css";
+import { Input } from "@/shared/ui/Input/Input";
 
 export default function CurrentOrderPage() {
   const {
@@ -127,19 +129,16 @@ export default function CurrentOrderPage() {
         : "—";
 
   return (
-    <div className="flex h-screen">
+    <div className="current-order">
       <NavPanel />
 
-      <main className="flex flex-1 flex-col overflow-hidden">
-        {/* Шапка */}
-        <div className="flex items-center gap-3 px-3 pt-3">
-          {/* Город */}
-          <div className="w-[160px] flex-shrink-0">
+      <main className="current-order__main">
+        <div className="current-order__header">
+          <div className="current-order__header-city">
             <InputSearch options={mockCities} />
           </div>
 
-          {/* Телефон */}
-          <div className="w-[200px] flex-shrink-0">
+          <div className="current-order__header-phone">
             <InputPhone
               value={phone}
               onChange={(val) => setPhone(val)}
@@ -147,63 +146,57 @@ export default function CurrentOrderPage() {
             />
           </div>
 
-          {/* Промокод + тултип */}
-          <div className="flex items-center gap-1 flex-1">
-            <div className="flex-1">
-              <InputSearch options={[]} />
+          <div className="current-order__header-promocode">
+            <div className="current-order__header-promocode-input">
+              <Input
+                value={promocode}
+                onChange={(e) => setPromocode(e.target.value)}
+                placeholder="Промокод"
+              />
             </div>
             <Tooltip
               content="Введите промокод для получения скидки"
               placement="bottom"
             >
-              <button className="w-8 h-8 flex items-center justify-center text-text-muted rounded-full border border-text-muted text-sm">
-                ?
-              </button>
+              <button className="current-order__header-tooltip-btn">?</button>
             </Tooltip>
           </div>
 
-          {/* Кнопка Найти */}
           <Button variant="base" theme="primary" size="sm" onClick={() => {}}>
             Найти
           </Button>
         </div>
 
-        {/* Кафе на стопе */}
-        <div className="px-3 pt-3 pb-4">
+        <div className="current-order__stop-order">
           <StopOrder options={mockStopOrders} />
         </div>
 
-        {/* Табы шагов */}
-        <div className="flex px-3">
+        <div className="current-order__tabs">
           <Tab
             title="Шаг 1. Заказ"
             active={step === ORDER_STEP.CART}
             variant="default"
             onClick={() => setStep(ORDER_STEP.CART)}
-            className="flex-1"
+            className="current-order__tab"
           />
           <Tab
             title="Шаг 2. Способ получения"
             active={step === ORDER_STEP.DELIVERY}
             variant="default"
             onClick={() => setStep(ORDER_STEP.DELIVERY)}
-            className="flex-1"
+            className="current-order__tab"
           />
         </div>
 
-        {/* Контент */}
-        <div className="flex-1 overflow-y-auto px-3 pt-3">
+        <div className="current-order__content">
           {step === ORDER_STEP.CART && (
             <>
-              {/* Категории */}
               <Categories
                 items={mockCategories}
                 selectedId={selectedCategory}
                 onSelect={setSelectedCategory}
               />
-
-              {/* Поиск товаров */}
-              <div className="my-3 relative">
+              <div className="current-order__search">
                 <InputSearch
                   options={mockDishes.map((d) => ({
                     id: Number(d.id),
@@ -211,17 +204,11 @@ export default function CurrentOrderPage() {
                   }))}
                 />
               </div>
-
-              {/* Карточки блюд */}
               <CardsDish
                 dishes={mockDishes.map((d) => ({
                   ...d,
                   onClick: () =>
-                    addItem({
-                      id: d.id,
-                      name: d.name,
-                      price: d.price,
-                    }),
+                    addItem({ id: d.id, name: d.name, price: d.price }),
                 }))}
               />
             </>
@@ -239,7 +226,6 @@ export default function CurrentOrderPage() {
         </div>
       </main>
 
-      {/* Корзина */}
       <Cart
         items={items}
         step={step}
@@ -257,7 +243,6 @@ export default function CurrentOrderPage() {
         }}
       />
 
-      {/* Модалка предпросмотра */}
       <OrderPreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
@@ -270,7 +255,6 @@ export default function CurrentOrderPage() {
         totalPrice={totalPrice}
       />
 
-      {/* Модалка подтверждения */}
       <ModalOrderConfirm
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
