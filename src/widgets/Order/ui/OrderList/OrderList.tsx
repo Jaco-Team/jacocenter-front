@@ -38,7 +38,7 @@ export const OrderList = ({
         {/* Итоговая сумма */}
         <div className="order-total order-row">
           <h3>Сумма заказа</h3>
-          <span className="order-price">3050 ₽</span>
+          <span className="order-price">{totalPrice} ₽</span>
         </div>
       </div>
     </div>
