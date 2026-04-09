@@ -1,7 +1,7 @@
 import { Text } from "@/shared/ui/Typography/Typography";
 import { NotificationProps, NotificationConfig } from "./Notification.types";
 import './Notification.style.css';
-import { useNotificationStore } from "../../store/Notification/Notification";
+import { useNotificationStore } from "@/entities/notifications/store/Notification/Notification";
 
 const withNotification = ({ variant, text }: NotificationConfig) => {
   return function Notification({ id, zoneName }: NotificationProps) {

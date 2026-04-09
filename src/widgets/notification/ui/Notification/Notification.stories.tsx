@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CafeStoppedNotification, CafeAvailableNotification } from './Notification';
-import { useNotificationStore } from '../../store/Notification/Notification';
+import { useNotificationStore } from '@/entities/notifications/store/Notification/Notification';
 
 const meta: Meta<typeof CafeStoppedNotification> = {
   title: 'Widgets/Notification',
