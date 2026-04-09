@@ -1,6 +1,6 @@
 'use client';
-import { Grid, type CellComponentProps } from 'react-window';
-import React, { useState } from 'react';
+import { Grid, useGridRef, type CellComponentProps } from 'react-window';
+import React, { useEffect, useState } from 'react';
 import './Table.style.css';
 import { CellProps, TableProps } from './Table.types';
 import { Text } from '../Typography/Typography';
@@ -63,13 +63,27 @@ export function Table<T>({
   headerHeight = 52,
   variant = 'default', 
   fontVariant = 'body-m-regular-16',
-  rowGap = 0
+  rowGap = 0,
+  foundRow = null,
 }: TableProps<T>) {
 
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [pressedRow, setPressedRow] = useState<number | null>(null);
   const [activeRow, setActiveRow] = useState<number | null>(null);
   const [activeColumn, setActiveColumn] = useState<string | null>(null);
+  const gridRef = useGridRef(null);
+
+  useEffect(() => {
+    if (foundRow !== null && gridRef.current) {   
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveRow(foundRow + 1);   
+      gridRef.current.scrollToRow({
+        index: foundRow + 1,
+        align: 'smart',
+        behavior: 'auto'
+      });
+    }
+  }, [foundRow, gridRef]); 
 
   const getHeaderFont = (columnKey: string) => {
     if (activeColumn === columnKey && fontVariant === 'label-s-regular-12') {
@@ -90,6 +104,7 @@ export function Table<T>({
 
   return (
       <Grid 
+        gridRef={gridRef}
         cellComponent={CellComponent}
         cellProps={{ data, columns, hoveredRow, setHoveredRow, pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap}}
         columnCount={columns.length}

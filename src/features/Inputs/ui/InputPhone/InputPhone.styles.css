@@ -1,12 +1,12 @@
 @reference '../../../../app/globals.css';
 
 .phone-root {
-  @apply relative w-full rounded-xl bg-(--color-base)
+  @apply relative w-full rounded-xl 
   text-(--color-text-secondary);
 }
 
 .phone-input {
-  @apply w-full pr-1 pl-[31px] h-11
+  @apply w-full pr-1 pl-[31px] h-11 bg-base
   focus:outline-none;
 }
 

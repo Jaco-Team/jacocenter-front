@@ -1,17 +1,20 @@
+import { IMask, useIMask, ReactMaskOpts } from "react-imask";
+import "./ByTimeTab.style.css";
+import { useState } from "react";
 import { Input } from "@/shared/ui/Input/Input";
 import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
-import { IMask, useIMask, ReactMaskOpts } from "react-imask";
-import "./ByTimeTab.style.css";
-import { useState } from "react";
 import { ModalTimeSelect } from "@/features/order/ui/ModalTimeSelect/ModalTimeSelect";
+import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
+
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
 
   const [isTimeSelectOpen, setIsTimeSelectOpen] = useState(false);
+  const [isDateSelectOpen, setIsDateSelectOpen] = useState(false);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(setDate, () => setIsTimeSaved(false));
   const { ref: timeRef, setValue: setTimeValue } = useTimeMask(setTime, () => setIsTimeSaved(false));
@@ -41,7 +44,7 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
             className="placeholder:text-text-muted"
           />
 
-          <button type="button" className="icon-calendar">
+          <button type="button" className="icon-calendar" onClick={() => setIsDateSelectOpen(true)}>
             <Image
               src="/icons/calendar.svg"
               alt="Календарь"
@@ -95,9 +98,11 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
           setTime(value);
         }}
       />
+      <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setDate(value)}/>
     </>
   );
 };
+
 
 const useDateMask = (valueSetter: (val: string) => void, onChangeSaved?: () => void) => {
   const { ref, setValue } = useIMask<HTMLInputElement, ReactMaskOpts>(

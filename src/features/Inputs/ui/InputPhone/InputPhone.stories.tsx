@@ -7,6 +7,12 @@ const meta = {
   component: InputPhone,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+  decorators: [
+    (Story, context) => {
+      const [value, setValue] = useState(context.args.value ?? '');
+      return <Story args={{ ...context.args, value, onChange: setValue }} />;
+    },
+  ],
 } satisfies Meta<typeof InputPhone>;
 
 export default meta;

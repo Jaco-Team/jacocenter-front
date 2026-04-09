@@ -1,0 +1,13 @@
+@reference "../../../../app/globals.css";
+
+.cafe-filter {
+  @apply h-11 px-3 flex items-center justify-center rounded-xl cursor-pointer border border-transparent;
+}
+
+.cafe-filter-default {
+  @apply bg-bg-base-light;
+}
+
+.cafe-filter-active {
+  @apply bg-base border-primary;
+}
