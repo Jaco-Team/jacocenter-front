@@ -9,24 +9,19 @@ import { useSearchFormStore } from "@/entities/client/store/searchForm/searchFor
 const columns: Column<Client>[] = [
   { key: 'name', title: 'Имя', width: 168 },
   { key: 'phone', title: 'Телефон', width: 168 },
-  { key: 'address', title: 'Адрес', width: 328 },
+  { key: 'address', title: 'Адрес', width: 456 },
   { 
     key: 'promo', 
     title: 'Промокоды', 
     width: 128, 
     render: () => (<Image src="/icons/info-base.svg" alt="Посмотреть промокоды" width={20} height={20}/>), 
-    onCellClick: (row) => console.log(row)},
+    onCellClick: (row) => console.log(row)
+  },
   { 
     key: 'history', 
     title: 'История заказов', 
     width: 168, 
     render: () => (<Image src="/icons/script.svg" alt="Открыть историю заказов" width={20} height={20}/>), 
-    onCellClick: (row) => console.log(row)},
-  {
-    key: 'edit', 
-    title: 'Редакт', 
-    width: 128, 
-    render: () => (<Image src="/icons/edit.svg" alt="Редактировать клиента" width={20} height={20}/>), 
     onCellClick: (row) => console.log(row)
   },
 ];
