@@ -4,12 +4,7 @@ import { Client, TableClientsProps } from "./TableClients.types";
 import Image from "next/image";
 import { useState } from "react";
 import { PromocodeList } from "../PromocodeList/PromocodeList";
-
-const clients: Client[] = Array.from({ length: 99 }, (_, i) => ({
-  name: `Иванов Иван Иванович ${i + 1}`,
-  phone: `+7 999 000 00-${String(i + 1).padStart(2, '0')}`,
-  address: `Москва, ул. Ленина, д. 1, подъезд 1, кв. ${i + 1}`,
-}));
+import { clients } from "../../utils/constants";
 
 export const TableClients = ({ searchPhone }: TableClientsProps) => {
   const [selectedClientPromo, setSelectedClientPromo] = useState<Client | null>(null);
