@@ -1,9 +1,10 @@
 'use client';
 import { Table } from "@/shared/ui/Table/Table";
 import { Column } from "@/shared/ui/Table/Table.types";
-import { Client, TableClientsProps } from "./TableClients.types";
+import { Client } from "./TableClients.types";
 import Image from "next/image";
 import { clients } from "../../utils/constants";
+import { useSearchFormStore } from "@/entities/client/store/searchForm/searchForm";
 
 const columns: Column<Client>[] = [
   { key: 'name', title: 'Имя', width: 168 },
@@ -30,8 +31,9 @@ const columns: Column<Client>[] = [
   },
 ];
 
-export const TableClients = ({ searchPhone }: TableClientsProps) => {
-  const foundRow = searchPhone ? clients.findIndex(client => client.phone === searchPhone) : null;
+export const TableClients = () => {
+  const { foundClientId } = useSearchFormStore();
+  const foundRow = foundClientId !== null ? clients.findIndex(c => c.id === foundClientId) : null;
 
   return (
     <Table 
