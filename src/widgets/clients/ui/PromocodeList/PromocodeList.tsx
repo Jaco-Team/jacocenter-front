@@ -1,7 +1,7 @@
 import { Modal } from "@/shared/ui/Modal/Modal";
 import { Table } from "@/shared/ui/Table/Table";
 import { promocodesData } from "../../utils/mocks";
-import { columns } from "./columns";
+import { columns } from "./PromocodeList.columns";
 
 export const PromocodeList = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   return (

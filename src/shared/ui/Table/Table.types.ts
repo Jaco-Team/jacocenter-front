@@ -28,7 +28,7 @@ export interface TableProps<T> {
   data: T[];
   columns: Column<T>[];
   height: number;
-  width: number;
+  width?: number | string;
   headerHeight?: number;
   rowHeight?: number;
   variant?: 'default' | 'secondary';
