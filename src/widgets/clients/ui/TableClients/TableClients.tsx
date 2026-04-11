@@ -1,3 +1,4 @@
+'use client';
 import { Table } from "@/shared/ui/Table/Table";
 import { Column } from "@/shared/ui/Table/Table.types";
 import { Client, TableClientsProps } from "./TableClients.types";
