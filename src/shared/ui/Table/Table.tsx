@@ -49,7 +49,7 @@ export function CellComponent<T>({
         column.onCellClick?.(row);
       }}
     >
-      {typeof content === 'string' ? <Text variant={fontVariant}>{content}</Text> : content}
+      {typeof content !== 'object' && content !== null ? <Text variant={fontVariant}>{content}</Text> : content}
     </div>
   );
 }
