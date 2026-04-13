@@ -1,3 +1,4 @@
+"use client";
 import { Table } from '@/shared/ui/Table/Table';
 import { useState } from 'react';
 import { getKitchenColumns } from './TableKitchen.columns';
