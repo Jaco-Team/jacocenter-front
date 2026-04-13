@@ -12,3 +12,6 @@ export const mockKitchenOrders: KitchenOrder[] = Array.from({ length: 200 }, (_,
   servedAt: i % 5 === 0 ? undefined : `${12 + (i % 6)}:${String((i * 4 + 10) % 60).padStart(2, '0')}:${String(i * 19 % 60).padStart(2, '0')}`,
   promisedIn: (['15-30', '30-60', '60-90'] as const)[i % 3],
 }));
+
+export const cityOptions = ['Тольятти', 'Самара'];
+export const cafeOptions = ['Ленинградская 47', 'Ворошилова 12 а', 'Матросова 32', 'Цветной 1'];  
