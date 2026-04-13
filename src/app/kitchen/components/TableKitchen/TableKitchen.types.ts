@@ -11,4 +11,6 @@ export type KitchenOrder = {
   preparedAt?: string;
   servedAt?: string;
   promisedIn?: string;
+  city: string;
+  cafe: string;
 }

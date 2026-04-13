@@ -4,33 +4,15 @@ import { Button } from "@/shared/ui/Button/Button";
 import { Input } from "@/shared/ui/Input/Input";
 import { SelectBase } from "@/shared/ui/SelectBase/SelectBase"
 import { Text } from "@/shared/ui/Typography/Typography";
-import { cafeOptions, cityOptions, mockKitchenOrders } from "../../data/kitchenOrders.mock";
+import { cafeOptions, cityOptions } from "../../data/kitchenOrders.mock";
 import "./HeaderKitchen.style.css";
-import { useState } from "react";
+import { useKitchenStore } from "../../data/kitchenStore";
 
 export const HeaderKitchen = () => {
-  const [city, setCity] = useState('');
-  const [cafe, setCafe] = useState('');
-  const [orderNumber, setOrderNumber] = useState('');
-  const [openSelect, setOpenSelect] = useState<'cities' | 'cafes' | null>(null);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [foundRow, setFoundRow] = useState<number | null>(null);
-  const [searched, setSearched] = useState(false);
-
-  const toggleSelect = (name: 'cities' | 'cafes') => {
-    setOpenSelect(prev => (prev === name ? null : name));
-  };
-  const toggleSettings = () => setIsSettingsOpen(prev => !prev);
-  const clearOrderNumber = () => { setOrderNumber(''); setFoundRow(null); setSearched(false); };
-
-  const search = () => {
-    const found = mockKitchenOrders.findIndex(
-      order => String(order.number) === orderNumber
-    );
-
-    setFoundRow(found === -1 ? null : found);
-    setSearched(true);
-  };
+  const {
+    city, cafe, orderNumber, openSelect, isSettingsOpen, foundRow, searched,
+    setCity, setCafe, setOrderNumber, toggleSelect, toggleSettings, clearOrderNumber, search
+  } = useKitchenStore();
 
   return (
     <div className="header-kitchen-container">
@@ -40,7 +22,7 @@ export const HeaderKitchen = () => {
           value={city}
           isOpen={openSelect === 'cities'}
           onToggle={() => toggleSelect('cities')}
-          onSelect={(option) => { setCity(option); setSearched(false); }}
+          onSelect={setCity}
           className="header-kitchen-select"
         />
         <SelectBase 
@@ -49,7 +31,7 @@ export const HeaderKitchen = () => {
           value={cafe}
           isOpen={openSelect === 'cafes'}
           onToggle={() => toggleSelect('cafes')}
-          onSelect={(option) => { setCafe(option); setSearched(false); }}
+          onSelect={setCafe}
           className="header-kitchen-select"
         />
         <div className="relative">
@@ -58,7 +40,6 @@ export const HeaderKitchen = () => {
             value={orderNumber} 
             onChange={(e) => {
               setOrderNumber(e.target.value);
-              setSearched(false); 
             }} 
             placeholder="Номер заказа" 
             error={orderNumber && searched && foundRow === null ? "Заказ с таким номером не найден" : undefined}

@@ -3,8 +3,10 @@ import { Table } from '@/shared/ui/Table/Table';
 import { useState } from 'react';
 import { getKitchenColumns } from './TableKitchen.columns';
 import { mockKitchenOrders } from '../../data/kitchenOrders.mock';
+import { useKitchenStore } from '../../data/kitchenStore';
 
 export const TableKitchen = () => {
+  const { foundRow } = useKitchenStore();
   const [activeColumn, setActiveColumn] = useState<'status' | 'type' | null>(null);
   const columns = getKitchenColumns(activeColumn, setActiveColumn);
 
@@ -17,6 +19,7 @@ export const TableKitchen = () => {
       rowHeight={48}
       headerHeight={60}
       fontVariant='label-s-regular-12'
+      foundRow={foundRow}
     />
   );
 }
