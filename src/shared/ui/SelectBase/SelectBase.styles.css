@@ -1,7 +1,7 @@
 @reference '../../../app/globals.css';
 
 .select-base {
-  @apply relative w-full min-w-[196px];
+  @apply relative;
 }
 
 .select-base__trigger {
