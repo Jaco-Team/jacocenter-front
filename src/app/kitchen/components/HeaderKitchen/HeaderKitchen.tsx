@@ -7,11 +7,17 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { cafeOptions, cityOptions } from "../../data/kitchenOrders.mock";
 import "./HeaderKitchen.style.css";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
+import { ModalFilters } from "@/features/orders/ui/ModalFilters/ModalFilters";
+import { useState } from "react";
 
 export const HeaderKitchen = () => {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [openSelect, setOpenSelect] = useState<'cities' | 'cafes' | null>(null);
+  const toggleSelect = (name: 'cities' | 'cafes') => setOpenSelect(prev => prev === name ? null : name);
+
   const {
-    city, cafe, orderNumber, openSelect, isSettingsOpen, foundRow, searched,
-    setCity, setCafe, setOrderNumber, toggleSelect, toggleSettings, clearOrderNumber, search
+    city, cafe, orderNumber, foundRow, searched, visibleColumns,
+    setCity, setCafe, setOrderNumber, clearOrderNumber, search, setVisibleColumns
   } = useKitchenStore();
 
   return (
@@ -55,9 +61,19 @@ export const HeaderKitchen = () => {
         <button type="button" className="filters-button filters-button-refresh" onClick={() => console.log('обновить')}>
           <Image src="/icons/download.svg" alt="Обновить" height={20} width={20}/>
         </button>
-        <button type="button" className={`filters-button ${isSettingsOpen ? "filters-button-settings" : ""}`} onClick={toggleSettings}>
+        <button 
+          type="button" 
+          popoverTarget="filters-modal"
+          style={{ anchorName: "--filters-button"}}
+          className={`filters-button ${isSettingsOpen ? "filters-button-settings" : ""}`} 
+        >
           <Image src="/icons/settings.svg" alt="Открыть настройки" height={20} width={20}/>
         </button>
+        <ModalFilters 
+          visibleColumns={visibleColumns} 
+          onChange={setVisibleColumns} 
+          onToggle={setIsSettingsOpen}
+        />
       </div>
     </div>
   )

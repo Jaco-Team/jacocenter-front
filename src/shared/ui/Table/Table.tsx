@@ -116,7 +116,7 @@ export function Table<T>({
         columnWidth={columnWidth}
         rowCount={(data?.length + 1)}
         rowHeight={getRowHeight}
-        overscanCount={5}
+        overscanCount={10}
         style={{ width, height }}
         className={`table-main ${variant==='secondary' ? 'table-secondary' : ''}`}
       >

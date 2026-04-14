@@ -8,10 +8,11 @@ import { ColumnFilter } from '@/features/orders/ui/ColumnFilter/ColumnFilter';
 import { mockKitchenOrders } from '../../data/kitchenOrders.mock';
 
 export const TableKitchen = () => {
-  const { foundRow, statusFilter, typeFilter, setStatusFilter, setTypeFilter } = useKitchenStore();
+  const { foundRow, statusFilter, typeFilter, setStatusFilter, setTypeFilter, visibleColumns } = useKitchenStore();
   const [activeColumn, setActiveColumn] = useState<'status' | 'type' | null>(null);
 
-  const columns = getKitchenColumns(activeColumn);
+  const columns = getKitchenColumns(activeColumn)
+    .filter(col => visibleColumns[col.title]);;
 
   const filteredOrders = mockKitchenOrders.filter(order => 
     statusFilter[orderStatus[order.status]?.label] &&

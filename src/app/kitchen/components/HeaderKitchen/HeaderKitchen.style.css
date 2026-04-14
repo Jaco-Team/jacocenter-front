@@ -36,3 +36,11 @@
 .filters-button-settings {
   @apply border border-primary;
 }
+
+.header-kitchen-container .filters-item {
+  @apply w-[252px];
+}
+
+.header-kitchen-container .filters-item:nth-child(n + 6) {
+  @apply w-[205px];
+}
