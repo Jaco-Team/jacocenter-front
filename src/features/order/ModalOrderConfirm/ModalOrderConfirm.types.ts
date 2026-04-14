@@ -4,9 +4,9 @@ export interface ModalOrderConfirmProps {
   renderActions?: () => React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
   onEdit?: () => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
 
   /** Заголовок модалки, например "Заказ № 800602 от 23 октября 2025" */
   title: string;

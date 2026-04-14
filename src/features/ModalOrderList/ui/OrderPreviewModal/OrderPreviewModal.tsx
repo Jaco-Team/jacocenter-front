@@ -13,16 +13,16 @@ export const OrderPreviewModal: React.FC<OrderPreviewModalProps> = ({
   totalPrice
 }) => {
   const title = (
-    <div className="title">
+    <div className="order-preview-title">
       <Text variant="body-m-medium-16">Предпросмотр</Text>
       <Text>Заказ № {orderNumber}</Text>
     </div>
   );
   return (
     <Modal title={title} isOpen={isOpen} onClose={onClose} isAccent={false}>
-      <OrderList items={items} totalPrice={totalPrice} className="order-list"/>
-      <div className="button-container">
-        <Button variant="base" theme="primary" className="button" onClick={onClose}>Ок</Button>
+      <OrderList items={items} totalPrice={totalPrice} className="order-preview-list"/>
+      <div className="order-preview-button-container">
+        <Button variant="base" theme="primary" className="order-preview-button" onClick={onClose}>Ок</Button>
       </div>
     </Modal>
   );

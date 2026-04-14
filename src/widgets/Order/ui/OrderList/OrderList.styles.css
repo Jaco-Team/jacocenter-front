@@ -2,7 +2,7 @@
 
 /* Основной контейнер */
 .order-list {
-  @apply bg-[#F3F3F3] rounded-xl pt-3 pr-5 pb-5 pl-5
+  @apply bg-[#F3F3F3] rounded-xl pt-3 pr-5 pb-5 pl-5 w-[484px]
          flex flex-col;
 }
 
