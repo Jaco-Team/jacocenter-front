@@ -6,7 +6,7 @@ import { SelectBase } from "@/shared/ui/SelectBase/SelectBase"
 import { Text } from "@/shared/ui/Typography/Typography";
 import { cafeOptions, cityOptions } from "../../data/kitchenOrders.mock";
 import "./HeaderKitchen.style.css";
-import { useKitchenStore } from "../../data/kitchenStore";
+import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
 
 export const HeaderKitchen = () => {
   const {

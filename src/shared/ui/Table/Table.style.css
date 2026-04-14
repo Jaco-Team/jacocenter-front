@@ -33,11 +33,7 @@
 }
 
 .table-cell {
-  @apply flex items-center justify-center text-center text-text-secondary px-2;
-}
-
-.table-cell .label-s-regular-12 {
-  @apply text-text-base;
+  @apply flex items-center justify-center text-center px-2;
 }
 
 .table-cell-default {

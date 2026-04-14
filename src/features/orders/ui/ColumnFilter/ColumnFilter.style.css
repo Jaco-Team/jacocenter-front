@@ -1,0 +1,29 @@
+@reference "../../../../app/globals.css";
+
+.column-filter-container {
+  @apply w-[240px] mt-1 pt-5 pb-8 px-5 rounded-xl border border-bg-base bg-base shadow-[0px_4px_4px_4px_#3C3B3B29] text-text-secondary;
+  inset: unset;
+  top: anchor(bottom);
+  left: anchor(left);
+}
+
+.column-filter-all {
+  @apply border-b border-bg-base-light py-[5px] h-[44px];
+}
+
+.checkbox-accent {
+  @apply border-primary;
+}
+
+.column-filter-list {
+  @apply flex flex-col gap-1 my-3;
+}
+
+.column-filter-item {
+  @apply h-[44px] flex items-center;
+}
+
+.column-filter-reset-button {
+  @apply text-error border-transparent bg-bg-base-light w-[96px] h-[44px]
+  hover:text-error hover:border-bg-base active:bg-bg-base active:text-error;
+}
