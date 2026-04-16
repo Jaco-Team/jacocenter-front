@@ -16,6 +16,8 @@ export const getOrdersColumns = (
     headerRender: (col) => (
       <button
         type='button'
+        popoverTarget='status-filters'
+        style={{ anchorName: '--status-filters' }}
         className='w-full h-full flex items-center justify-center gap-3 bg-transparent border-none cursor-pointer p-0'
       >
         <Text variant={activeColumn === 'status' ? 'label-s-semibold-12' : 'label-s-regular-12'}>
@@ -34,6 +36,8 @@ export const getOrdersColumns = (
     headerRender: (col) => (
       <button
         type='button'
+        popoverTarget='type-filters'
+        style={{ anchorName: '--type-filters' }}
         className='w-full h-full flex items-center justify-center gap-3 bg-transparent border-none cursor-pointer p-0'
       >
         <Text variant={activeColumn === 'type' ? 'label-s-semibold-12' : 'label-s-regular-12'}>
@@ -52,12 +56,14 @@ export const getOrdersColumns = (
     headerRender: (col) => (
       <button
         type='button'
+        popoverTarget='created-by-filters'
+        style={{ anchorName: '--created-by-filters' }}
         className='w-full h-full flex items-center justify-center gap-3 bg-transparent border-none cursor-pointer p-0'
       >
-        <Text variant={activeColumn === 'type' ? 'label-s-semibold-12' : 'label-s-regular-12'}>
+        <Text variant={activeColumn === 'createdBy' ? 'label-s-semibold-12' : 'label-s-regular-12'}>
           {col.title}
         </Text>
-        <Arrow active={activeColumn === 'type'} />
+        <Arrow active={activeColumn === 'createdBy'} />
       </button>
     ),
   },
