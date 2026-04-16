@@ -1,17 +1,17 @@
 @reference '../../../../app/globals.css';
 
-.title {
+.order-preview-title {
   @apply flex gap-[10px];
 }
 
-.order-list {
+.order-preview-list {
   @apply w-[496px] h-[418px] pb-5 mx-5;
 }
 
-.button-container {
+.order-preview-button-container {
   @apply flex justify-end mt-3 mb-[54px] mx-5;
 } 
 
-.button {
+.order-preview-button {
   @apply w-[104px];
 }

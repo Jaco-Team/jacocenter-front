@@ -38,7 +38,7 @@
 
 /* Кнопки */
 .modal-order-confirm__actions {
-  @apply flex items-center justify-between px-5 pb-5 pt-0;
+  @apply flex items-center justify-between pb-5 pt-0;
 }
 
 .modal-order-confirm__actions-left {
