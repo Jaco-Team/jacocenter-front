@@ -13,7 +13,6 @@ export const TableOrders = () => {
       <Table 
         data={mockAllOrders} 
         columns={columns}
-        width={1088}
         height={564}
         rowHeight={52}
         rowGap={4}

@@ -21,3 +21,10 @@ export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
     driver: 'Тимофеев М.Ф.',
   }
 });
+
+export const cafeList = [
+  "Ленинградская 47",
+  "Ворошилова 12А",
+  "Матросова 32",
+  "Цветной 1"
+];
