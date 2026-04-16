@@ -9,20 +9,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    value: {
-      control: 'text',
-    },
-    placeholder: {
-      control: 'text',
-    },
-    isOpen: {
-      control: 'boolean',
-    },
-    options: {
-      control: { type: 'object' },
-    },
-  },
 } satisfies Meta<typeof SelectBase>;
 
 export default meta;
@@ -42,7 +28,7 @@ export const Open: Story = {
     placeholder: 'Город',
     value: '',
     isOpen: true,
-    options:['Тольятти', 'Москва', 'Санкт-Петербург', 'Казань', 'Самара', 'Сочи', 'Тула'],
+    children:['Тольятти', 'Москва', 'Санкт-Петербург', 'Казань', 'Самара', 'Сочи', 'Тула'],
   },
 };
 
