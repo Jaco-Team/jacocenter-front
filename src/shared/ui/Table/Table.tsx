@@ -1,6 +1,6 @@
 'use client';
 import { Grid, useGridRef, type CellComponentProps } from 'react-window';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Table.style.css';
 import { CellProps, TableProps } from './Table.types';
 import { Text } from '../Typography/Typography';

@@ -1,0 +1,34 @@
+@reference '../../../../app/globals.css';
+
+.slot {
+  @apply cursor-pointer flex items-center justify-center rounded-xl text-text-secondary border border-transparent; 
+}
+
+.daySlot {
+  @apply w-[170px] h-[40px]  
+  hover:text-primary hover:border-bg-base-light hover:bg-base
+  active:text-primary active:border-disabled hover:bg-base;
+}
+
+.daySlotDefault {
+  @apply bg-bg-base-light;
+}
+
+.daySlotActive {
+  @apply bg-primary-light;
+}
+
+.timeSlot {
+  @apply w-[109px] h-[40px] 
+  active:border-disabled active:text-primary; 
+}
+
+.timeSlotDefault {
+  @apply border-b-bg-base-light
+  hover:border-bg-base-light hover:text-primary
+}
+
+.timeSlotActive {
+  @apply border-[1.5px] border-primary 
+  hover:border-primary hover:text-text-secondary;
+}
