@@ -2,34 +2,41 @@
 
 .tooltip-wrapper {
   @apply relative inline-block;
+  anchor-name: --tooltip-anchor;
 }
 
 .tooltip-content {
-  @apply  absolute 
-          w-53 bg-[var(--color-text-subtle)] text-(--color-base) 
-          items-center justify-center rounded-[8px]
-          text-center px-4 py-3 shadow-[var(--shadow-card-dish)]
-          z-20;
+  @apply  w-53 bg-[var(--color-text-subtle)] rounded-[8px] text-center px-4 py-3 shadow-[var(--shadow-card-dish)] leading-[130%];
+    position-anchor: --tooltip-anchor;
+    inset: unset;
   }
 
-.tooltip-overlay {
-  @apply fixed inset-0 z-40;
+.tooltip-content-text.label-s-regular-12 {
+    @apply text-base;
 }
 
   /* placements */
 
 .tooltip-top {
-  @apply bottom-full left-1/2 -translate-x-1/2;
+  bottom: calc(anchor(top) + 8px);
+  left: anchor(center);
+  translate: -50% 0;
 }
 
 .tooltip-bottom {
-  @apply top-full left-1/2 -translate-x-1/2;
+  top: calc(anchor(bottom) + 8px);
+  left: anchor(center);
+  translate: -50% 0;
 }
 
 .tooltip-left {
-  @apply right-full top-1/2 -translate-y-1/2;
+  right: calc(anchor(left) + 8px);
+  top: anchor(center);
+  translate: 0 -50%;
 }
 
 .tooltip-right {
-  @apply left-full top-1/2 -translate-y-1/2;
+  left: calc(anchor(right) + 8px);
+  top: anchor(center);
+  translate: 0 -50%;
 }

@@ -5,7 +5,7 @@
 }
 
 .table-secondary {
-  @apply border border-bg-base;
+  @apply outline outline-bg-base;
 }
 
 .table-header-wrapper {
