@@ -1,0 +1,5 @@
+@reference '../../../app/globals.css';
+
+.select-date__dropdown {
+  @apply py-5 px-5;
+}

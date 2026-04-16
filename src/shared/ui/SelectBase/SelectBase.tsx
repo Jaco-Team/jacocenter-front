@@ -1,36 +1,27 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ISelectBaseProps } from './SelectBase.types';
 import './SelectBase.styles.css';
-import Image from 'next/image';
 
 
-export const SelectBase: React.FC<ISelectBaseProps> = ({
+export const SelectBase = ({
   value,
-  placeholder = 'Город',
+  placeholder = '',
   isOpen = false,
   className = '',
-  options = [],
+  icon,
+  rotateIcon = false,
+  dropdownClassName,
   onToggle,
-  onSelect
-}) => {
+  children
+}: ISelectBaseProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [showAll, setShowAll] = useState(false);
-  const visibleOptions = showAll ? options : options.slice(0, 4);
 
   const handleClick = () => {
     onToggle?.();
   };
 
-  const handleSelect = (option: string) => {
-    onSelect?.(option);
-    onToggle?.();
-  };
-
   useEffect(() => {
-    if (!isOpen) {
-      setShowAll(false);
-    };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
@@ -61,11 +52,8 @@ export const SelectBase: React.FC<ISelectBaseProps> = ({
   return (
     <div ref={rootRef} className={`select-base ${className}`}>
       <button
-        type="button"
-        className={`
-          select-base__trigger
-          ${isOpen ? 'select-base--open' : ''}
-        `}
+        type='button'
+        className={`select-base__trigger ${isOpen ? 'select-base--open' : ''}`}
         onClick={handleClick}
         aria-expanded={isOpen}
       >
@@ -78,38 +66,22 @@ export const SelectBase: React.FC<ISelectBaseProps> = ({
         >
           {value || placeholder}
         </span>
-          <Image
-            src='/icons/arrow-down.svg'
-            alt='Стрелка расскрытия списка'
-            width={20}
-            height={20}
+          {icon && (
+          <span
             className={`
-                select-base__chevron
-                ${isOpen ? 'select-base__chevron--open' : ''}
+              select-base__icon
+              ${rotateIcon && isOpen ? 'select-base__icon--rotated' : ''}
             `}
-          />
+          >
+            {icon}
+          </span>
+        )}
       </button>
 
       {isOpen && (
-        <ul className='select-base__dropdown'>
-          {visibleOptions.map((option) => (
-            <li
-              key={option}
-              className='select-base__option'
-              onClick={() => handleSelect(option)}
-            >
-              {option}
-            </li>
-          ))}
-          {options.length > 4 && (
-            <li
-              className='select-base__option select-base__option--all'
-              onClick={() => setShowAll(prev => !prev)}
-            >
-              {showAll ? 'Свернуть тут' : 'Все кафе'}
-            </li>
-          )}
-        </ul>
+        <div className={`select-base__dropdown ${dropdownClassName ?? ''}`}>
+          {children}
+        </div>
       )}
     </div>
   );

@@ -1,9 +1,15 @@
+import { ReactNode } from "react";
+
 export interface ISelectBaseProps {
-  value?: string;
+  value?: ReactNode;
   placeholder?: string;
   isOpen?: boolean;
   className?: string;
-  options: string[];
+
+  icon?: ReactNode;
+  rotateIcon?: boolean;
+  dropdownClassName?: string;
+  children?: ReactNode;
+
   onToggle?: () => void;
-  onSelect: (value: string) => void;
 }
