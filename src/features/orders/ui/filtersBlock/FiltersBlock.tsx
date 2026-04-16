@@ -5,16 +5,13 @@ import "./FiltersBlock.style.css";
 import { CafeFilterTab } from "../CafeFilterTab/CafeFilterTab";
 import { FiltersBlockProps } from "./FiltersBlock.types";
 import { ModalFilters } from "../ModalFilters/ModalFilters";
-import { getOrdersColumns } from "@/app/(nav)/orders/components/TableOrders/TableOrders.columns";
+import { useOrdersStore } from "@/entities/Order/store/orders/ordersStore";
 
 export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
   const [selectedCafe, setSelectedCafe] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
-  const columns = Object.fromEntries(
-    getOrdersColumns(null).map(col => [col.title, true])
-  );
-  const [visibleColumns, setVisibleColumns] = useState(columns);
+  const { visibleColumns, setVisibleColumns } = useOrdersStore();
 
   const handleRefresh = () => console.log("Обновить список");
 
