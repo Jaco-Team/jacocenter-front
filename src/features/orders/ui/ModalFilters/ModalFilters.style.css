@@ -9,7 +9,7 @@
 }
 
 .filter-container {
-  @apply max-w-[652px] h-[444px] pt-4 pb-8 px-5 rounded-xl border border-bg-base bg-base shadow-[0px_4px_4px_4px_#3C3B3B29] text-text-secondary;
+  @apply max-w-[652px] h-[436px] pt-4 pb-8 px-5 rounded-xl border border-bg-base bg-base shadow-[0px_4px_4px_4px_#3C3B3B29] text-text-secondary;
 }
 
 .filters-all {
@@ -21,22 +21,14 @@
 }
 
 .filters-list {
-  @apply grid grid-flow-col grid-rows-5 gap-y-1 gap-x-3 mt-4;
+  @apply grid grid-flow-col grid-rows-5 gap-y-1 gap-x-3 my-4;
 }
 
 .filters-item {
   @apply w-[196px] h-[44px] flex items-center;
 }
 
-.filters-btns-group {
-  @apply flex gap-3 justify-end mt-4;
-}
-
 .reset-button {
-  @apply text-error border-transparent bg-bg-base-light w-[96px] h-[44px]
+  @apply text-error border-transparent bg-bg-base-light w-[96px] h-[36px]
   hover:text-error hover:border-bg-base active:bg-bg-base active:text-error;
-}
-
-.apply-button {
-  @apply w-[109px] h-[44px];
 }

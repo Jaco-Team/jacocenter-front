@@ -28,6 +28,7 @@ export function CellComponent<T>({
   const isPressed = pressedRow === rowIndex;
   const isActive = activeRow === rowIndex;
   const isClickable = !!column.onCellClick;
+  const textColor = fontVariant === 'label-s-regular-12' ? 'text-text-base' : 'text-text-secondary';
 
   return (
      <div
@@ -49,7 +50,7 @@ export function CellComponent<T>({
         column.onCellClick?.(row);
       }}
     >
-      {typeof content === 'string' ? <Text variant={fontVariant}>{content}</Text> : content}
+      {typeof content !== 'object' && content !== null ? <Text variant={fontVariant} className={textColor}>{content}</Text> : content}
     </div>
   );
 }
@@ -58,7 +59,7 @@ export function Table<T>({
   data, 
   columns, 
   height, 
-  width = '100%', 
+  width = '100%',
   rowHeight = 56, 
   headerHeight = 52,
   variant = 'default', 
@@ -85,8 +86,8 @@ export function Table<T>({
     }
   }, [foundRow, gridRef]); 
 
-  const getHeaderFont = (columnKey: string) => {
-    if (activeColumn === columnKey && fontVariant === 'label-s-regular-12') {
+  const getHeaderFont = (columnKey: string, isHeaderActive?: boolean) => {
+    if ((isHeaderActive ?? activeColumn === columnKey) && fontVariant === 'label-s-regular-12') {
       return 'label-s-semibold-12';
     }
     return fontVariant;
@@ -115,7 +116,7 @@ export function Table<T>({
         columnWidth={columnWidth}
         rowCount={(data?.length + 1)}
         rowHeight={getRowHeight}
-        overscanCount={5}
+        overscanCount={10}
         style={{ width, height }}
         className={`table-main ${variant==='secondary' ? 'table-secondary' : ''}`}
       >
@@ -131,7 +132,7 @@ export function Table<T>({
               <div
                 key={String(column.key) + i}
                 className={`table-header-cell 
-                ${(activeColumn === column.key) && (variant === "default") ? 'table-header-cell-active-default' : ''}
+                ${(column.isHeaderActive ?? activeColumn === column.key) && variant === "default" ? 'table-header-cell-active-default' : ''}
                 ${column.onHeaderClick ? 'table-cell-clickable' : ''}
                 `}
                 style={{ width: columnWidth(i), flexShrink: 0 }}
@@ -141,7 +142,7 @@ export function Table<T>({
                   column.onHeaderClick?.(column);
                 }}
               >
-                  {column.headerRender ? column.headerRender(column) : <Text variant={getHeaderFont(column.key)}>{column.title}</Text>}
+                  {column.headerRender ? column.headerRender(column) : <Text variant={getHeaderFont(column.key, column.isHeaderActive)}>{column.title}</Text>}
               </div>
             ))}
           </div>

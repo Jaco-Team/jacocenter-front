@@ -1,4 +1,5 @@
 export type ModalFiltersProps = {
   visibleColumns: Record<string, boolean>
-  onApply: (columns: Record<string, boolean>) => void
+  onChange: (columns: Record<string, boolean>) => void
+  onToggle: (open: boolean) => void
 }

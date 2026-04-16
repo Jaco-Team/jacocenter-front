@@ -19,6 +19,7 @@ export interface Column<T> {
   title: string;
   width: number;
   headerRender?: (column: Column<T>) => React.ReactNode;
+  isHeaderActive?: boolean;
   render?: (value: string, row: T) => React.ReactNode;
   onHeaderClick?: (column: Column<T>) => void;
   onCellClick?: (row: T) => void;

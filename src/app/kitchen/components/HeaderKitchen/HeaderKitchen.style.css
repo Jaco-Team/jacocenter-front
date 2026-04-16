@@ -1,0 +1,46 @@
+@reference "../../../../app/globals.css";
+
+.header-kitchen-container {
+  @apply flex justify-between h-[64px];
+}
+
+.header-kitchen-inputs-group {
+  @apply flex gap-3;
+}
+
+.header-kitchen-select {
+  @apply w-[263px];
+}
+
+.header-kitchen-select .select-base__dropdown {
+  @apply top-[44px];
+}
+
+.header-kitchen-input {
+  @apply w-[263px] h-[44px] bg-base placeholder:text-disabled pl-7 border-transparent
+  [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield];
+}
+
+.filters-buttons-group {
+  @apply flex gap-3;
+}
+
+.filters-button {
+  @apply flex items-center justify-center w-11 h-11 bg-base rounded-xl cursor-pointer;
+}
+
+.filters-button-refresh {
+  @apply active:border active:border-primary;
+}
+
+.filters-button-settings {
+  @apply border border-primary;
+}
+
+.header-kitchen-container .filters-item {
+  @apply w-[252px];
+}
+
+.header-kitchen-container .filters-item:nth-child(n + 6) {
+  @apply w-[205px];
+}
