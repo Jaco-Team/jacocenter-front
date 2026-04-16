@@ -8,7 +8,7 @@ import { ColumnFilter } from "@/features/orders/ui/ColumnFilter/ColumnFilter";
 import { orderStatus } from "@/widgets/orders/utils/constants";
 
 export const TableOrders = () => {
-  const { visibleColumns, statusFilter, typeFilter, createdByFilter, setStatusFilter, setTypeFilter, setCreatedByFilter } = useOrdersStore();
+  const { selectedCafe, visibleColumns, statusFilter, typeFilter, createdByFilter, setStatusFilter, setTypeFilter, setCreatedByFilter } = useOrdersStore();
   const [activeColumn, setActiveColumn] = useState<'status' | 'type' | 'createdBy' | null>(null);
   const columns = getOrdersColumns(activeColumn)
     .filter(col => visibleColumns[col.title]);
@@ -16,7 +16,8 @@ export const TableOrders = () => {
   const filteredOrders = mockAllOrders.filter(order => 
     statusFilter[orderStatus[order.status]?.label] &&
     typeFilter[orderStatus[order.type]?.label] &&
-    createdByFilter[order.createdBy]
+    createdByFilter[order.createdBy] &&
+    order.cafe === selectedCafe
   );
 
   return (
@@ -46,7 +47,6 @@ export const TableOrders = () => {
       <ColumnFilter 
         options={createdByFilter}
         onChange={setCreatedByFilter}
-        allLabel='Все типы'
         id='created-by-filters'
         onToggle={(open) => setActiveColumn(open ? 'createdBy' : null)}
       />   

@@ -8,10 +8,9 @@ import { ModalFilters } from "../ModalFilters/ModalFilters";
 import { useOrdersStore } from "@/entities/Order/store/orders/ordersStore";
 
 export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
-  const [selectedCafe, setSelectedCafe] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
-  const { visibleColumns, setVisibleColumns } = useOrdersStore();
+  const { visibleColumns, setVisibleColumns, selectedCafe, setSelectedCafe } = useOrdersStore();
 
   const handleRefresh = () => console.log("Обновить список");
 

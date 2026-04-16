@@ -1,5 +1,12 @@
 import { Order } from "../components/TableOrders/TableOrders.types";
 
+export const cafeList = [
+  "Ленинградская 47",
+  "Ворошилова 12А",
+  "Матросова 32",
+  "Цветной 1"
+];
+
 export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
   const pad = (n: number) => String(n).padStart(2, '0');
   return {
@@ -19,12 +26,6 @@ export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
     amount: 500 + (i % 40)* 150,
     payment: ['б/н', 'нал'][i % 2],
     driver: 'Тимофеев М.Ф.',
+    cafe: cafeList[i % cafeList.length],
   }
 });
-
-export const cafeList = [
-  "Ленинградская 47",
-  "Ворошилова 12А",
-  "Матросова 32",
-  "Цветной 1"
-];

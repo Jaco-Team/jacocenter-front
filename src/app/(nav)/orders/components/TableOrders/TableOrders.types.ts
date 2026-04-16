@@ -16,4 +16,5 @@ export type Order = {
   amount: number;
   payment: string;
   driver: string;
+  cafe: string;
 }
