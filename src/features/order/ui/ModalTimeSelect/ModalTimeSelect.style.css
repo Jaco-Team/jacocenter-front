@@ -1,0 +1,29 @@
+@reference '../../../../app/globals.css';
+
+.time-select-container {
+  @apply w-[552px] min-h-[88px] px-5 pt-[3px];
+}
+
+.period-group {
+  @apply flex gap-4 mt-2;
+}
+
+.time-slots-container {
+  @apply pt-4;
+}
+
+.time-slots-list {
+  @apply w-[512px] py-3 px-[25px] mt-1 mb-3 rounded-xl border border-primary-light grid grid-cols-4 gap-y-3 gap-x-2;
+}
+
+.time-slots-btns-group {
+  @apply flex justify-end gap-4;
+}
+
+.time-select-cancel-btn {
+  @apply w-[103px] border-bg-base text-error hover:text-error;
+}
+
+.time-select-confirm-btn {
+  @apply w-[220px] border-bg-base;
+}

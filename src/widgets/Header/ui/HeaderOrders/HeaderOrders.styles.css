@@ -1,0 +1,22 @@
+@reference '../../../../app/globals.css';
+
+.header-orders__form {
+  @apply flex gap-3 w-full ;
+}
+
+
+.header-orders__address {
+  @apply relative flex w-full;
+}
+
+.icon-search {
+  @apply absolute left-2 top-1/2 -translate-y-1/2;
+}
+
+.header-orders__address-input {
+  @apply !pl-7 !pr-[48px] bg-(--color-base);
+}
+
+.phone-clear {
+  @apply absolute right-[17px] top-1/2 cursor-pointer;
+}

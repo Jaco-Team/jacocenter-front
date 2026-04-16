@@ -1,18 +1,20 @@
 'use client';
 import { Table } from "@/shared/ui/Table/Table";
 import { Client } from "./TableClients.types";
+import { useState } from "react";
+import { PromocodeList } from "../PromocodeList/PromocodeList";
 import { clients } from "../../utils/constants";
 import { useSearchFormStore } from "@/entities/client/store/searchForm/searchForm";
-import { useState } from "react";
 import { OrdersHistory } from "../OrdersHistory/OrdersHistory";
 import { orderHistoryMock } from "../../data/mocks";
 import { getClientsColumns } from "./TableClients.columns";
 
 export const TableClients = () => {
   const [selectedClientHistory, setSelectedClientHistory] = useState<Client | null>(null);
+  const [selectedClientPromo, setSelectedClientPromo] = useState<Client | null>(null);
   const { foundClientId } = useSearchFormStore();
   const foundRow = foundClientId !== null ? clients.findIndex(c => c.id === foundClientId) : null;
-  const columns = getClientsColumns(setSelectedClientHistory);
+  const columns = getClientsColumns(setSelectedClientHistory, setSelectedClientPromo);
 
   return (
     <>
@@ -29,6 +31,7 @@ export const TableClients = () => {
         onClose={() => setSelectedClientHistory(null)}
         orders={orderHistoryMock}
       />      
+      <PromocodeList isOpen={!!selectedClientPromo} onClose={() => setSelectedClientPromo(null)}/>
     </>
   );
 }

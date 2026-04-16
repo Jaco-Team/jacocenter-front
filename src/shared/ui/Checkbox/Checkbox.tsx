@@ -20,7 +20,7 @@ export const Checkbox = ({
   };
 
   return (
-    <div className={`checkbox-root ${className}`}>
+    <div className={`checkbox-root`}>
       <input
         type="checkbox"
         id={id}
@@ -31,7 +31,7 @@ export const Checkbox = ({
         {...rest}
       />
       <label htmlFor={id} className="checkbox-label-container">
-        <span className={`checkbox-control ${checked ? "checked" : ""}`}>
+        <span className={`checkbox-control ${checked ? "checked" : ""} ${className}`}>
           {checked && (
             <Image
               src="/icons/checkmark-success.svg"

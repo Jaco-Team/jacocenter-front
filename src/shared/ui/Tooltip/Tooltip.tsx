@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
+import { useId } from 'react';
 import { ITooltipUIProps } from './Tooltip.types';
 import './Tooltip.styles.css';
+import { Text } from '../Typography/Typography';
 
 export const Tooltip: React.FC<ITooltipUIProps> = ({
   children,
@@ -9,39 +11,43 @@ export const Tooltip: React.FC<ITooltipUIProps> = ({
   placement = 'top',
   className,
 }) => {
-  const [open, setOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const anchorName = `--anchor-${id}`;
 
-  const openTooltip = () => setOpen(true);
-  const closeTooltip = () => setOpen(false);
-  const toggleTooltip = () => setOpen((prev) => !prev);
+  const openTooltip = () => popoverRef.current?.showPopover();
+  const closeTooltip = () => popoverRef.current?.hidePopover();
+  const toggleTooltip = () => {
+    if (popoverRef.current?.matches(':popover-open')) {
+      popoverRef.current?.hidePopover();
+    } else {
+      popoverRef.current?.showPopover();
+    }
+  };
 
-  const triggerProps =
+  const triggerProps = 
     trigger === 'hover'
-      ? {
-          onMouseEnter: openTooltip,
-          onMouseLeave: closeTooltip,
-        }
-      : {
-          onClick: toggleTooltip,
-        };
+    ? { 
+        onMouseEnter: openTooltip, 
+        onMouseLeave: closeTooltip, 
+      }
+    : { 
+        onClick: toggleTooltip, 
+      };
 
-    const placementClass = `tooltip-${placement}`;
+  const placementClass = `tooltip-${placement}`;
 
   return (
-    <>
-      {open && trigger === 'click' && (
-        <div className='tooltip-overlay' onClick={closeTooltip} />
-      )}
-
-      <div className='tooltip-wrapper' {...triggerProps}>
-        {children}
-
-        {open && (
-          <div className={`tooltip-content ${placementClass} ${className ?? ''}`}>
-            {content}
-          </div>
-        )}
+    <div className='tooltip-wrapper' style={{ anchorName }} {...triggerProps}>
+      {children}
+      <div
+        ref={popoverRef}
+        popover="auto"
+        className={`tooltip-content ${placementClass} ${className ?? ''}`}
+        style={{ positionAnchor: anchorName }}
+      >
+        <Text variant='label-s-regular-12' className='tooltip-content-text'>{content}</Text>
       </div>
-    </>
+    </div>
   );
 };

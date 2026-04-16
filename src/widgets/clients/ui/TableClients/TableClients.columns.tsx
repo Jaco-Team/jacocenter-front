@@ -3,7 +3,8 @@ import { Client } from "./TableClients.types"
 import Image from "next/image";
 
 export const getClientsColumns = (
-  onHistoryClick: (row: Client) => void
+  onHistoryClick: (row: Client) => void,
+  onPromoClick: (row: Client) => void
 ): Column<Client>[] => [
   { key: 'name', title: 'Имя', width: 168 },
   { key: 'phone', title: 'Телефон', width: 168 },
@@ -13,7 +14,7 @@ export const getClientsColumns = (
     title: 'Промокоды', 
     width: 128, 
     render: () => (<Image src="/icons/info-base.svg" alt="Посмотреть промокоды" width={20} height={20}/>), 
-    onCellClick: (row) => console.log(row)
+    onCellClick: onPromoClick,
   },
   { 
     key: 'history', 

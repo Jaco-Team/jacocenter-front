@@ -1,0 +1,21 @@
+@reference "../../../../app/globals.css";
+
+.notification-container {
+  @apply w-full fixed top-0 z-10 flex items-center justify-center h-[68px];
+}
+
+.notification-text {
+  @apply flex gap-3;
+}
+
+.cafe-stopped {
+  @apply bg-error text-base;
+}
+
+.cafe-available {
+  @apply bg-primary-light;
+}
+
+.close-button {
+  @apply flex items-center justify-center w-11 h-11 absolute top-3 right-4 cursor-pointer;
+}
