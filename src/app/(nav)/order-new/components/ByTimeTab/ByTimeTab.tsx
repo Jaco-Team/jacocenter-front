@@ -6,14 +6,11 @@ import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
-import { ModalTimeSelect } from "@/features/order/ui/ModalTimeSelect/ModalTimeSelect";
-import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
-
+import { ModalCalendar } from "@/features/Order/ui/ModalCalendar/ModalCalendar";
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
 
-  const [isTimeSelectOpen, setIsTimeSelectOpen] = useState(false);
   const [isDateSelectOpen, setIsDateSelectOpen] = useState(false);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(setDate, () => setIsTimeSaved(false));
@@ -54,7 +51,7 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
           </button>
 
           {date && (<ClearButton onClick={handleClearDate} className="top-[24px] right-[52px]"/>)}
-        
+          
         </div>
         <div className="input-time">
           <Input 
@@ -67,10 +64,7 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
             className="placeholder:text-text-muted"
           />
 
-          <button 
-            type="button" 
-            onClick={() => setIsTimeSelectOpen(true)}
-            className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
+          <button type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
             <Image
               src="/icons/arrow-down.svg"
               alt="Стрелка"
@@ -90,14 +84,6 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
           <Text>Сохранить время</Text>
         </Button>
       </div>
-      
-      <ModalTimeSelect 
-        isOpen={isTimeSelectOpen} 
-        onClose={() => setIsTimeSelectOpen(false)}
-        onTimeSelect={(value: string) => {
-          setTime(value);
-        }}
-      />
       <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setDate(value)}/>
     </>
   );
