@@ -1,7 +1,7 @@
 @reference "../../../app/globals.css";
 
 .modal-order-confirm__content {
-  @apply grid gap-3 px-5 pt-3;
+  @apply grid gap-3 px-5;
   grid-template-columns: 200px 1fr;
 }
 
@@ -38,7 +38,7 @@
 
 /* Кнопки */
 .modal-order-confirm__actions {
-  @apply flex items-center justify-between pb-5 pt-0;
+  @apply flex items-center justify-between pt-0;
 }
 
 .modal-order-confirm__actions-left {

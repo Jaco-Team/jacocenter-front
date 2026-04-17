@@ -48,6 +48,22 @@ export const sampleItems = [
   { name: 'Палочки', quantity: 2, price: 0 },
 ];
 
+export const sampleDecomposition= [
+  { name: 'Филадельфия Лайт', status: 'Приготовлен' },
+  { name: 'Акваланг запечённый унаги', status: 'Готовится' },
+  { name: 'Коралл запечённый унаги', status: 'В очереди' },
+  { name: 'Ролл Жако', status: 'В очереди' },
+  { name: 'Васаби', status: 'Приготовлен' },
+  { name: 'Васаби', status: 'Приготовлен' },
+  { name: 'Вилка', status: 'Приготовлен' },
+  { name: 'Вилка', status: 'Приготовлен' },
+  { name: 'Вилка', status: 'Приготовлен' },
+  { name: 'Вилка', status: 'Приготовлен' },
+  { name: 'Вилка', status: 'Приготовлен' },
+  { name: 'Палочки', status: 'Приготовлен' },
+  { name: 'Палочки', status: 'Приготовлен' },
+];
+
 export const baseOrderDetails = {
   title: 'Заказ № 800602 от 23 октября 2025',
   deliveryTime: 'Время ожидания 0:45-1:15',

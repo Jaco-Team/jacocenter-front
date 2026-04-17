@@ -7,7 +7,7 @@ import { Text } from '../Typography/Typography';
 
 export function CellComponent<T>({
   columnIndex, rowIndex, style, data, columns, hoveredRow, setHoveredRow, 
-  pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap
+  pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap, onRowClick,
 }: CellComponentProps<CellProps<T>>) {
   
   if (rowIndex === 0) {
@@ -27,7 +27,7 @@ export function CellComponent<T>({
   const isHovered = hoveredRow === rowIndex;
   const isPressed = pressedRow === rowIndex;
   const isActive = activeRow === rowIndex;
-  const isClickable = !!column.onCellClick;
+  const isClickable = !!column.onCellClick || !!onRowClick;
   const textColor = fontVariant === 'label-s-regular-12' ? 'text-text-base' : 'text-text-secondary';
 
   return (
@@ -48,6 +48,7 @@ export function CellComponent<T>({
       onClick={() => {
         setActiveRow(rowIndex);
         column.onCellClick?.(row);
+        onRowClick?.(row);
       }}
     >
       {typeof content !== 'object' && content !== null ? <Text variant={fontVariant} className={textColor}>{content}</Text> : content}
@@ -66,6 +67,7 @@ export function Table<T>({
   fontVariant = 'body-m-regular-16',
   rowGap = 0,
   foundRow = null,
+  onRowClick,
 }: TableProps<T>) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
@@ -111,7 +113,7 @@ export function Table<T>({
           if (typeof width !== 'number' && w > 0) setContainerWidth(w);
         }}
         cellComponent={CellComponent}
-        cellProps={{ data, columns, hoveredRow, setHoveredRow, pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap}}
+        cellProps={{ data, columns, hoveredRow, setHoveredRow, pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap, onRowClick}}
         columnCount={columns.length}
         columnWidth={columnWidth}
         rowCount={(data?.length + 1)}

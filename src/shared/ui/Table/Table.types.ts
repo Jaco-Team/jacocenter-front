@@ -12,6 +12,7 @@ export interface CellProps<T> {
   variant: 'default' | 'secondary';
   fontVariant: TypographyVariant;
   rowGap: number;
+  onRowClick?: (row: T) => void;
 }
 
 export interface Column<T> {
@@ -23,6 +24,7 @@ export interface Column<T> {
   render?: (value: string, row: T) => React.ReactNode;
   onHeaderClick?: (column: Column<T>) => void;
   onCellClick?: (row: T) => void;
+  onRowClick?: (row: T) => void;
 }
 
 export interface TableProps<T> {
@@ -36,4 +38,5 @@ export interface TableProps<T> {
   fontVariant?: TypographyVariant;
   rowGap?: number;
   foundRow?: number | null;
+  onRowClick?: (row: T) => void;
 }
