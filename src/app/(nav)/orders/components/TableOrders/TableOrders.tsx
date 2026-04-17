@@ -13,11 +13,13 @@ import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import "./TableOrders.style.css";
 import Image from "next/image";
+import { ModalOrderCancel } from "../ModalOrderCancel/ModalOrderCancel";
 
 export const TableOrders = () => {
   const { selectedCafe, visibleColumns, statusFilter, typeFilter, createdByFilter, setStatusFilter, setTypeFilter, setCreatedByFilter } = useOrdersStore();
   const [activeColumn, setActiveColumn] = useState<'status' | 'type' | 'createdBy' | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   const columns = getOrdersColumns(activeColumn)
     .filter(col => visibleColumns[col.title]);
@@ -28,6 +30,11 @@ export const TableOrders = () => {
     createdByFilter[order.createdBy] &&
     order.cafe === selectedCafe
   );
+
+  const handleCancelOrder = () => {
+    setIsCancelOpen(false);
+    setSelectedOrder(null);
+  };
 
   const renderOrderActions = () => {
     if (!selectedOrder) return null;
@@ -50,7 +57,7 @@ export const TableOrders = () => {
             ))}
           </ul>
         </details>
-        <Button variant="base" theme="error" size="md" onClick={() => console.log("отменить")} className="order-breakdown-cancel-button">
+        <Button variant="base" theme="error" size="md" onClick={() => setIsCancelOpen(true)} className="order-breakdown-cancel-button">
           <Text variant="body-m-medium-16">Отменить заказ</Text>
         </Button>
       </div>
@@ -103,6 +110,12 @@ export const TableOrders = () => {
         items={baseOrderDetails.items}
         totalPrice={baseOrderDetails.totalPrice}
         renderActions={renderOrderActions}
+      />
+      <ModalOrderCancel
+        isOpen={isCancelOpen}
+        onClose={() => setIsCancelOpen(false)}
+        onCancel={handleCancelOrder}
+        orderNumber={selectedOrder?.orderNumber}
       />
     </>
   );
