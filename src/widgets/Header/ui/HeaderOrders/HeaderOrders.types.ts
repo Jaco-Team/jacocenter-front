@@ -4,7 +4,7 @@ export interface IHeaderOrdersProps {
 
   onSubmit?: (data: {
     city?: string;
-    date?: Date;
+    date?: string;
     phone?: string;
     address?: string;
   }) => void;

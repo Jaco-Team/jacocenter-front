@@ -6,14 +6,15 @@ import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
-import { ModalCalendar } from "@/features/Order/ui/ModalCalendar/ModalCalendar";
+import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
+import { useDateMask } from "@/shared/hooks/useDateMask";
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
 
   const [isDateSelectOpen, setIsDateSelectOpen] = useState(false);
 
-  const { ref: dateRef, setValue: setDateValue } = useDateMask(setDate, () => setIsTimeSaved(false));
+  const { ref: dateRef, setValue: setDateValue } = useDateMask((val) => {setDate(val); setIsTimeSaved(false)});
   const { ref: timeRef, setValue: setTimeValue } = useTimeMask(setTime, () => setIsTimeSaved(false));
 
   const handleClearDate = () => {
@@ -87,30 +88,6 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
       <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setDate(value)}/>
     </>
   );
-};
-
-
-const useDateMask = (valueSetter: (val: string) => void, onChangeSaved?: () => void) => {
-  const { ref, setValue } = useIMask<HTMLInputElement, ReactMaskOpts>(
-    {
-      mask: "d.`m.`Y",
-      lazy: true,
-      eager: true,
-      blocks: {
-        d: { mask: IMask.MaskedRange, from: 1, to: 31, maxLength: 2 },
-        m: { mask: IMask.MaskedRange, from: 1, to: 12, maxLength: 2 },
-        Y: { mask: IMask.MaskedRange, from: 0, to: 9999, maxLength: 4 },
-      },
-    },
-    {
-      onAccept: (val) => {
-        valueSetter(val);
-        onChangeSaved?.();
-      },
-    }
-  );
-
-  return { ref, setValue };
 };
 
 const useTimeMask = (valueSetter: (val: string) => void, onChangeSaved?: () => void) => {
