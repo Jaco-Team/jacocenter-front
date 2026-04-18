@@ -96,9 +96,9 @@ export const HeaderOrders = ({
           onChange={setPhone}
           error={phoneCheck === 'error' ? 'Клиент с таким номером не найден': ''}
           withSearchIcon
-          className='w-[263px] shrink-0 border-none'
+          className='header-orders__input-phone'
         />
-        <div className='header-orders__address w-[381px]'>
+        <div className='header-orders__address'>
           <Image
             src='/icons/search.svg'
             alt='Поиск'
@@ -113,7 +113,6 @@ export const HeaderOrders = ({
             onChange={(e)=>{
               setAddress(e.target.value);
             }}
-            className='header-orders__address-input'
           />
           {address && (
             <button

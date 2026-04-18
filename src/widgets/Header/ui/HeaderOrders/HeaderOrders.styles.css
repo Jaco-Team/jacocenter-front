@@ -26,18 +26,30 @@
 }
 
 .header-orders__calendar-icon {
-  @apply flex items-center justify-center cursor-pointer absolute top-[2px] right-1 w-10 h-10;
+  @apply flex items-center justify-center cursor-pointer absolute top-[2px] right-0 w-10 h-10;
+}
+
+.header-orders__form > .phone-root {
+  @apply w-[263px] shrink-0;
+}
+
+.header-orders__input-phone {
+  @apply border-none;
 }
 
 .header-orders__address {
   @apply relative flex w-full;
 }
 
-.icon-search {
-  @apply absolute left-2 top-1/2 -translate-y-1/2;
+.header-orders__address .input-root {
+  @apply w-full;
 }
 
-.header-orders__address-input {
+.icon-search {
+  @apply absolute left-2 top-[14px];
+}
+
+.header-orders__address .input-field {
   @apply pl-7 pr-[48px] bg-(--color-base) border-none h-[44px];
 }
 

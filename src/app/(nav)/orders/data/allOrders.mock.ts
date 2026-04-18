@@ -1,11 +1,5 @@
 import { Order } from "../components/TableOrders/TableOrders.types";
-
-export const cafeList = [
-  "Ленинградская 47",
-  "Ворошилова 12А",
-  "Матросова 32",
-  "Цветной 1"
-];
+import { cafeList } from "../constants";
 
 export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
   const pad = (n: number) => String(n).padStart(2, '0');

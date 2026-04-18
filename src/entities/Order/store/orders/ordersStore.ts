@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { getOrdersColumns } from "@/app/(nav)/orders/components/TableOrders/TableOrders.columns";
 import { format } from "date-fns";
+import { cafeList, cities } from "@/app/(nav)/orders/constants";
 
 type OrdersStore = {
   selectedCafe: string;
@@ -28,9 +29,9 @@ const defaultVisibleColumns = Object.fromEntries(
 );
 
 export const useOrdersStore = create<OrdersStore>((set) => ({
-  selectedCafe: 'Ленинградская 47',
+  selectedCafe: cafeList[0],
   date: format(new Date(), "dd.MM.yyyy"),
-  city: '',
+  city: cities[0],
   phone: '',
   address: '',
   visibleColumns: defaultVisibleColumns,
