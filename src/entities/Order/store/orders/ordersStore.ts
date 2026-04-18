@@ -5,12 +5,18 @@ import { format } from "date-fns";
 type OrdersStore = {
   selectedCafe: string;
   date: string;
+  city: string;
+  phone: string;
+  address: string;
   visibleColumns: Record<string, boolean>;
   statusFilter: Record<string, boolean>;
   typeFilter: Record<string, boolean>;
   createdByFilter: Record<string, boolean>;
   setSelectedCafe: (cafe: string) => void;
   setDate: (date: string) => void;
+  setCity: (city: string) => void;
+  setPhone: (phone: string) => void;
+  setAddress: (address: string) => void;
   setVisibleColumns: (columns: Record<string, boolean>) => void;
   setStatusFilter: (filter: Record<string, boolean>) => void;
   setTypeFilter: (filter: Record<string, boolean>) => void;
@@ -24,6 +30,9 @@ const defaultVisibleColumns = Object.fromEntries(
 export const useOrdersStore = create<OrdersStore>((set) => ({
   selectedCafe: 'Ленинградская 47',
   date: format(new Date(), "dd.MM.yyyy"),
+  city: '',
+  phone: '',
+  address: '',
   visibleColumns: defaultVisibleColumns,
   statusFilter: {
   'В очереди': true,
@@ -43,6 +52,9 @@ createdByFilter: {
 },
   setSelectedCafe: (cafe) => set({ selectedCafe: cafe }),
   setDate: (date) => set({ date }),
+  setCity: (city) => set({ city }),
+  setPhone: (phone) => set({ phone }),
+  setAddress: (address) => set({ address }),
   setVisibleColumns: (visibleColumns) => set({ visibleColumns }),
   setStatusFilter: (filter) => set({ statusFilter: filter }),
   setTypeFilter: (filter) => set({ typeFilter: filter }),

@@ -1,5 +1,4 @@
 'use client'
-import { useState } from 'react';
 import './HeaderOrders.styles.css';
 import { SelectTown } from '@/shared/ui/SelectTown/SelectTown';
 import { InputPhone } from '@/features/Inputs/ui/InputPhone/InputPhone';
@@ -18,11 +17,7 @@ export const HeaderOrders = ({
   onSubmit
 }: IHeaderOrdersProps) => {
 
-  const { date, setDate } = useOrdersStore();
-
-  const [city, setCity] = useState<string>();
-  const [phone, setPhone] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
+  const { date, city, phone, address, setCity, setDate, setPhone, setAddress } = useOrdersStore();
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(
     (val) => setDate(val),
