@@ -2,31 +2,31 @@ export const orderStatus = {
   cancel: {
     label: "Отмена",
     border: "border-error",
-    bg: "",
+    bg: "bg-base",
     color: "text-accent",
   },
   delivery: {
     label: "Доставка",
     border: "border-status-delivery",
-    bg: "",
+    bg: "bg-base",
     color: "text-text-base",
   },
   room: {
     label: "Зал",
     border: "border-status-hall",
-    bg: "",
+    bg: "bg-base",
     color: "text-text-base",
   },
   takeaway: {
     label: "Самовывоз",
     border: "border-status-pickup",
-    bg: "",
+    bg: "bg-base",
     color: "text-text-base",
   },
   inQueue: {
     label: "В очереди",
     border: "border-disabled",
-    bg: "",
+    bg: "bg-base",
     color: "text-text-base",
   },
   cooking: {

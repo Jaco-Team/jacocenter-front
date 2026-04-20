@@ -1,7 +1,7 @@
 @reference "../../../app/globals.css";
 
 .checkbox-root {
-  @apply inline-flex items-center;
+  @apply inline-flex items-center flex-shrink-0;
 }
 
 .checkbox-input {

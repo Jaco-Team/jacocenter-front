@@ -37,3 +37,27 @@ export const orderHistoryMock: OrderHistoryRow[] = [
     onShowComposition: () => alert('Состав #12345'),
   },
 ];
+
+export const sampleItems = [
+  { name: 'Филадельфия Лайт', quantity: 1, price: 339 },
+  { name: 'Акваланг запечённый унаги', quantity: 1, price: 319 },
+  { name: 'Коралл запечённый унаги', quantity: 1, price: 229 },
+  { name: 'Ролл Жако', quantity: 1, price: 0 },
+  { name: 'Васаби', quantity: 2, price: 18 },
+  { name: 'Вилка', quantity: 5, price: 0 },
+  { name: 'Палочки', quantity: 2, price: 0 },
+];
+
+export const baseOrderDetails = {
+  title: 'Заказ № 800602 от 23 октября 2025',
+  deliveryTime: 'Время ожидания 0:45-1:15',
+  clientPhone: '+7 (999) 999-99-99',
+  address: 'г. Тольятти, ул. Ленинградская, 27, п.1, эт.3, кв.15',
+  intercom: 'работает',
+  payment: 'Наличный расчёт\nСдача с 5 000 рублей',
+  promocode: 'ПТЮИУЦУ6',
+  promocodeDescription: 'Бесплатный ролл Жако. С Днем Рождения!)',
+  comment: 'Позвонить за 30 минут для заказа пропуска',
+  items: sampleItems,
+  totalPrice: 975,
+}

@@ -1,3 +1,4 @@
+"use client";
 import { useSearchFormStore } from "@/entities/client/store/searchForm/searchForm";
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone";
 import { Button } from "@/shared/ui/Button/Button";

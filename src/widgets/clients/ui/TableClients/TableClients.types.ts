@@ -4,7 +4,3 @@ export interface Client {
   phone: string;
   address: string;
 }
-
-export interface TableClientsProps {
-  searchPhone?: string;
-}

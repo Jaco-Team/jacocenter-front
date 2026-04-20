@@ -1,11 +1,12 @@
 import { OrderItem } from '@/widgets/Order/ui/OrderList/OrderList.types';
 
 export interface ModalOrderConfirmProps {
+  renderActions?: () => React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  onCancel: () => void;
-  onEdit: () => void;
-  onConfirm: () => void;
+  onCancel?: () => void;
+  onEdit?: () => void;
+  onConfirm?: () => void;
 
   /** Заголовок модалки, например "Заказ № 800602 от 23 октября 2025" */
   title: string;

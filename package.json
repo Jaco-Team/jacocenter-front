@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@storybook/nextjs": "^10.2.12",
+    "@turf/turf": "^7.3.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "next": "16.1.6",
@@ -38,6 +39,7 @@
     "@types/react-dom": "^19",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
+    "@yandex/ymaps3-types": "^1.0.19345674",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",

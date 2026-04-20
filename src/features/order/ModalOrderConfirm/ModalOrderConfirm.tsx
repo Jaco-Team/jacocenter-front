@@ -5,6 +5,7 @@ import { ModalOrderConfirmProps } from "./ModalOrderConfirm.types";
 import "./ModalOrderConfirm.styles.css";
 
 export const ModalOrderConfirm = ({
+  renderActions,
   isOpen,
   onClose,
   onCancel,
@@ -98,40 +99,44 @@ export const ModalOrderConfirm = ({
           />
 
           <div className="modal-order-confirm__actions">
-            <div className="modal-order-confirm__actions-left">
-              <Button
-                variant="base"
-                theme="error"
-                size="sm"
-                onClick={onCancel}
-                className="!w-auto px-5"
-              >
-                Отменить
-              </Button>
-              <Button
-                variant="base"
-                theme="secondary"
-                size="sm"
-                onClick={onEdit}
-                className="!w-auto px-5"
-              >
-                Редактировать
-              </Button>
-            </div>
-            <Button
-              variant="base"
-              theme="primary"
-              size="md"
-              onClick={onConfirm}
-              className="!w-auto px-5"
-            >
-              Подтвердить заказ
-            </Button>
+            {renderActions ? renderActions() : (
+              <>
+                <div className="modal-order-confirm__actions-left">
+                  <Button
+                    variant="base"
+                    theme="error"
+                    size="sm"
+                    onClick={onCancel}
+                    className="!w-auto px-5"
+                  >
+                    Отменить
+                  </Button>
+                  <Button
+                    variant="base"
+                    theme="secondary"
+                    size="sm"
+                    onClick={onEdit}
+                    className="!w-auto px-5"
+                  >
+                    Редактировать
+                  </Button>
+                </div>
+                <Button
+                  variant="base"
+                  theme="primary"
+                  size="md"
+                  onClick={onConfirm}
+                  className="!w-auto px-5"
+                >
+                  Подтвердить заказ
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Кнопки вынесены отдельно под весь контент */}
+      
+            {/* Кнопки вынесены отдельно под весь контент */}
     </Modal>
   );
 };

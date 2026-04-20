@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { Input } from '@/shared/ui/Input/Input';
 import { IInputPhoneUIProps } from './InputPhone.types';
 import './InputPhone.styles.css';
@@ -24,29 +24,37 @@ export const InputPhone = forwardRef<HTMLInputElement, IInputPhoneUIProps>(
   (
     {
       onChange,
-      value="",
+      value,
       withSearchIcon = false,
       searchIconSrc,
       className,
-      error,
-      helperText,
       ...props
     },
     ref
   ) => {
-    const digits = (value ?? "").replace(/\D/g, "").slice(-10);
-    const formatted = formatPhone(digits);
-    const clear = digits.length > 0;
+    const [digits, setDigits] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const onlyDigits = e.target.value.replace(/\D/g, '').slice(0, 10);
 
-      onChange?.(onlyDigits);
+      setDigits(onlyDigits);
+      onChange?.(`7${onlyDigits}`);
     };
 
     const clearInput = () => {
-      onChange?.('');
+      setDigits('');
+      onChange?.('7');
     }
+
+    const formatted = formatPhone(digits);
+    const clear = digits.length > 0;
+
+    useEffect(() => {
+      if (value !== undefined) {
+        const cleaned = value.replace(/^7/, '')
+        setDigits(cleaned);
+      }
+    }, [value]);
 
     return (
       <div className='phone-root'>
@@ -69,8 +77,6 @@ export const InputPhone = forwardRef<HTMLInputElement, IInputPhoneUIProps>(
           type='tel'
           value={formatted}
           onChange={handleChange}
-          error={error}
-          helperText={helperText}
           className={`phone-input ${withSearchIcon ? 'with-icon' : ''} ${className}`}
           placeholder='999 999-99-99'
           {...props}
@@ -87,13 +93,11 @@ export const InputPhone = forwardRef<HTMLInputElement, IInputPhoneUIProps>(
             <Image
               src='/icons/button-close.svg'
               alt='Очистить'
-              width={16}
-              height={16} />
+              width={14}
+              height={14} />
           </button>
         )}
       </div>
     );
   }
 );
-
-InputPhone.displayName = "InputPhone";

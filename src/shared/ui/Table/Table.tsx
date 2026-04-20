@@ -1,6 +1,6 @@
 'use client';
 import { Grid, useGridRef, type CellComponentProps } from 'react-window';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Table.style.css';
 import { CellProps, TableProps } from './Table.types';
 import { Text } from '../Typography/Typography';
@@ -28,6 +28,7 @@ export function CellComponent<T>({
   const isPressed = pressedRow === rowIndex;
   const isActive = activeRow === rowIndex;
   const isClickable = !!column.onCellClick;
+  const textColor = fontVariant === 'label-s-regular-12' ? 'text-text-base' : 'text-text-secondary';
 
   return (
      <div
@@ -49,7 +50,7 @@ export function CellComponent<T>({
         column.onCellClick?.(row);
       }}
     >
-      {typeof content === 'string' ? <Text variant={fontVariant}>{content}</Text> : content}
+      {typeof content !== 'object' && content !== null ? <Text variant={fontVariant} className={textColor}>{content}</Text> : content}
     </div>
   );
 }
@@ -58,7 +59,7 @@ export function Table<T>({
   data, 
   columns, 
   height, 
-  width, 
+  width = '100%',
   rowHeight = 56, 
   headerHeight = 52,
   variant = 'default', 
@@ -66,7 +67,7 @@ export function Table<T>({
   rowGap = 0,
   foundRow = null,
 }: TableProps<T>) {
-
+  const [containerWidth, setContainerWidth] = useState(0);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [pressedRow, setPressedRow] = useState<number | null>(null);
   const [activeRow, setActiveRow] = useState<number | null>(null);
@@ -85,8 +86,8 @@ export function Table<T>({
     }
   }, [foundRow, gridRef]); 
 
-  const getHeaderFont = (columnKey: string) => {
-    if (activeColumn === columnKey && fontVariant === 'label-s-regular-12') {
+  const getHeaderFont = (columnKey: string, isHeaderActive?: boolean) => {
+    if ((isHeaderActive ?? activeColumn === columnKey) && fontVariant === 'label-s-regular-12') {
       return 'label-s-semibold-12';
     }
     return fontVariant;
@@ -96,22 +97,26 @@ export function Table<T>({
     return index === 0 ? headerHeight : rowHeight + rowGap;
   };
 
+  const resolvedWidth = typeof width === 'number' ? width : containerWidth;
   const minTotalWidth = columns.reduce((sum, column) => sum + column.width, 0);
-  const isFlex = minTotalWidth < width;
-  const flexMultiplier = isFlex ? width / minTotalWidth : 1;
+  const isFlex = minTotalWidth < resolvedWidth;
+  const flexMultiplier = isFlex ? resolvedWidth / minTotalWidth : 1;
   const columnWidth = (index: number) => Math.floor(columns[index].width * flexMultiplier);
-  const actualContentWidth = isFlex ? width : minTotalWidth;
+  const actualContentWidth = isFlex ? resolvedWidth : minTotalWidth;
 
   return (
       <Grid 
         gridRef={gridRef}
+        onResize={({ width: w }) => {
+          if (typeof width !== 'number' && w > 0) setContainerWidth(w);
+        }}
         cellComponent={CellComponent}
         cellProps={{ data, columns, hoveredRow, setHoveredRow, pressedRow, setPressedRow, activeRow, setActiveRow, variant, fontVariant, rowGap}}
         columnCount={columns.length}
         columnWidth={columnWidth}
         rowCount={(data?.length + 1)}
         rowHeight={getRowHeight}
-        overscanCount={5}
+        overscanCount={10}
         style={{ width, height }}
         className={`table-main ${variant==='secondary' ? 'table-secondary' : ''}`}
       >
@@ -127,7 +132,7 @@ export function Table<T>({
               <div
                 key={String(column.key) + i}
                 className={`table-header-cell 
-                ${(activeColumn === column.key) && (variant === "default") ? 'table-header-cell-active-default' : ''}
+                ${(column.isHeaderActive ?? activeColumn === column.key) && variant === "default" ? 'table-header-cell-active-default' : ''}
                 ${column.onHeaderClick ? 'table-cell-clickable' : ''}
                 `}
                 style={{ width: columnWidth(i), flexShrink: 0 }}
@@ -137,7 +142,7 @@ export function Table<T>({
                   column.onHeaderClick?.(column);
                 }}
               >
-                  {column.headerRender ? column.headerRender(column) : <Text variant={getHeaderFont(column.key)}>{column.title}</Text>}
+                  {column.headerRender ? column.headerRender(column) : <Text variant={getHeaderFont(column.key, column.isHeaderActive)}>{column.title}</Text>}
               </div>
             ))}
           </div>
