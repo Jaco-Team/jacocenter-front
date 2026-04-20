@@ -6,12 +6,14 @@ import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { TimeState } from "../ByTimeTab/ByTimeTab.types";
-import { ModalCalendar } from "@/features/Order/ui/ModalCalendar/ModalCalendar";
+import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
+import { ModalTimeSelect } from "@/features/order/ui/ModalTimeSelect/ModalTimeSelect";
 
 export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
   const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
 
   const [isDateSelectOpen, setIsDateSelectOpen] = useState(false);
+  const [isTimeSelectOpen, setIsTimeSelectOpen] = useState(false);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(setDate, () => setIsTimeSaved(false));
   const { ref: timeRef, setValue: setTimeValue } = useTimeMask(setTime, () => setIsTimeSaved(false));
@@ -64,7 +66,10 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
             className="placeholder:text-text-muted"
           />
 
-          <button type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
+          <button 
+            type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10" 
+            onClick={() => setIsTimeSelectOpen(true)}
+          >
             <Image
               src="/icons/arrow-down.svg"
               alt="Стрелка"
@@ -85,6 +90,7 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
         </Button>
       </div>
       <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setDate(value)}/>
+      <ModalTimeSelect isOpen={isTimeSelectOpen} onClose={() => setIsTimeSelectOpen(false)} onTimeSelect={(value: string) => setTime(value)}/>
     </>
   );
 };
