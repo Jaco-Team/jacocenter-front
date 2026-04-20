@@ -40,6 +40,7 @@ interface OrderState {
   pickup: PickupForm;
   payment: PaymentForm;
   time: TimeForm;
+  orderNumber: number | null;
 }
 
 interface OrderActions {
@@ -58,6 +59,8 @@ interface OrderActions {
   setPickup: (val: Partial<PickupForm>) => void;
   setPayment: (val: Partial<PaymentForm>) => void;
   setTime: (val: Partial<TimeForm>) => void;
+
+  setOrderNumber: (num: number) => void;
 
   resetOrder: () => void;
 }
@@ -91,6 +94,7 @@ const initialState: OrderState = {
     time: '',
     isTimeSaved: false,
   },
+  orderNumber: Math.floor(800000 + Math.random() * 1000), //мок, заменить
 };
 
 type OrderStore = OrderState & OrderActions;
@@ -132,6 +136,7 @@ export const useOrderStore = create<OrderStore>((set) => ({
   setCity: (city) => set({ city }),
   setPhone: (phone) => set({ phone }),
   setPromocode: (promocode) => set({ promocode }),
+  setOrderNumber: (orderNumber) => set({ orderNumber }),
 
   // Формы
   setDelivery: (val) =>

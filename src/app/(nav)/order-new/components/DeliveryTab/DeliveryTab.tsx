@@ -3,19 +3,15 @@ import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Input } from "@/shared/ui/Input/Input";
 import { Text } from "@/shared/ui/Typography/Typography";
-import { DeliveryState } from "../DeliveryTab/DeliveryTab.types";
+import { DeliveryTabProps } from "./DeliveryTab.types";
 import "./DeliveryTab.style.css";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
-export const DeliveryTab = ({ 
-  state, 
-  activeTimeTab, 
-  setActiveTimeTab 
-}: { 
-  state: DeliveryState, 
-  activeTimeTab: "nearest" | "by-time" | null, 
-  setActiveTimeTab: (val: "nearest" | "by-time") => void} 
-) => {
-  const { address, building, entrance, floor, apartment, intercom, addressCheckStatus, setAddress, setBuilding, setEntrance, setFloor, setApartment, setIntercom, setAddressCheckStatus} = state;
+export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProps ) => {
+  const delivery = useOrderStore((s) => s.delivery);
+  const setDelivery = useOrderStore((s) => s.setDelivery);
+
+  const { address, building, entrance, floor, apartment, intercom, addressCheckStatus } = delivery;
 
   const buildingRef = useRef<HTMLInputElement>(null);
 
@@ -31,10 +27,12 @@ export const DeliveryTab = ({
         <div className="delivery-address group">
           <Input 
             value={address} 
-            onChange={(e) => {
-              setAddress(e.target.value); 
-              setAddressCheckStatus(null);
-            }} 
+            onChange={(e) => 
+              setDelivery({
+                address: e.target.value,
+                addressCheckStatus: null,
+              })
+            } 
             label="Улица" 
             placeholder="Введите улицу, дом"
             helperText={addressCheckStatus === "success" ? "Адрес входит в зону доставки" : ""}
@@ -42,7 +40,7 @@ export const DeliveryTab = ({
             className="placeholder:ps-6"
           />
           {!address && <Image src="/icons/search.svg" alt="Поиск" width={20} height={20} className="icon-search"/>}
-          {address && <ClearButton onClick={() => {setAddress(""); setAddressCheckStatus(null);}} className="right-1 top-[24px]"/>}
+          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null })} className="right-1 top-[24px]"/>}
         </div>
         <div className="delivery-buttons-group">
           <Button 
@@ -50,9 +48,10 @@ export const DeliveryTab = ({
             theme={address && !addressCheckStatus ? "primary" : "secondary"} 
             size="sm" 
             onClick={() => {
-              // setAddressCheckStatus("error");
-              setAddressCheckStatus("success");
-            }}>
+              // TODO: mock, заменить на реальную проверку адреса
+              setDelivery({ addressCheckStatus: "success" });
+            }}
+          >
             <Text>Найти</Text>
           </Button>
           <Button variant="icon" theme="secondary" size="icon-sm">
@@ -65,28 +64,28 @@ export const DeliveryTab = ({
           type="number"
           ref={buildingRef} 
           value={building} 
-          onChange={(e) => setBuilding(e.target.value)} 
+          onChange={(e) => setDelivery({ building: e.target.value })}
           label="Корпус" 
           placeholder="___" 
           className="delivery-address-details-input"/>
         <Input 
           type="number"
           value={entrance} 
-          onChange={(e) => setEntrance(e.target.value)}  
+          onChange={(e) => setDelivery({ entrance: e.target.value })}
           label="Подъезд" 
           placeholder="___"  
           className="delivery-address-details-input"/>
         <Input  
           type="number"
           value={floor} 
-          onChange={(e) => setFloor(e.target.value)} 
+          onChange={(e) => setDelivery({ floor: e.target.value })}
           label="Этаж" 
           placeholder="___"  
           className="delivery-address-details-input"/>
         <Input 
           type="number"
           value={apartment} 
-          onChange={(e) => setApartment(e.target.value)} 
+          onChange={(e) => setDelivery({ apartment: e.target.value })}
           label="Квартира" 
           placeholder="___" 
           className="delivery-address-details-input"/>
@@ -99,7 +98,7 @@ export const DeliveryTab = ({
             theme={intercom === "working" ? "primary" : "secondary"} 
             size="md"
             onClick={() => {
-              setIntercom("working");
+              setDelivery({ intercom: "working" });
               if (activeTimeTab === null) setActiveTimeTab("nearest");
             }}
             className={intercom === "working" ? "button-active" : "button-default"}
@@ -111,7 +110,7 @@ export const DeliveryTab = ({
             theme={intercom === "not-working" ? "primary" : "secondary"} 
             size="md"
             onClick={() => {
-              setIntercom("not-working");
+              setDelivery({ intercom: "not-working" });
               if (activeTimeTab === null) setActiveTimeTab("nearest");
             }}
             className={intercom === "not-working" ? "button-active" : "button-default"}

@@ -1,6 +1,5 @@
-export type PickupState = {
-  cafe: string;
-  cafeCheckStatus: null | "success" | "error";
-  setCafe: (val: string) => void;
-  setCafeCheckStatus: (val: null | "success" | "error") => void;
+export type PickupTabProps = {
+  options: { id: number; name: string }[], 
+  activeTimeTab: "nearest" | "by-time" | null, 
+  setActiveTimeTab: (val: "nearest" | "by-time") => void 
 };

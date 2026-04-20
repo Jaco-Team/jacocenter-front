@@ -8,14 +8,11 @@ import { PaymentBlock } from "../PaymentBlock/PaymentBlock";
 import { ByTimeTab } from "../ByTimeTab/ByTimeTab";
 import { NearestTab } from "../NearestTab/NearestTab";
 import "./DeliveryForm.style.css";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
-export function DeliveryForm({ 
-  deliveryState, 
-  pickupState, 
-  timeState, 
-  paymentState, 
-  cafeList 
-}: DeliveryFormProps) {
+export function DeliveryForm({ cafeList }: DeliveryFormProps) {
+  const isTimeSaved = useOrderStore((s) => s.time.isTimeSaved);
+
   const [activeDeliveryTab, setActiveDeliveryTab] = useState<"delivery" | "pickup">("delivery");
   const [activeTimeTab, setActiveTimeTab] = useState<"nearest" | "by-time" | null>(null);
 
@@ -46,7 +43,6 @@ export function DeliveryForm({
 
           {activeDeliveryTab==="delivery" && (
             <DeliveryTab 
-              state={deliveryState} 
               activeTimeTab={activeTimeTab} 
               setActiveTimeTab={setActiveTimeTab}
             />
@@ -54,7 +50,6 @@ export function DeliveryForm({
 
           {activeDeliveryTab==="pickup" && (
             <PickupTab 
-              state={pickupState} 
               options={cafeList} 
               activeTimeTab={activeTimeTab} 
               setActiveTimeTab={setActiveTimeTab}
@@ -88,15 +83,14 @@ export function DeliveryForm({
               />
             )}
 
-            {activeTimeTab==="by-time" && <ByTimeTab timeState={timeState}/>}
+            {activeTimeTab==="by-time" && <ByTimeTab/>}
           </div>
         </div>
       </div>
       {activeDeliveryTab==="delivery" && (
         <PaymentBlock 
-          state={paymentState} 
           activeTimeTab={activeTimeTab} 
-          isTimeSaved={timeState.isTimeSaved}
+          isTimeSaved={isTimeSaved}
         />
       )}
     </div>

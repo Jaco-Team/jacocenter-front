@@ -21,25 +21,18 @@ import "./CurrentOrderPage.styles.css";
 import { HeaderNewOrder } from "../(nav)/order-new/components/HeaderNewOrder/HeaderNewOrder";
 
 export default function CurrentOrderPage() {
-  const {
-    step,
-    setStep,
-    items,
-    addItem,
-    increaseItem,
-    decreaseItem,
-    deleteItem,
-    phone,
-    delivery,
-    setDelivery,
-    pickup,
-    setPickup,
-    payment,
-    setPayment,
-    time,
-    setTime,
-    resetOrder,
-  } = useOrderStore();
+  const step = useOrderStore((s) => s.step);
+  const setStep = useOrderStore((s) => s.setStep);
+  const items = useOrderStore((s) => s.items);
+  const addItem = useOrderStore((s) => s.addItem);
+  const increaseItem = useOrderStore((s) => s.increaseItem);
+  const decreaseItem = useOrderStore((s) => s.decreaseItem);
+  const deleteItem = useOrderStore((s) => s.deleteItem);
+  const phone = useOrderStore((s) => s.phone);
+  const delivery = useOrderStore((s) => s.delivery);
+  const payment = useOrderStore((s) => s.payment);
+  const orderNumber = useOrderStore((s) => s.orderNumber);
+  const resetOrder = useOrderStore((s) => s.resetOrder);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -47,46 +40,10 @@ export default function CurrentOrderPage() {
     string | number | null
   >(null);
 
-  const [orderNumber] = useState(800602);
-
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.count,
     0,
   );
-
-  const deliveryState = {
-    ...delivery,
-    setAddress: (val: string) => setDelivery({ address: val }),
-    setBuilding: (val: string) => setDelivery({ building: val }),
-    setEntrance: (val: string) => setDelivery({ entrance: val }),
-    setFloor: (val: string) => setDelivery({ floor: val }),
-    setApartment: (val: string) => setDelivery({ apartment: val }),
-    setIntercom: (val: "working" | "not-working") =>
-      setDelivery({ intercom: val }),
-    setAddressCheckStatus: (val: null | "success" | "error") =>
-      setDelivery({ addressCheckStatus: val }),
-  };
-
-  const pickupState = {
-    ...pickup,
-    setCafe: (val: string) => setPickup({ cafe: val }),
-    setCafeCheckStatus: (val: null | "success" | "error") =>
-      setPickup({ cafeCheckStatus: val }),
-  };
-
-  const paymentState = {
-    ...payment,
-    setMethod: (val: "cash" | "card") => setPayment({ method: val }),
-    setCashAmount: (val: string) => setPayment({ cashAmount: val }),
-    setComment: (val: string) => setPayment({ comment: val }),
-  };
-
-  const timeState = {
-    ...time,
-    setDate: (val: string) => setTime({ date: val }),
-    setTime: (val: string) => setTime({ time: val }),
-    setIsTimeSaved: (val: boolean) => setTime({ isTimeSaved: val }),
-  };
 
   const handleConfirm = () => {
     setIsConfirmOpen(false);
@@ -175,10 +132,6 @@ export default function CurrentOrderPage() {
 
           {step === ORDER_STEP.DELIVERY && (
             <DeliveryForm
-              deliveryState={deliveryState}
-              pickupState={pickupState}
-              timeState={timeState}
-              paymentState={paymentState}
               cafeList={mockCafeList}
             />
           )}
@@ -194,15 +147,18 @@ export default function CurrentOrderPage() {
         onDecrease={decreaseItem}
         onDelete={deleteItem}
         onNext={() => {
-          if (step === ORDER_STEP.CART) setStep(ORDER_STEP.DELIVERY);
-          else setIsConfirmOpen(true);
+          if (step === ORDER_STEP.CART) {
+            setStep(ORDER_STEP.DELIVERY);
+            return;
+          }
+          setIsConfirmOpen(true);
         }}
       />
 
       <OrderPreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
-        orderNumber={orderNumber}
+        orderNumber={orderNumber ?? 0}
         items={items.map((i) => ({
           name: i.name,
           quantity: i.count,
