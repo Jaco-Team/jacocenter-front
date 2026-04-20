@@ -1,7 +1,7 @@
 @reference '../../../../../app/globals.css';
 
 .current-order__header {
-  @apply flex items-center gap-3 px-3 pt-3 h-[64px];
+  @apply flex gap-3 h-[64px];
 }
 
 .current-order__header-city {
@@ -9,7 +9,7 @@
 }
 
 .current-order__header-phone {
-  @apply w-[200px] flex-shrink-0;
+  @apply w-[196px] flex-shrink-0;
 }
 
 .current-order__header-phone .input-field {
@@ -17,18 +17,18 @@
 }
 
 .current-order__header-promocode {
-  @apply flex items-center gap-3 flex-1 min-w-[168px];
+  @apply flex items-center gap-3 flex-1 w-[212px] h-[44px];
 }
 
 .current-order__header-promocode-input {
-  @apply flex-1;
+  @apply w-[168px];
 }
 
 .current-order__header-promocode-input .input-field {
-  @apply flex-1 h-[44px] bg-base border-none;
+  @apply h-[44px] bg-base border-none;
 }
 
 .current-order__header-tooltip-btn {
-  @apply w-6 h-6 flex items-center justify-center 
+  @apply w-5 h-5 flex items-center justify-center 
          text-text-muted rounded-full border border-text-muted text-sm;
 }

@@ -27,8 +27,8 @@ export function DeliveryForm({
             <Button
               variant="text" 
               theme="primary"
-              className={`tab tab-default
-              ${activeDeliveryTab === "delivery" ? (activeTimeTab === null ? "tab-active" : "tab-active-muted") : ""}`} 
+              className={`delivery-tab delivery-tab-default
+              ${activeDeliveryTab === "delivery" ? (activeTimeTab === null ? "delivery-tab-active" : "delivery-tab-active-muted") : ""}`} 
               onClick={() => setActiveDeliveryTab("delivery")}
             >
               <Text>Доставка</Text>
@@ -36,8 +36,8 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default
-              ${activeDeliveryTab === "pickup" ? (activeTimeTab === null ? "tab-active" : "tab-active-muted") : ""}`} 
+              className={`delivery-tab delivery-tab-default
+              ${activeDeliveryTab === "pickup" ? (activeTimeTab === null ? "delivery-tab-active" : "delivery-tab-active-muted") : ""}`} 
               onClick={() => setActiveDeliveryTab("pickup")}
             >
               <Text>Самовывоз</Text>
@@ -66,7 +66,7 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default ${activeTimeTab === "nearest" ? "tab-active" : ""}`} 
+              className={`delivery-tab delivery-tab-default ${activeTimeTab === "nearest" ? "delivery-tab-active" : ""}`} 
               onClick={() => setActiveTimeTab("nearest")}
             >
               <Text>Ближайшее</Text>
@@ -74,7 +74,7 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default ${activeTimeTab === "by-time" ? "tab-active" : ""}`} 
+              className={`delivery-tab delivery-tab-default ${activeTimeTab === "by-time" ? "delivery-tab-active" : ""}`} 
               onClick={() => setActiveTimeTab("by-time")}
               >
               <Text>Ко времени</Text>

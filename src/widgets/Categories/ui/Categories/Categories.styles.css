@@ -1,7 +1,7 @@
 @reference "../../../../app/globals.css";
 
 .categories-container {
-  @apply bg-white p-4 flex flex-wrap gap-4 rounded-b-xl justify-center list-none m-0;
+  @apply bg-white p-4 flex flex-wrap gap-3 rounded-b-xl justify-around list-none m-0 h-[152px];
 }
 
 .categories-item {

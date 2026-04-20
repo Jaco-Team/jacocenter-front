@@ -6,7 +6,7 @@
 
 .stop-order__trigger {
   @apply flex items-center gap-3
-         px-2 py-[10px]
+         px-2 py-[10px] h-10
          border-b border-[var(--color-status-ready)]
          text-[16px] text-[var(--color-text-secondary)]
          cursor-pointer bg-transparent outline-none;

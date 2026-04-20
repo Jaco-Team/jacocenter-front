@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useOrderStore } from "@/store/orderStore";
 import { ORDER_STEP } from "@/utils/constants";
-import { NavPanel } from "@/widgets/NavPanel/ui/NavPanel";
 import { Cart } from "@/widgets/Order/ui/Cart/Cart";
 import { CardsDish } from "@/widgets/CardsDish/ui/CardsDish";
 import { Categories } from "@/widgets/Categories/ui/Categories/Categories";
@@ -123,8 +122,6 @@ export default function CurrentOrderPage() {
 
   return (
     <div className="current-order">
-      <NavPanel />
-
       <main className="current-order__main">
         <HeaderNewOrder/>
 

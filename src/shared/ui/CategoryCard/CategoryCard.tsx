@@ -1,5 +1,6 @@
 "use client";
 
+import { Text } from "../Typography/Typography";
 import "./CategoryCard.styles.css";
 import { CategoryCardProps } from "./CategoryCard.types";
 
@@ -21,7 +22,7 @@ export const CategoryCard = ({
         }
       }}
     >
-      {children}
+      <Text>{children}</Text>
     </div>
   );
 };

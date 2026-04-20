@@ -38,7 +38,7 @@
 }
 
 .select-base__dropdown {
-  @apply absolute top-full mt-1
+  @apply absolute top-0 mt-[48px]
          bg-[var(--color-base)] border border-[var(--color-status-cooking)] 
          rounded-xl shadow-[var(--shadow-card-dish)] z-20 overflow-hidden;
 }

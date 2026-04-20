@@ -50,7 +50,7 @@ export const HeaderNewOrder = () => {
         </Tooltip>
       </div>
 
-      <Button type="submit" variant="base" theme="primary" size="sm">
+      <Button type="submit" variant="base" theme="primary" className="!w-[76px] !h-[44px]">
         Найти
       </Button>
     </form>

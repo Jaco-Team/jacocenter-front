@@ -57,7 +57,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
   }, [activeIndex]);
 
   return (
-    <div ref={rootRef} onKeyDown={handleKeyDown}>
+    <div ref={rootRef} onKeyDown={handleKeyDown} className="relative">
       <div className="rounded-xl bg-base relative text-text-secondary">
         <Input
           value={value}
@@ -66,6 +66,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
             setIsOpen(true);
           }}
           placeholder="Все товары"
+          className="h-11 border-none"
         ></Input>
         <button className="absolute p-3 top-0 right-0 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
@@ -80,7 +81,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
       (
         <ul 
           ref={listRef}
-          className="max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
+          className="absolute top-full left-0 right-0 z-10 max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
           {filtered.map((item, index) => (
             <li
               key={item.id}

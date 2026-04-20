@@ -2,16 +2,16 @@
 
 /* Базовые стили для одного таба */
 .tab {
-  @apply cursor-pointer select-none transition-colors;
+  @apply cursor-pointer select-none transition-colors h-10 flex items-center justify-center;
 }
 
 /* Вариант default */
 .tab-default {
-  @apply px-4 py-2 text-[20px] rounded-t-lg text-center;
+  @apply text-[20px] rounded-t-lg;
 }
 
 .tab-default.active {
-  @apply bg-[var(--color-primary-light)] text-[var(--color-text-base)];
+  @apply bg-[var(--color-primary-light)] text-text-base;
 }
 
 .tab-default.inactive {

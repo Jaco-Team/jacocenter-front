@@ -16,18 +16,18 @@
   @apply flex h-[36px];
 }
 
-.tab {
+.delivery-tab {
   @apply w-[161px] cursor-pointer; 
 }
 
-.tab.tab-default {
+.delivery-tab.delivery-tab-default {
   @apply text-text-subtle hover:text-text-subtle;
 }
 
-.tab.tab-active {
+.delivery-tab.delivery-tab-active {
   @apply border-primary text-primary hover:text-primary;
 }
 
-.tab.tab-active-muted {
+.delivery-tab.delivery-tab-active-muted {
   @apply border-disabled text-text-subtle;
 }

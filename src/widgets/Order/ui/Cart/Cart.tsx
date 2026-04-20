@@ -37,7 +37,7 @@ export function Cart({
   const formatPrice = (value: number) => value.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(",", ".");
 
   return (
-    <aside className="my-3 mr-4 min-w-[368px]">
+    <aside className="min-w-[368px] w-full">
       <section className="flex h-[640px] py-5 flex-col rounded-2xl bg-white text-text-secondary">
         
         <header className="px-3 mb-4 h-10 flex justify-between items-center">

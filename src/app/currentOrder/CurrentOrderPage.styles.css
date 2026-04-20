@@ -1,19 +1,19 @@
 @reference "../../app/globals.css";
 
 .current-order {
-  @apply flex h-screen;
+  @apply flex gap-4 h-screen;
 }
 
 .current-order__main {
-  @apply flex flex-1 flex-col overflow-hidden;
+  @apply flex flex-col w-[704px];
 }
 
 .current-order__stop-order {
-  @apply px-3 pt-3 pb-4;
+  @apply pt-2 pb-4;
 }
 
 .current-order__tabs {
-  @apply flex px-3 gap-3;
+  @apply flex gap-3;
 }
 
 .current-order__tab {
@@ -21,7 +21,7 @@
 }
 
 .current-order__content {
-  @apply flex-1 overflow-y-auto px-3;
+  @apply flex-1 overflow-y-auto;
 }
 
 .current-order__search {
