@@ -2,7 +2,7 @@ import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import Image from "next/image";
 import { Input } from "@/shared/ui/Input/Input";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PickupTabProps } from "./PickupTab.types";
 import "./PickupTab.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
@@ -14,6 +14,30 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKey);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isOpen]);
 
   const visibleOptions = showAll ? options : options.slice(0, 4);
   const isMatch = (name: string) => cafe && name.toLowerCase().startsWith(cafe.toLowerCase());
@@ -34,7 +58,7 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
 
   return (
   <div className="pickup-container">
-    <div className="select-cafe">
+    <div className="select-cafe" ref={selectRef}>
       <Input 
         value={cafe} 
         onChange={(e) => {
@@ -80,7 +104,7 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
               </li>
             ))}
 
-            {!showAll && (
+            {!showAll && options.length > 4 && (
               <li
                 onClick={() => setShowAll(true)}
                 className="button-all-cafes"
