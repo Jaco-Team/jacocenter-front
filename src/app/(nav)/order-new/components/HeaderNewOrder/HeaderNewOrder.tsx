@@ -3,7 +3,7 @@ import { Button } from "@/shared/ui/Button/Button"
 import { Input } from "@/shared/ui/Input/Input"
 import { Tooltip } from "@/shared/ui/Tooltip/Tooltip"
 import "./HeaderNewOrder.style.css";
-import { useOrderStore } from "@/store/orderStore"
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore"
 import { SelectTown } from "@/shared/ui/SelectTown/SelectTown"
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone"
 import Image from "next/image";

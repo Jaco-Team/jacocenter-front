@@ -5,6 +5,7 @@ import { CartProps } from './Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
 import { useState } from 'react';
 import { ModalOrderDelete } from '@/features/order/ModalOrderDelete/ModalOrderDelete';
+import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 
 export function Cart({
   items,
@@ -14,9 +15,9 @@ export function Cart({
   onDelete,
   onNext,
   onOpenOrderInfo,
-  onCancel,
   step
 }: CartProps) {
+  const { resetOrder } = useOrderStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const sumWithoutDiscount = items.reduce((acc, item) => {
@@ -125,8 +126,8 @@ export function Cart({
         isOpen={isDeleteModalOpen} 
         onClose={() => setIsDeleteModalOpen(false)}
         onCancelOrder={() => {
-          onCancel?.();
           setIsDeleteModalOpen(false);
+          resetOrder();
         }}
       />
     </aside>

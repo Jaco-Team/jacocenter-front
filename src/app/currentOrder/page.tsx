@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useOrderStore } from "@/store/orderStore";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { ORDER_STEP } from "@/utils/constants";
 import { Cart } from "@/widgets/Order/ui/Cart/Cart";
 import { CardsDish } from "@/widgets/CardsDish/ui/CardsDish";
@@ -29,7 +29,6 @@ export default function CurrentOrderPage() {
     increaseItem,
     decreaseItem,
     deleteItem,
-    clearCart,
     phone,
     delivery,
     setDelivery,
@@ -39,6 +38,7 @@ export default function CurrentOrderPage() {
     setPayment,
     time,
     setTime,
+    resetOrder,
   } = useOrderStore();
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -46,9 +46,7 @@ export default function CurrentOrderPage() {
   const [selectedCategory, setSelectedCategory] = useState<
     string | number | null
   >(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<
-    string | number | null
-  >(null);
+
   const [orderNumber] = useState(800602);
 
   const totalPrice = items.reduce(
@@ -92,8 +90,13 @@ export default function CurrentOrderPage() {
 
   const handleConfirm = () => {
     setIsConfirmOpen(false);
-    clearCart();
-    setStep(ORDER_STEP.CART);
+    resetOrder();
+  };
+
+  const handleCancelConfirm = () => {
+    setIsConfirmOpen(false);
+    resetOrder();
+
   };
 
   const intercomLabel =
@@ -186,10 +189,7 @@ export default function CurrentOrderPage() {
         items={items}
         step={step}
         onOpenOrderInfo={() => setIsPreviewOpen(true)}
-        onCancel={() => {
-          clearCart();
-          setStep(ORDER_STEP.CART);
-        }}
+        onCancel={resetOrder}
         onIncrease={increaseItem}
         onDecrease={decreaseItem}
         onDelete={deleteItem}
@@ -214,11 +214,7 @@ export default function CurrentOrderPage() {
       <ModalOrderConfirm
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
-        onCancel={() => {
-          setIsConfirmOpen(false);
-          clearCart();
-          setStep(ORDER_STEP.CART);
-        }}
+        onCancel={handleCancelConfirm}
         onEdit={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirm}
         title={`Заказ № ${orderNumber} от ${new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
