@@ -6,6 +6,7 @@ import "./HeaderNewOrder.style.css";
 import { useOrderStore } from "@/store/orderStore"
 import { SelectTown } from "@/shared/ui/SelectTown/SelectTown"
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone"
+import Image from "next/image";
 
 export const HeaderNewOrder = () => {
   const {
@@ -41,6 +42,7 @@ export const HeaderNewOrder = () => {
             onChange={(e) => setPromocode(e.target.value)}
             placeholder="Промокод"
           />
+          {promocode && (<ClearButton onClick={() => setPromocode("")} className="top-[2px] right-0"/>)}
         </div>
         <Tooltip
           content="Введите промокод для получения скидки"
@@ -50,9 +52,15 @@ export const HeaderNewOrder = () => {
         </Tooltip>
       </div>
 
-      <Button type="submit" variant="base" theme="primary" className="!w-[76px] !h-[44px]">
+      <Button type="submit" variant="base" theme="primary" className="current-order__header-button">
         Найти
       </Button>
     </form>
   )
 }
+
+const ClearButton = ({ onClick, className="" }: { onClick: () => void; className?: string }) => (
+  <button type="button" className={`absolute flex items-center justify-center cursor-pointer w-10 h-10 ${className}`} onClick={onClick}>
+    <Image src="/icons/button-delete.svg" alt="Очистить" width={14} height={14}/>
+  </button>
+);

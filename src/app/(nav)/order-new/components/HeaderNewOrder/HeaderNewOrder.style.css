@@ -21,7 +21,7 @@
 }
 
 .current-order__header-promocode-input {
-  @apply w-[168px];
+  @apply relative w-[168px];
 }
 
 .current-order__header-promocode-input .input-field {
@@ -31,4 +31,8 @@
 .current-order__header-tooltip-btn {
   @apply w-5 h-5 flex items-center justify-center 
          text-text-muted rounded-full border border-text-muted text-sm;
+}
+
+.current-order__header-button {
+  @apply w-[76px] h-[44px];
 }
