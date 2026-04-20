@@ -156,10 +156,8 @@ export default function CurrentOrderPage() {
               />
               <div className="current-order__search">
                 <InputSearch
-                  options={mockDishes.map((d) => ({
-                    id: Number(d.id),
-                    name: d.name,
-                  }))}
+                  options={mockDishes}
+                  onSelect={(d) => addItem(d)}
                 />
               </div>
               <CardsDish

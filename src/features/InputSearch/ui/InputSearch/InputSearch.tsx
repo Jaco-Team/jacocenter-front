@@ -2,9 +2,9 @@
 import { Input } from "@/shared/ui/Input/Input";
 import { Text } from "@/shared/ui/Typography/Typography";
 import React, { useEffect, useRef, useState } from "react";
-import { SearchInputProps } from "./InputSearch.type";
+import { OptionItem, SearchInputProps } from "./InputSearch.type";
 
-export const InputSearch = ({ options }: SearchInputProps) => {
+export const InputSearch = <T extends OptionItem>({ options, onSelect }: SearchInputProps<T>) => {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -12,6 +12,13 @@ export const InputSearch = ({ options }: SearchInputProps) => {
   const listRef = useRef<HTMLUListElement>(null);
 
   const filtered = options.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
+
+  const handleSelect = (item: typeof options[number]) => {
+    onSelect?.(item);
+    setValue("");
+    setIsOpen(false);
+    setActiveIndex(-1);
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen) return;
@@ -25,9 +32,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
     }
 
     if (e.key === "Enter" && activeIndex >= 0) {
-      setValue(filtered[activeIndex].name);
-      setIsOpen(false);
-      setActiveIndex(-1);
+      handleSelect(filtered[activeIndex]);
     }
 
     if (e.key === "Escape") {
@@ -85,11 +90,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
           {filtered.map((item, index) => (
             <li
               key={item.id}
-              onClick={() => {
-                setValue(item.name);
-                setIsOpen(false);
-                setActiveIndex(-1);
-              }}
+              onClick={() => handleSelect(item)}
               className={`h-10 px-2 flex items-center rounded-lg ${activeIndex === index ? "bg-bg-base-light text-text-base" : "hover:bg-bg-base-light"}`}
             >
               <Text>{item.name}</Text>

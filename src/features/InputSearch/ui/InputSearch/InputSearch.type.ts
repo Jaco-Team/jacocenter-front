@@ -1,8 +1,9 @@
-type OptionItem = {
-  id: number,
+export type OptionItem = {
+  id: string,
   name: string,
 };
 
-export type SearchInputProps = {
-  options: OptionItem[];
+export type SearchInputProps<T extends OptionItem> = {
+  options: T[];
+  onSelect?: (item: T) => void;
 };
