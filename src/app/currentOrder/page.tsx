@@ -7,23 +7,19 @@ import { Cart } from "@/widgets/Order/ui/Cart/Cart";
 import { CardsDish } from "@/widgets/CardsDish/ui/CardsDish";
 import { Categories } from "@/widgets/Categories/ui/Categories/Categories";
 import { StopOrder } from "@/features/order/ui/StopOrder/StopOrder";
-import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone";
 import { InputSearch } from "@/features/InputSearch/ui/InputSearch/InputSearch";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
 import { Tab } from "@/shared/ui/Tab/Tab";
-import { Tooltip } from "@/shared/ui/Tooltip/Tooltip";
-import { Button } from "@/shared/ui/Button/Button";
 import {
   mockCategories,
   mockDishes,
   mockStopOrders,
   mockCafeList,
-  mockCities,
 } from "./mocks";
 import { DeliveryForm } from "../(nav)/order-new/components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
-import { Input } from "@/shared/ui/Input/Input";
+import { HeaderNewOrder } from "../(nav)/order-new/components/HeaderNewOrder/HeaderNewOrder";
 
 export default function CurrentOrderPage() {
   const {
@@ -36,9 +32,6 @@ export default function CurrentOrderPage() {
     deleteItem,
     clearCart,
     phone,
-    setPhone,
-    promocode,
-    setPromocode,
     delivery,
     setDelivery,
     pickup,
@@ -133,39 +126,7 @@ export default function CurrentOrderPage() {
       <NavPanel />
 
       <main className="current-order__main">
-        <div className="current-order__header">
-          <div className="current-order__header-city">
-            <InputSearch options={mockCities} />
-          </div>
-
-          <div className="current-order__header-phone">
-            <InputPhone
-              value={phone}
-              onChange={(val) => setPhone(val)}
-              placeholder="+7 999 999-99-99"
-            />
-          </div>
-
-          <div className="current-order__header-promocode">
-            <div className="current-order__header-promocode-input">
-              <Input
-                value={promocode}
-                onChange={(e) => setPromocode(e.target.value)}
-                placeholder="Промокод"
-              />
-            </div>
-            <Tooltip
-              content="Введите промокод для получения скидки"
-              placement="bottom"
-            >
-              <button className="current-order__header-tooltip-btn">?</button>
-            </Tooltip>
-          </div>
-
-          <Button variant="base" theme="primary" size="sm" onClick={() => {}}>
-            Найти
-          </Button>
-        </div>
+        <HeaderNewOrder/>
 
         <div className="current-order__stop-order">
           <StopOrder options={mockStopOrders} />

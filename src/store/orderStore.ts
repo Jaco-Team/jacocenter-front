@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { CartItem } from '@/widgets/Order/ui/Cart/Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
+import { mockCities } from '@/app/currentOrder/mocks';
 
 // Форма доставки
 interface DeliveryForm {
@@ -43,8 +44,10 @@ interface OrderStore {
   deleteItem: (id: string) => void;
   clearCart: () => void;
 
-  // Телефон и промокод (шапка)
+  // Шапка
+  city: string;
   phone: string;
+  setCity: (city: string) => void;
   setPhone: (val: string) => void;
   promocode: string;
   setPromocode: (val: string) => void;
@@ -100,8 +103,10 @@ export const useOrderStore = create<OrderStore>((set) => ({
     set((state) => ({ items: state.items.filter((i) => i.id !== id) })),
   clearCart: () => set({ items: [] }),
 
-  // Телефон и промокод
+  // Шапка
+  city: mockCities[0],
   phone: '',
+  setCity: (city) => set({ city }),
   setPhone: (val) => set({ phone: val }),
   promocode: '',
   setPromocode: (val) => set({ promocode: val }),

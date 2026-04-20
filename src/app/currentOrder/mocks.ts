@@ -38,6 +38,6 @@ export const mockCafeList = [
 ];
 
 export const mockCities = [
-  { id: 1, name: 'Тольятти' },
-  { id: 2, name: 'Самара' },
+  'Тольятти',
+  'Самара',
 ];
