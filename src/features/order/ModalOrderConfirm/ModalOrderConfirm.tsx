@@ -15,6 +15,7 @@ export const ModalOrderConfirm = ({
   onEdit,
   onConfirm,
   title,
+  deliveryType="delivery",
   deliveryTime,
   clientPhone,
   address,
@@ -62,7 +63,9 @@ export const ModalOrderConfirm = ({
             <h2 className="modal-order-confirm__info-title">О заказе</h2>
 
             <div className="modal-order-confirm__field">
-              <span className="modal-order-confirm__field-label">Доставка</span>
+              <span className="modal-order-confirm__field-label">
+                {deliveryType === "pickup" ? "Самовывоз" : "Доставка"}
+              </span>
               <span className="modal-order-confirm__field-value">
                 {deliveryTime}
               </span>
@@ -82,12 +85,14 @@ export const ModalOrderConfirm = ({
               <span className="modal-order-confirm__field-value">{address}</span>
             </div>
 
-            <div className="modal-order-confirm__field">
-              <span className="modal-order-confirm__field-label">Домофон</span>
-              <span className="modal-order-confirm__field-value modal-order-confirm__field-value--accent">
-                {intercom}
-              </span>
-            </div>
+            {deliveryType === "delivery" && (
+              <div className="modal-order-confirm__field">
+                <span className="modal-order-confirm__field-label">Домофон</span>
+                <span className="modal-order-confirm__field-value modal-order-confirm__field-value--accent">
+                  {intercom}
+                </span>
+              </div>
+            )}
 
             {promocode && (
               <div className="modal-order-confirm__field">
@@ -114,10 +119,12 @@ export const ModalOrderConfirm = ({
               </div>
             )}
 
-            <div className="modal-order-confirm__field">
+            {deliveryType === "delivery" && (
+              <div className="modal-order-confirm__field">
               <span className="modal-order-confirm__field-label">Оплата</span>
               <span className="modal-order-confirm__field-value">{payment}</span>
             </div>
+          )}
           </div>
 
           {/* Правая колонка */}

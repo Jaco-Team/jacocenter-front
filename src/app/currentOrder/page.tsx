@@ -25,6 +25,11 @@ export default function CurrentOrderPage() {
   const payment = useOrderStore((s) => s.payment);
   const orderNumber = useOrderStore((s) => s.orderNumber);
   const resetOrder = useOrderStore((s) => s.resetOrder);
+  const deliveryType = useOrderStore((s) => s.deliveryType);
+  const promocode = useOrderStore((s) => s.promocode);
+  const pickup = useOrderStore((s) => s.pickup);
+  const time = useOrderStore((s) => s.time);
+  const timeMode = useOrderStore((s) => s.timeMode);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -52,10 +57,10 @@ export default function CurrentOrderPage() {
         ? "не работает"
         : "—";
 
-  const addressFull = [
+  const addressFull = deliveryType === "pickup" ? pickup.cafe : [
     delivery.address,
     delivery.building && `корп. ${delivery.building}`,
-    delivery.entrance && `подъезд ${delivery.entrance}`,
+    delivery.entrance && `п. ${delivery.entrance}`,
     delivery.floor && `эт. ${delivery.floor}`,
     delivery.apartment && `кв. ${delivery.apartment}`,
   ]
@@ -66,8 +71,12 @@ export default function CurrentOrderPage() {
     payment.method === "cash"
       ? `Наличный расчёт${payment.cashAmount ? `\nСдача с ${payment.cashAmount} рублей` : ""}`
       : payment.method === "card"
-        ? "Безналичный расчёт"
-        : "—";
+        ? "Безналичный расчёт" : "—";
+
+  const nearestLabel = deliveryType === "delivery" ? "Время ожидания" : "Время приготовления";
+  const scheduledLabel = deliveryType === "delivery" ? "Доставим" : "Заберут";
+  const nearestTime = deliveryType === "delivery" ? "1:25 - 1:55" : "0:10 - 0:15";
+  const deliveryTime = timeMode === "by-time" ? `${scheduledLabel} ${time.date}, ${time.time}` : `${nearestLabel} ${nearestTime}`;
 
   return (
     <div className="current-order">
@@ -137,8 +146,9 @@ export default function CurrentOrderPage() {
         onEdit={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirm}
         title={`Заказ № ${orderNumber} от ${new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
-        deliveryTime="Время ожидания 0:45-1:15"
-        clientPhone={phone}
+        deliveryType={deliveryType}
+        deliveryTime={deliveryTime}
+        clientPhone={`+7 (${phone.slice(0,3)}) ${phone.slice(3,6)}-${phone.slice(6,8)}-${phone.slice(8,10)}`}
         address={addressFull || "—"}
         intercom={intercomLabel}
         payment={paymentLabel}
@@ -149,6 +159,7 @@ export default function CurrentOrderPage() {
           price: i.price,
         }))}
         totalPrice={totalPrice}
+        promocode={promocode || undefined}
       />
     </div>
   );

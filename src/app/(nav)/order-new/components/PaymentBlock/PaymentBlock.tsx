@@ -15,7 +15,7 @@ export const PaymentBlock = ({ activeTimeTab, isTimeSaved }: PaymentBlockProps) 
       <div className="payment-method">
         <Input 
           value={cashAmount} 
-          onChange={(e) => setPayment({ cashAmount: e.target.value })}
+          onChange={(e) => setPayment({ cashAmount: e.target.value, method: "cash" })}
           placeholder="Введите сумму" 
           label="Сдача с" 
           className="payment-input"
@@ -23,7 +23,7 @@ export const PaymentBlock = ({ activeTimeTab, isTimeSaved }: PaymentBlockProps) 
         <Button 
           variant="base" 
           theme={method === "card" ? "primary" : "secondary"} 
-          onClick={() => setPayment({ method: "card" })}
+          onClick={() => setPayment( method === "card" ? { method: null } : { method: "card", cashAmount: "" })}
           className={method === "card" ? "button-active" : "button-default"}
         >
           <Text>Безналичный расчёт</Text>

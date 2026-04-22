@@ -12,6 +12,7 @@ export interface ModalOrderConfirmProps {
   title: string;
 
   // Левая колонка
+  deliveryType?: "delivery" | "pickup";
   deliveryTime: string;        // "Время ожидания 0:45-1:15"
   clientPhone: string;         // "+7 (999) 999-99-99"
   address: string;             // "г. Тольятти, ул. Ленинградская, 27..."

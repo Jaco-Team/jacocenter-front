@@ -3,6 +3,9 @@ import { CartItem } from '@/widgets/Order/ui/Cart/Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
 import { mockCities } from '@/app/currentOrder/mocks';
 
+type DeliveryType = 'delivery' | 'pickup';
+type TimeMode = 'nearest' | 'by-time' | null;
+
 interface DeliveryForm {
   address: string;
   building: string;
@@ -36,9 +39,11 @@ interface OrderState {
   city: string;
   phone: string;
   promocode: string;
+  deliveryType: DeliveryType;
   delivery: DeliveryForm;
   pickup: PickupForm;
   payment: PaymentForm;
+  timeMode: TimeMode;
   time: TimeForm;
   orderNumber: number | null;
 }
@@ -55,9 +60,11 @@ interface OrderActions {
   setPhone: (val: string) => void;
   setPromocode: (val: string) => void;
 
+  setDeliveryType: (val: DeliveryType) => void;
   setDelivery: (val: Partial<DeliveryForm>) => void;
   setPickup: (val: Partial<PickupForm>) => void;
   setPayment: (val: Partial<PaymentForm>) => void;
+  setTimeMode: (val: TimeMode) => void,
   setTime: (val: Partial<TimeForm>) => void;
 
   setOrderNumber: (num: number) => void;
@@ -71,6 +78,7 @@ const initialState: OrderState = {
   city: mockCities[0],
   phone: '',
   promocode: '',
+  deliveryType: 'delivery',
   delivery: {
     address: '',
     building: '',
@@ -89,6 +97,7 @@ const initialState: OrderState = {
     cashAmount: '',
     comment: '',
   },
+  timeMode: null,
   time: {
     date: '',
     time: '',
@@ -139,12 +148,14 @@ export const useOrderStore = create<OrderStore>((set) => ({
   setOrderNumber: (orderNumber) => set({ orderNumber }),
 
   // Формы
+  setDeliveryType: (deliveryType) => set({ deliveryType }),
   setDelivery: (val) =>
     set((state) => ({ delivery: { ...state.delivery, ...val } })),
   setPickup: (val) =>
     set((state) => ({ pickup: { ...state.pickup, ...val } })),
   setPayment: (val) =>
     set((state) => ({ payment: { ...state.payment, ...val } })),
+  setTimeMode: (val: TimeMode) => set({ timeMode: val }),
   setTime: (val) =>
     set((state) => ({ time: { ...state.time, ...val } })),
 

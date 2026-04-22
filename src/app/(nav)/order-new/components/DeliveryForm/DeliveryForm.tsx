@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { DeliveryFormProps } from "./DeliveryForm.types";
@@ -12,9 +11,10 @@ import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
 export function DeliveryForm({ cafeList }: DeliveryFormProps) {
   const isTimeSaved = useOrderStore((s) => s.time.isTimeSaved);
-
-  const [activeDeliveryTab, setActiveDeliveryTab] = useState<"delivery" | "pickup">("delivery");
-  const [activeTimeTab, setActiveTimeTab] = useState<"nearest" | "by-time" | null>(null);
+  const activeDeliveryTab = useOrderStore((s) => s.deliveryType);
+  const setActiveDeliveryTab = useOrderStore((s) => s.setDeliveryType);
+  const activeTimeTab = useOrderStore((s) => s.timeMode);
+  const setActiveTimeTab = useOrderStore((s) => s.setTimeMode);
 
   return (
     <div className="delivery-form">
