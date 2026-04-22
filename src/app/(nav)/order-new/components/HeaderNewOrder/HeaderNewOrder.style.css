@@ -17,7 +17,7 @@
 }
 
 .current-order__header-promocode {
-  @apply flex items-center gap-3 flex-1 w-[212px] h-[44px];
+  @apply flex gap-3 flex-1 w-[212px];
 }
 
 .current-order__header-promocode-input {
@@ -29,8 +29,12 @@
 }
 
 .current-order__header-tooltip-btn {
-  @apply w-5 h-5 flex items-center justify-center 
+  @apply w-5 h-5 flex items-center justify-center mt-3
          text-text-muted rounded-full border border-text-muted text-sm;
+}
+
+.current-order__header-promocode .tooltip-bottom {
+  top: calc(anchor(bottom) - 16px );
 }
 
 .current-order__header-button {

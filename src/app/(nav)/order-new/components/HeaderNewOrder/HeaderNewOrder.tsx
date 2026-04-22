@@ -1,4 +1,4 @@
-import { mockCities } from "@/app/currentOrder/mocks"
+import { mockCities, promocodesList } from "@/app/currentOrder/mocks"
 import { Button } from "@/shared/ui/Button/Button"
 import { Input } from "@/shared/ui/Input/Input"
 import { Tooltip } from "@/shared/ui/Tooltip/Tooltip"
@@ -7,6 +7,7 @@ import { useOrderStore } from "@/entities/Order/store/new-order/orderStore"
 import { SelectTown } from "@/shared/ui/SelectTown/SelectTown"
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone"
 import Image from "next/image";
+import { useState } from "react";
 
 export const HeaderNewOrder = () => {
   const {
@@ -18,11 +19,30 @@ export const HeaderNewOrder = () => {
     setPromocode,
   } = useOrderStore();
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsSubmitted(true);
     //добавить поиск
   };
-  
+
+  const handlePromocodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPromocode(e.target.value);
+    if (isSubmitted) setIsSubmitted(false);
+  };
+
+  const foundPromocode = promocode ? promocodesList.find(
+        (p) => p.promocode.toLowerCase() === promocode.trim().toLowerCase()
+      )
+    : null;
+
+  const tooltipContent = !promocode ? "Введите промокод для получения скидки"
+    : foundPromocode ? foundPromocode.description
+    : "Промокод не найден";
+
+  const promocodeError = isSubmitted && promocode && !foundPromocode ? "Промокод не найден" : undefined;
+
   return (
     <form onSubmit={handleSubmit} className="current-order__header">
       <SelectTown value={city} options={mockCities} onSelect={setCity} className="current-order__header-city"/>
@@ -39,13 +59,14 @@ export const HeaderNewOrder = () => {
         <div className="current-order__header-promocode-input">
           <Input
             value={promocode}
-            onChange={(e) => setPromocode(e.target.value)}
+            onChange={handlePromocodeChange}
             placeholder="Промокод"
+            error={promocodeError}
           />
           {promocode && (<ClearButton onClick={() => setPromocode("")} className="top-[2px] right-0"/>)}
         </div>
         <Tooltip
-          content="Введите промокод для получения скидки"
+          content={tooltipContent}
           placement="bottom"
         >
           <button type="button" className="current-order__header-tooltip-btn">?</button>
