@@ -11,7 +11,7 @@ import { mockStopOrders, mockCafeList } from "./mocks";
 import { DeliveryForm } from "../(nav)/order-new/components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
 import { HeaderNewOrder } from "../(nav)/order-new/components/HeaderNewOrder/HeaderNewOrder";
-import { OrderCatalogStep } from "./OrderCatalogStep";
+import { OrderCatalogStep } from "../(nav)/order-new/components/OrderCatalogStep/OrderCatalogStep";
 
 export default function CurrentOrderPage() {
   const step = useOrderStore((s) => s.step);
