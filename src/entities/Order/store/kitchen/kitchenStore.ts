@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { mockKitchenOrders } from '@/app/kitchen/data/kitchenOrders.mock';
-import { getKitchenColumns } from '@/app/kitchen/components/TableKitchen/TableKitchen.columns';
+import { mockKitchenOrders } from '@/app/(nav)/kitchen/data/kitchenOrders.mock';
+import { getKitchenColumns } from '@/app/(nav)/kitchen/components/TableKitchen/TableKitchen.columns';
 
 type KitchenStore = {
   city: string;
