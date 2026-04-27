@@ -4,6 +4,8 @@ import { BaseForm } from '../BaseForm/BaseForm';
 import { PasswordInput } from '@/shared/ui/PasswordInput/PasswordInput';
 import { Typography } from '@/shared/ui/Typography/Typography';
 import { useAuthStore } from '@/entities/auth/store/authStore/authStore';
+import { useState } from 'react';
+import { ModalAccessDenied } from '@/features/auth/ui/ModalAccessDenied/ModalAccessDenied';
 
 export const AuthForm = () => {
   const phone = useAuthStore((s) => s.phone);
@@ -11,6 +13,7 @@ export const AuthForm = () => {
   const setPhone = useAuthStore((s) => s.setPhone);
   const setPassword = useAuthStore((s) => s.setPassword);
   const reset = useAuthStore((s) => s.reset);
+  const [isAccessDeniedOpen, setIsAccessDeniedOpen] = useState(false);
 
   const inputs = () => {
     return (
@@ -41,17 +44,23 @@ export const AuthForm = () => {
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-
+    setIsAccessDeniedOpen(true);
     reset();
   };
   
   return (
-    <BaseForm
-      title='Авторизация'
-      buttonText='Войти'
-      inputs={inputs}
-      link={link}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <BaseForm
+        title='Авторизация'
+        buttonText='Войти'
+        inputs={inputs}
+        link={link}
+        onSubmit={handleSubmit}
+      />
+      <ModalAccessDenied
+        isOpen={isAccessDeniedOpen}
+        onClose={() => setIsAccessDeniedOpen(false)}
+      />
+    </>
   )
 }
