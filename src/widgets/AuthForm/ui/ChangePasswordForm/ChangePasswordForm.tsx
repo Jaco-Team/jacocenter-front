@@ -2,8 +2,17 @@ import './ChangePasswordForm.styles.css';
 import { BaseForm } from '../BaseForm/BaseForm';
 import { Typography } from '@/shared/ui/Typography/Typography';
 import { PasswordInput } from '@/shared/ui/PasswordInput/PasswordInput';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/entities/auth/store/authStore/authStore';
 
 export const ChangePasswordForm = () => {
+  const router = useRouter();
+  const newPassword = useAuthStore((s) => s.newPassword);
+  const repeatNewPassword = useAuthStore((s) => s.repeatNewPassword);
+  const setNewPassword = useAuthStore((s) => s.setNewPassword);
+  const setRepeatNewPassword = useAuthStore((s) => s.setRepeatNewPassword);
+  const reset = useAuthStore((s) => s.reset);
+
   const subTitle = () => {
     return (
       <>
@@ -22,14 +31,14 @@ export const ChangePasswordForm = () => {
       <>
         <PasswordInput
           placeholder='Введите пароль'
-          value=''
-          onChange={() => {}}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
           className='input'
         />
         <PasswordInput
           placeholder='Повторите пароль'
-          value=''
-          onChange={() => {}}
+          value={repeatNewPassword}
+          onChange={(e) => setRepeatNewPassword(e.target.value)}
           className='input'
         />
       </>
@@ -43,6 +52,12 @@ export const ChangePasswordForm = () => {
       </Typography>
     )
   }
+
+  const handleSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault();
+    reset();
+    router.replace('/auth/sign-in');
+  };
   
   return (
     <BaseForm
@@ -51,6 +66,7 @@ export const ChangePasswordForm = () => {
       subTitle={subTitle}
       inputs={inputs}
       text={text}
+      onSubmit={handleSubmit}
     />
   )
 }

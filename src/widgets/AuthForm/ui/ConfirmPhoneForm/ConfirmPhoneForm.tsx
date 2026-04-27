@@ -2,8 +2,15 @@ import './ConfirmPhoneForm.styles.css';
 import { Input } from '@/shared/ui/Input/Input';
 import { BaseForm } from '../BaseForm/BaseForm';
 import { Typography } from '@/shared/ui/Typography/Typography';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/entities/auth/store/authStore/authStore';
 
 export const ConfirmPhoneForm = () => {
+  const router = useRouter();
+  const phone = useAuthStore((s) => s.phone);
+  const code = useAuthStore((s) => s.code);
+  const setCode = useAuthStore((s) => s.setCode);
+
   const subTitle = () => {
     return (
       <>
@@ -14,7 +21,7 @@ export const ConfirmPhoneForm = () => {
             Отправили код на&nbsp;
             <span>
             <Typography variant='heading-l-regular-20'>
-              +79111234567
+              {phone}
             </Typography>
             </span>
         </Typography>
@@ -26,9 +33,9 @@ export const ConfirmPhoneForm = () => {
     return (
       <Input
         placeholder='Введите код'
-        value=''
+        value={code}
         type='password'
-        onChange={() => {}}
+        onChange={(e) => setCode(e.target.value)}
         className='input'
       />
     )
@@ -41,6 +48,11 @@ export const ConfirmPhoneForm = () => {
       </Typography>
     )
   }
+
+  const handleSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault();
+    router.replace('/auth/new-password');
+  };
   
   return (
     <BaseForm
@@ -49,6 +61,7 @@ export const ConfirmPhoneForm = () => {
       subTitle={subTitle}
       inputs={inputs}
       text={text}
+      onSubmit={handleSubmit}
     />
   )
 }
