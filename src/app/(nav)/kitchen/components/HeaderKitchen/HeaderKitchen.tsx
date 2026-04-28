@@ -2,13 +2,13 @@
 import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Input } from "@/shared/ui/Input/Input";
-import { SelectBase } from "@/shared/ui/SelectBase/SelectBase"
 import { Text } from "@/shared/ui/Typography/Typography";
 import { cafeOptions, cityOptions } from "../../data/kitchenOrders.mock";
 import "./HeaderKitchen.style.css";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
 import { ModalFilters } from "@/features/orders/ui/ModalFilters/ModalFilters";
 import { useState } from "react";
+import { SelectTown } from "@/shared/ui/SelectTown/SelectTown";
 
 export const HeaderKitchen = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -23,21 +23,21 @@ export const HeaderKitchen = () => {
   return (
     <div className="header-kitchen-container">
       <div className="header-kitchen-inputs-group">
-        <SelectBase 
+        <SelectTown 
           options={cityOptions}
           value={city}
           isOpen={openSelect === 'cities'}
           onToggle={() => toggleSelect('cities')}
-          onSelect={setCity}
+          onSelect={(val) => { setCity(val); setOpenSelect(null); }} 
           className="header-kitchen-select"
         />
-        <SelectBase 
+        <SelectTown 
           options={cafeOptions}
           placeholder="Адрес кафе"
           value={cafe}
           isOpen={openSelect === 'cafes'}
           onToggle={() => toggleSelect('cafes')}
-          onSelect={setCafe}
+          onSelect={(val) => { setCafe(val); setOpenSelect(null); }}
           className="header-kitchen-select"
         />
         <div className="relative">

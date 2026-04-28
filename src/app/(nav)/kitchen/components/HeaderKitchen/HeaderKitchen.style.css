@@ -12,10 +12,6 @@
   @apply w-[263px];
 }
 
-.header-kitchen-select .select-base__dropdown {
-  @apply top-[44px];
-}
-
 .header-kitchen-input {
   @apply w-[263px] h-[44px] bg-base placeholder:text-disabled pl-7 border-transparent
   [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield];
