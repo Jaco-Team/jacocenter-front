@@ -22,6 +22,6 @@
   @apply w-[176px] self-end;
 }
 
-.modal-order-confirm__right {
+.modal-order-confirm__right:has(.order-breakdown-group) {
   @apply max-h-[878px];
 }
