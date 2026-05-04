@@ -33,6 +33,8 @@ export const Default: Story = {
     );
   },
   args: {
+    isOpen: true,
+    onClose: () => {},
     title: 'Заказ № 800602 от 23 октября 2025',
     deliveryTime: 'Время ожидания 0:45-1:15',
     clientPhone: '+7 (999) 999-99-99',

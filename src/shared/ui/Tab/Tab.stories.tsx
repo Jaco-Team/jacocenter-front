@@ -28,6 +28,7 @@ export const Inactive: Story = {
     title: "Таб",
     active: false,
     variant: "default",
+    onClick: () => {},
   },
 };
 
@@ -37,6 +38,7 @@ export const Active: Story = {
     title: "Таб",
     active: true,
     variant: "default",
+    onClick: () => {},
   },
 };
 
@@ -46,6 +48,7 @@ export const UnderlineInactive: Story = {
     title: "Таб",
     active: false,
     variant: "underline",
+    onClick: () => {},
   },
 };
 
@@ -54,11 +57,17 @@ export const UnderlineActive: Story = {
     title: "Таб",
     active: true,
     variant: "underline",
+    onClick: () => {},
   },
 };
 
 // Группа табов (пример использования)
 export const Group: Story = {
+  args: {
+    title: "",
+    active: false,
+    onClick: () => {},
+  },
   render: function Render() {
     const [activeIndex, setActiveIndex] = useState(0);
     const items = ["Доставка", "Самовывоз"];
@@ -72,7 +81,7 @@ export const Group: Story = {
             active={index === activeIndex}
             onClick={() => setActiveIndex(index)}
             variant="default"
-            style={{ flex: 1 }} // для равномерного растягивания
+            className="flex-1"  // для равномерного растягивания
           />
         ))}
       </div>
@@ -82,6 +91,11 @@ export const Group: Story = {
 
 // Группа underline
 export const UnderlineGroup: Story = {
+  args: {
+    title: "",
+    active: false,
+    onClick: () => {},
+  },
   render: function Render() {
     const [activeIndex, setActiveIndex] = useState(0);
     const items = ["Вкладка 1", "Вкладка 2"];
@@ -95,7 +109,7 @@ export const UnderlineGroup: Story = {
             active={index === activeIndex}
             onClick={() => setActiveIndex(index)}
             variant="underline"
-            style={{ flex: 1 }}
+            className="flex-1"
           />
         ))}
       </div>
