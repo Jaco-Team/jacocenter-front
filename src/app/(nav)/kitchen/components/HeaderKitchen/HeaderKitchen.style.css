@@ -12,7 +12,7 @@
   @apply w-[263px];
 }
 
-.header-kitchen-input {
+.header-kitchen-inputs-group .header-kitchen-input {
   @apply w-[263px] h-[44px] bg-base placeholder:text-disabled pl-7 border-transparent
   [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield];
 }

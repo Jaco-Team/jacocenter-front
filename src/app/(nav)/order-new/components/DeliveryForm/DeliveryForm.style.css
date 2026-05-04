@@ -20,11 +20,11 @@
   @apply w-[161px] cursor-pointer; 
 }
 
-.delivery-tab.delivery-tab-default {
+.delivery-tab.delivery-tab-default.text {
   @apply text-text-subtle hover:text-text-subtle;
 }
 
-.delivery-tab.delivery-tab-active {
+.delivery-tab.delivery-tab-active.text {
   @apply border-primary text-primary hover:text-primary;
 }
 

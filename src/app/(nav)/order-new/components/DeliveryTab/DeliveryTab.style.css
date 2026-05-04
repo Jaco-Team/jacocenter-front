@@ -8,7 +8,7 @@
   @apply relative h-[80px];
 }
 
-.icon-search {
+.delivery-address .icon-search {
   @apply absolute left-3 top-[34px] group-focus-within:hidden;
 }
 
@@ -36,14 +36,14 @@
   @apply flex gap-3 h-[36px];
 }
 
-.intercom-buttons .button-default {
+.intercom-buttons {
   @apply border-bg-base;
 }
 
-.button-active {
+.intercom-buttons .button-active {
   @apply bg-primary-light text-text-secondary hover:bg-primary-light;
 }
 
-.button-default {
+.intercom-buttons .button-default {
   @apply text-text-subtle hover:text-text-subtle;
 }

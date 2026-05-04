@@ -12,6 +12,6 @@
   @apply flex justify-end mt-3 mb-[54px] mx-5;
 } 
 
-.order-preview-button {
+.order-preview-button.base {
   @apply w-[104px];
 }

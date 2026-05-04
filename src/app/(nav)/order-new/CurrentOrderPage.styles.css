@@ -1,7 +1,7 @@
 @reference "../../../app/globals.css";
 
 .current-order {
-  @apply flex gap-4 h-screen;
+  @apply flex gap-4 h-full;
 }
 
 .current-order__main {
@@ -29,5 +29,5 @@
 }
 
 .current-order__cards {
-  @apply flex-1 overflow-x-auto overflow-x-hidden;
+  @apply flex-1 overflow-y-auto overflow-x-hidden;
 }

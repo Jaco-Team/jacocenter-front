@@ -13,7 +13,7 @@
 }
 
 .pickup-cafe-list-expanded {
-  @apply h-[244px] overflow-y-auto;
+  @apply max-h-[244px] overflow-y-auto;
 }
 
 .pickup-cafe-item {

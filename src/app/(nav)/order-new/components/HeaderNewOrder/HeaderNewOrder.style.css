@@ -13,7 +13,7 @@
 }
 
 .current-order__header-phone .input-field {
-  @apply border-none;
+  @apply border-none pl-[31px];
 }
 
 .current-order__header-promocode {
