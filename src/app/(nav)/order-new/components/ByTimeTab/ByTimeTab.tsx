@@ -37,7 +37,7 @@ export const ByTimeTab = () => {
           <Input 
             ref={dateRef} 
             value={date} 
-            onChange={(e) => setTime({ date: e.target.value })}
+            onChange={() => {}}
             label="Дата" 
             placeholder="Выберите дату" 
             className="placeholder:text-text-muted"
@@ -89,7 +89,17 @@ export const ByTimeTab = () => {
           <Text>Сохранить время</Text>
         </Button>
       </div>
-      <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setTime({ date: value })}/>
+      {isDateSelectOpen && (
+        <ModalCalendar
+          isOpen={isDateSelectOpen}
+          onClose={() => setIsDateSelectOpen(false)}
+          onSelect={(value: string) => {
+            setTime({ date: value });
+            setDateValue(value);
+          }}
+          initialDate={date}
+        />
+      )}
       <ModalTimeSelect isOpen={isTimeSelectOpen} onClose={() => setIsTimeSelectOpen(false)} onTimeSelect={(value: string) => setTime({ time: value })}/>
     </>
   );
