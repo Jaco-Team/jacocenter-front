@@ -3,21 +3,31 @@ import { Input } from '@/shared/ui/Input/Input';
 import { BaseForm } from '../BaseForm/BaseForm';
 import { PasswordInput } from '@/shared/ui/PasswordInput/PasswordInput';
 import { Typography } from '@/shared/ui/Typography/Typography';
+import { useAuthStore } from '@/entities/auth/store/authStore/authStore';
+import { useState } from 'react';
+import { ModalAccessDenied } from '@/features/auth/ui/ModalAccessDenied/ModalAccessDenied';
 
 export const AuthForm = () => {
+  const phone = useAuthStore((s) => s.phone);
+  const password = useAuthStore((s) => s.password);
+  const setPhone = useAuthStore((s) => s.setPhone);
+  const setPassword = useAuthStore((s) => s.setPassword);
+  const reset = useAuthStore((s) => s.reset);
+  const [isAccessDeniedOpen, setIsAccessDeniedOpen] = useState(false);
+
   const inputs = () => {
     return (
       <>
         <Input 
           placeholder='Введите номер телефона'
-          value=''
-          onChange={() => {}}
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           className='input'
         />
         <PasswordInput
           placeholder='Пароль'
-          value=''
-          onChange={() => {}}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className='password-input'
         />
       </>
@@ -27,17 +37,30 @@ export const AuthForm = () => {
   const link = () => {
     return (
       <Typography variant='body-m-regular-16' className='link'>
-        <a href='\'>Забыли пароль?</a>
+        <a href='/auth/phone'>Забыли пароль?</a>
       </Typography>
     )
   };
+
+  const handleSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault();
+    setIsAccessDeniedOpen(true);
+    reset();
+  };
   
   return (
-    <BaseForm
-      title='Авторизация'
-      buttonText='Войти'
-      inputs={inputs}
-      link={link}
-    />
+    <>
+      <BaseForm
+        title='Авторизация'
+        buttonText='Войти'
+        inputs={inputs}
+        link={link}
+        onSubmit={handleSubmit}
+      />
+      <ModalAccessDenied
+        isOpen={isAccessDeniedOpen}
+        onClose={() => setIsAccessDeniedOpen(false)}
+      />
+    </>
   )
 }
