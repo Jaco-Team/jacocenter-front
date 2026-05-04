@@ -32,7 +32,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     visibleColumns: Object.fromEntries(columnsNames.map((name) => [name, true])),
-    onApply: () => {},
+    onChange: () => {},
+    onToggle: () => {},
   },
   render: () => {
     const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
@@ -48,7 +49,7 @@ export const Default: Story = {
       >
         Клик
       </button>
-        <ModalFilters visibleColumns={visibleColumns} onApply={setVisibleColumns} />
+        <ModalFilters visibleColumns={visibleColumns} onChange={setVisibleColumns} onToggle={() => {}} />
       </>
     )
   },
