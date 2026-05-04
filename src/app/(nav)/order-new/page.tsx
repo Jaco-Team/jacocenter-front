@@ -7,11 +7,11 @@ import { StopOrder } from "@/features/order/ui/StopOrder/StopOrder";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
 import { Tab } from "@/shared/ui/Tab/Tab";
-import { mockStopOrders, mockCafeList } from "./mocks";
-import { DeliveryForm } from "../(nav)/order-new/components/DeliveryForm/DeliveryForm";
+import { mockStopOrders, mockCafeList } from "./data/mocks";
+import { DeliveryForm } from "./components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
-import { HeaderNewOrder } from "../(nav)/order-new/components/HeaderNewOrder/HeaderNewOrder";
-import { OrderCatalogStep } from "../(nav)/order-new/components/OrderCatalogStep/OrderCatalogStep";
+import { HeaderNewOrder } from "./components/HeaderNewOrder/HeaderNewOrder";
+import { OrderCatalogStep } from "./components/OrderCatalogStep/OrderCatalogStep";
 
 export default function CurrentOrderPage() {
   const step = useOrderStore((s) => s.step);

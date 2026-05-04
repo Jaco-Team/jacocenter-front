@@ -3,7 +3,7 @@ import { CardsDish } from "@/widgets/CardsDish/ui/CardsDish"
 import { Categories } from "@/widgets/Categories/ui/Categories/Categories"
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore"
 import { useState } from "react"
-import { mockCategories, mockDishes } from "@/app/currentOrder/mocks"
+import { mockCategories, mockDishes } from "@/app/(nav)/order-new/data/mocks"
 
 export const OrderCatalogStep = () => {
   const addItem = useOrderStore((s) => s.addItem);

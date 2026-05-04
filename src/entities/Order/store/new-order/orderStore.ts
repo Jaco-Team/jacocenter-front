@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { CartItem } from '@/widgets/Order/ui/Cart/Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
-import { mockCities } from '@/app/currentOrder/mocks';
+import { mockCities } from '@/app/(nav)/order-new/data/mocks';
 
 type DeliveryType = 'delivery' | 'pickup';
 type TimeMode = 'nearest' | 'by-time' | null;

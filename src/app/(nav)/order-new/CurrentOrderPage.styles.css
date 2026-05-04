@@ -1,4 +1,4 @@
-@reference "../../app/globals.css";
+@reference "../../../app/globals.css";
 
 .current-order {
   @apply flex gap-4 h-screen;

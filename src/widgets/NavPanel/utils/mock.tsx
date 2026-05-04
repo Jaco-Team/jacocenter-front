@@ -14,7 +14,7 @@ export interface NavItem {
 export const navPanelMock: NavItem[] = [
   {
     label: 'Оформить заказ',
-    href: '/new-order',
+    href: '/order-new',
     icon: <WriteIcon />,
   },
   {

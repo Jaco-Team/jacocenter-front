@@ -1,4 +1,4 @@
-import { mockCities, promocodesList } from "@/app/currentOrder/mocks"
+import { mockCities, promocodesList } from "@/app/(nav)/order-new/data/mocks"
 import { Button } from "@/shared/ui/Button/Button"
 import { Input } from "@/shared/ui/Input/Input"
 import { Tooltip } from "@/shared/ui/Tooltip/Tooltip"
