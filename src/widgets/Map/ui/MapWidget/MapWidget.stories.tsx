@@ -13,6 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    apiKey: '28d11474-f6fe-4ffa-b5ea-4b0016185436'
+    apiKey: '28d11474-f6fe-4ffa-b5ea-4b0016185436',
+    width: '793px',
+    height: '696px',
   }
 }
