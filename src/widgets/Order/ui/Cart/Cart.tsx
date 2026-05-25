@@ -5,6 +5,7 @@ import { CartProps } from './Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
 import { useState } from 'react';
 import { ModalOrderDelete } from '@/features/order/ModalOrderDelete/ModalOrderDelete';
+import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 
 export function Cart({
   items,
@@ -14,9 +15,9 @@ export function Cart({
   onDelete,
   onNext,
   onOpenOrderInfo,
-  onCancel,
   step
 }: CartProps) {
+  const { resetOrder } = useOrderStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const sumWithoutDiscount = items.reduce((acc, item) => {
@@ -37,8 +38,8 @@ export function Cart({
   const formatPrice = (value: number) => value.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(",", ".");
 
   return (
-    <aside className="my-3 mr-4 min-w-[368px]">
-      <section className="flex h-[640px] py-5 flex-col rounded-2xl bg-white text-text-secondary">
+    <aside className="min-w-[368px] w-full h-full flex flex-col">
+      <section className="flex flex-1 min-h-0 py-5 flex-col rounded-2xl bg-white text-text-secondary">
         
         <header className="px-3 mb-4 h-10 flex justify-between items-center">
           <Button
@@ -115,7 +116,7 @@ export function Cart({
         variant="base"
         theme="primary"
         onClick={onNext}
-        className="mt-3 h-[44px]"
+        className="mt-3 h-[44px] shtink-0"
       >
         <Text 
           variant="body-m-medium-16" className="text-bg-base-light">{step === ORDER_STEP.CART ? "Далее" : "Оформить заказ"}</Text>
@@ -125,8 +126,8 @@ export function Cart({
         isOpen={isDeleteModalOpen} 
         onClose={() => setIsDeleteModalOpen(false)}
         onCancelOrder={() => {
-          onCancel?.();
           setIsDeleteModalOpen(false);
+          resetOrder();
         }}
       />
     </aside>

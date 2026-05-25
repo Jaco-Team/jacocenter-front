@@ -2,14 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { InputSearch } from './InputSearch';
 
 const mock = [
-  {id: 1, name: "Сет Атлантида"},
-  {id: 2, name: "Сет Амазония"},
-  {id: 3, name: "Сет Водопад"},
-  {id: 4, name: "Сет Вулкан"},
-  {id: 5, name: "Сет Доминикана"},
-  {id: 6, name: "Сет Карнавал"},
-  {id: 7, name: "Сет Мадагаскар"},
-  {id: 8, name: "Сет Сицилия"},
+  {id: "1", name: "Сет Атлантида"},
+  {id: "2", name: "Сет Амазония"},
+  {id: "3", name: "Сет Водопад"},
+  {id: "4", name: "Сет Вулкан"},
+  {id: "5", name: "Сет Доминикана"},
+  {id: "6", name: "Сет Карнавал"},
+  {id: "7", name: "Сет Мадагаскар"},
+  {id: "8", name: "Сет Сицилия"},
 ];
 
 const meta = {

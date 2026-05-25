@@ -20,10 +20,10 @@
   @apply flex justify-end gap-4;
 }
 
-.time-select-cancel-btn {
+.time-slots-btns-group .time-select-cancel-btn {
   @apply w-[103px] border-bg-base text-error hover:text-error;
 }
 
-.time-select-confirm-btn {
+.time-slots-btns-group .time-select-confirm-btn {
   @apply w-[220px] border-bg-base;
 }

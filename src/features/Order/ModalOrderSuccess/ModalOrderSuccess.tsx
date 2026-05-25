@@ -15,8 +15,8 @@ export const ModalOrderSuccess = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <div className='content'>
-        <div className='info'>
+      <div className='order-success-content'>
+        <div className='order-success-info'>
           <Image
             src='/icons/checkmark-success.svg'
             alt='Успех'

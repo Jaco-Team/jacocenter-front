@@ -2,33 +2,51 @@ import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import Image from "next/image";
 import { Input } from "@/shared/ui/Input/Input";
-import { useState } from "react";
-import { PickupState } from "../PickupTab/PickupTab.types";
+import { useEffect, useRef, useState } from "react";
+import { PickupTabProps } from "./PickupTab.types";
 import "./PickupTab.style.css";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
-export const PickupTab = ({ 
-  state, 
-  options,  
-  activeTimeTab, 
-  setActiveTimeTab  
-}: { 
-  state: PickupState, 
-  options: { id: number; name: string }[], 
-  activeTimeTab: "nearest" | "by-time" | null, 
-  setActiveTimeTab: (val: "nearest" | "by-time") => void 
-}) => {
-  const { cafe, cafeCheckStatus, setCafe, setCafeCheckStatus} = state;
-  
+export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTabProps) => {
+  const pickup = useOrderStore((s) => s.pickup);
+  const setPickup = useOrderStore((s) => s.setPickup);
+  const { cafe, cafeCheckStatus } = pickup;
+
   const [isOpen, setIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKey);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isOpen]);
 
   const visibleOptions = showAll ? options : options.slice(0, 4);
   const isMatch = (name: string) => cafe && name.toLowerCase().startsWith(cafe.toLowerCase());
 
   const handleCheckCafe = () => {
+    // TODO: mock, заменить на реальную проверку кафе
     // const newStatus = "success";
-    const newStatus = "error";
-    setCafeCheckStatus(newStatus);
+    const newStatus: "success" | "error" = "error";
+    setPickup({ cafeCheckStatus: newStatus });
     if ((newStatus as string) === "success" && activeTimeTab === null) {
       setActiveTimeTab("nearest");
     }
@@ -40,11 +58,11 @@ export const PickupTab = ({
 
   return (
   <div className="pickup-container">
-    <div className="select-cafe">
+    <div className="select-cafe" ref={selectRef}>
       <Input 
         value={cafe} 
         onChange={(e) => {
-          setCafe(e.target.value);
+          setPickup({ cafe: e.target.value });
           setIsOpen(true);
           if (cafe) {
             setShowAll(true);
@@ -67,7 +85,7 @@ export const PickupTab = ({
       </button>
 
 
-      {cafe && <ClearButton onClick={() => {setCafe(""); setCafeCheckStatus(null);}} className="top-6 right-14"/>}
+      {cafe && <ClearButton onClick={() => setPickup({ cafe: "", cafeCheckStatus: null })} className="top-6 right-14"/>}
       
       {isOpen && 
         (
@@ -77,9 +95,8 @@ export const PickupTab = ({
               <li
                 key={item.id}
                 onClick={() => {
-                  setCafe(item.name);
+                  setPickup({ cafe: item.name, cafeCheckStatus: null });
                   setIsOpen(false);
-                  setCafeCheckStatus(null);
                 }}
                 className={`pickup-cafe-item ${isMatch(item.name) ? "pickup-cafe-item-active" : ""}`}
               >
@@ -87,7 +104,7 @@ export const PickupTab = ({
               </li>
             ))}
 
-            {!showAll && (
+            {!showAll && options.length > 4 && (
               <li
                 onClick={() => setShowAll(true)}
                 className="button-all-cafes"

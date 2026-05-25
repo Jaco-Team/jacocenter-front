@@ -5,28 +5,29 @@ import { Input } from "@/shared/ui/Input/Input";
 import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
-import { TimeState } from "../ByTimeTab/ByTimeTab.types";
 import { ModalCalendar } from "@/features/order/ui/ModalCalendar/ModalCalendar";
+import { ModalTimeSelect } from "@/features/order/ui/ModalTimeSelect/ModalTimeSelect";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { useDateMask } from "@/shared/hooks/useDateMask";
 
-export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
-  const { date, time, isTimeSaved, setDate, setTime, setIsTimeSaved } = timeState;
+export const ByTimeTab = () => {
+  const { date, time, isTimeSaved } = useOrderStore((s) => s.time);
+  const setTime = useOrderStore((s) => s.setTime);
 
   const [isDateSelectOpen, setIsDateSelectOpen] = useState(false);
+  const [isTimeSelectOpen, setIsTimeSelectOpen] = useState(false);
 
-  const { ref: dateRef, setValue: setDateValue } = useDateMask((val) => {setDate(val); setIsTimeSaved(false)});
-  const { ref: timeRef, setValue: setTimeValue } = useTimeMask(setTime, () => setIsTimeSaved(false));
+  const { ref: dateRef, setValue: setDateValue } = useDateMask((val) => setTime({ date: val, isTimeSaved: false }));
+  const { ref: timeRef, setValue: setTimeValue } = useTimeMask((val) => setTime({ time: val, isTimeSaved: false }));
 
   const handleClearDate = () => {
-    setDate(""); 
+    setTime({ date: "", isTimeSaved: false });
     setDateValue(""); 
-    setIsTimeSaved(false)
   };
   
   const handleClearTime = () => {
-    setTime(""); 
+    setTime({ time: "", isTimeSaved: false }); 
     setTimeValue(""); 
-    setIsTimeSaved(false)
   };
 
   return (
@@ -36,7 +37,7 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
           <Input 
             ref={dateRef} 
             value={date} 
-            onChange={(e) => setDate(e.target.value)} 
+            onChange={() => {}}
             label="Дата" 
             placeholder="Выберите дату" 
             className="placeholder:text-text-muted"
@@ -65,7 +66,10 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
             className="placeholder:text-text-muted"
           />
 
-          <button type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10">
+          <button 
+            type="button" className="flex items-center justify-center cursor-pointer absolute top-[26px] right-1 w-10 h-10" 
+            onClick={() => setIsTimeSelectOpen(true)}
+          >
             <Image
               src="/icons/arrow-down.svg"
               alt="Стрелка"
@@ -80,12 +84,23 @@ export const ByTimeTab = ({ timeState }: { timeState: TimeState }) => {
         <Button 
           variant="base" 
           theme={time && date && !isTimeSaved ? "primary" : "secondary"} 
-          onClick={() => setIsTimeSaved(true)} 
+          onClick={() => setTime({ isTimeSaved: true })}
           className="button-save-time">
           <Text>Сохранить время</Text>
         </Button>
       </div>
-      <ModalCalendar isOpen={isDateSelectOpen} onClose={() => setIsDateSelectOpen(false)} onSelect={(value: string) => setDate(value)}/>
+      {isDateSelectOpen && (
+        <ModalCalendar
+          isOpen={isDateSelectOpen}
+          onClose={() => setIsDateSelectOpen(false)}
+          onSelect={(value: string) => {
+            setTime({ date: value });
+            setDateValue(value);
+          }}
+          initialDate={date}
+        />
+      )}
+      <ModalTimeSelect isOpen={isTimeSelectOpen} onClose={() => setIsTimeSelectOpen(false)} onTimeSelect={(value: string) => setTime({ time: value })}/>
     </>
   );
 };

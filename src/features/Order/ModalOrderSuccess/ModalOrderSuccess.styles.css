@@ -1,9 +1,9 @@
 @reference '../../../app/globals.css';
 
-.content {
+.order-success-content {
   @apply flex flex-col items-center w-[392px] px-5 gap-8;
 }
 
-.info {
+.order-success-info {
   @apply flex gap-4 text-(--color-text-secondary);
 }

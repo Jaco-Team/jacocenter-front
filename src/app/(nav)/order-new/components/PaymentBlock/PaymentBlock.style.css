@@ -20,10 +20,10 @@
   @apply bg-base placeholder:text-text-muted;
 }
 
-.button-active {
+.payment-method .button-active {
   @apply bg-primary-light text-text-secondary hover:bg-primary-light;
 }
 
-.button-default {
+.payment-method .button-default {
   @apply text-text-subtle hover:text-text-subtle;
 }

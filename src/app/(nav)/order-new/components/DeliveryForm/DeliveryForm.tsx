@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { DeliveryFormProps } from "./DeliveryForm.types";
@@ -8,16 +7,14 @@ import { PaymentBlock } from "../PaymentBlock/PaymentBlock";
 import { ByTimeTab } from "../ByTimeTab/ByTimeTab";
 import { NearestTab } from "../NearestTab/NearestTab";
 import "./DeliveryForm.style.css";
+import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
-export function DeliveryForm({ 
-  deliveryState, 
-  pickupState, 
-  timeState, 
-  paymentState, 
-  cafeList 
-}: DeliveryFormProps) {
-  const [activeDeliveryTab, setActiveDeliveryTab] = useState<"delivery" | "pickup">("delivery");
-  const [activeTimeTab, setActiveTimeTab] = useState<"nearest" | "by-time" | null>(null);
+export function DeliveryForm({ cafeList }: DeliveryFormProps) {
+  const isTimeSaved = useOrderStore((s) => s.time.isTimeSaved);
+  const activeDeliveryTab = useOrderStore((s) => s.deliveryType);
+  const setActiveDeliveryTab = useOrderStore((s) => s.setDeliveryType);
+  const activeTimeTab = useOrderStore((s) => s.timeMode);
+  const setActiveTimeTab = useOrderStore((s) => s.setTimeMode);
 
   return (
     <div className="delivery-form">
@@ -27,8 +24,8 @@ export function DeliveryForm({
             <Button
               variant="text" 
               theme="primary"
-              className={`tab tab-default
-              ${activeDeliveryTab === "delivery" ? (activeTimeTab === null ? "tab-active" : "tab-active-muted") : ""}`} 
+              className={`delivery-tab delivery-tab-default
+              ${activeDeliveryTab === "delivery" ? (activeTimeTab === null ? "delivery-tab-active" : "delivery-tab-active-muted") : ""}`} 
               onClick={() => setActiveDeliveryTab("delivery")}
             >
               <Text>Доставка</Text>
@@ -36,8 +33,8 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default
-              ${activeDeliveryTab === "pickup" ? (activeTimeTab === null ? "tab-active" : "tab-active-muted") : ""}`} 
+              className={`delivery-tab delivery-tab-default
+              ${activeDeliveryTab === "pickup" ? (activeTimeTab === null ? "delivery-tab-active" : "delivery-tab-active-muted") : ""}`} 
               onClick={() => setActiveDeliveryTab("pickup")}
             >
               <Text>Самовывоз</Text>
@@ -46,7 +43,6 @@ export function DeliveryForm({
 
           {activeDeliveryTab==="delivery" && (
             <DeliveryTab 
-              state={deliveryState} 
               activeTimeTab={activeTimeTab} 
               setActiveTimeTab={setActiveTimeTab}
             />
@@ -54,7 +50,6 @@ export function DeliveryForm({
 
           {activeDeliveryTab==="pickup" && (
             <PickupTab 
-              state={pickupState} 
               options={cafeList} 
               activeTimeTab={activeTimeTab} 
               setActiveTimeTab={setActiveTimeTab}
@@ -66,7 +61,7 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default ${activeTimeTab === "nearest" ? "tab-active" : ""}`} 
+              className={`delivery-tab delivery-tab-default ${activeTimeTab === "nearest" ? "delivery-tab-active" : ""}`} 
               onClick={() => setActiveTimeTab("nearest")}
             >
               <Text>Ближайшее</Text>
@@ -74,7 +69,7 @@ export function DeliveryForm({
             <Button 
               variant="text" 
               theme="primary"
-              className={`tab tab-default ${activeTimeTab === "by-time" ? "tab-active" : ""}`} 
+              className={`delivery-tab delivery-tab-default ${activeTimeTab === "by-time" ? "delivery-tab-active" : ""}`} 
               onClick={() => setActiveTimeTab("by-time")}
               >
               <Text>Ко времени</Text>
@@ -88,15 +83,14 @@ export function DeliveryForm({
               />
             )}
 
-            {activeTimeTab==="by-time" && <ByTimeTab timeState={timeState}/>}
+            {activeTimeTab==="by-time" && <ByTimeTab/>}
           </div>
         </div>
       </div>
       {activeDeliveryTab==="delivery" && (
         <PaymentBlock 
-          state={paymentState} 
           activeTimeTab={activeTimeTab} 
-          isTimeSaved={timeState.isTimeSaved}
+          isTimeSaved={isTimeSaved}
         />
       )}
     </div>

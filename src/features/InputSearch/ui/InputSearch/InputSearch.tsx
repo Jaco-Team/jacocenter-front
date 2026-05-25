@@ -2,9 +2,9 @@
 import { Input } from "@/shared/ui/Input/Input";
 import { Text } from "@/shared/ui/Typography/Typography";
 import React, { useEffect, useRef, useState } from "react";
-import { SearchInputProps } from "./InputSearch.type";
+import { OptionItem, SearchInputProps } from "./InputSearch.type";
 
-export const InputSearch = ({ options }: SearchInputProps) => {
+export const InputSearch = <T extends OptionItem>({ options, onSelect }: SearchInputProps<T>) => {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -12,6 +12,13 @@ export const InputSearch = ({ options }: SearchInputProps) => {
   const listRef = useRef<HTMLUListElement>(null);
 
   const filtered = options.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
+
+  const handleSelect = (item: typeof options[number]) => {
+    onSelect?.(item);
+    setValue("");
+    setIsOpen(false);
+    setActiveIndex(-1);
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen) return;
@@ -25,9 +32,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
     }
 
     if (e.key === "Enter" && activeIndex >= 0) {
-      setValue(filtered[activeIndex].name);
-      setIsOpen(false);
-      setActiveIndex(-1);
+      handleSelect(filtered[activeIndex]);
     }
 
     if (e.key === "Escape") {
@@ -57,7 +62,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
   }, [activeIndex]);
 
   return (
-    <div ref={rootRef} onKeyDown={handleKeyDown}>
+    <div ref={rootRef} onKeyDown={handleKeyDown} className="relative">
       <div className="rounded-xl bg-base relative text-text-secondary">
         <Input
           value={value}
@@ -66,6 +71,7 @@ export const InputSearch = ({ options }: SearchInputProps) => {
             setIsOpen(true);
           }}
           placeholder="Все товары"
+          className="h-11 border-none"
         ></Input>
         <button className="absolute p-3 top-0 right-0 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
@@ -80,15 +86,11 @@ export const InputSearch = ({ options }: SearchInputProps) => {
       (
         <ul 
           ref={listRef}
-          className="max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
+          className="absolute top-full left-0 right-0 z-10 max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
           {filtered.map((item, index) => (
             <li
               key={item.id}
-              onClick={() => {
-                setValue(item.name);
-                setIsOpen(false);
-                setActiveIndex(-1);
-              }}
+              onClick={() => handleSelect(item)}
               className={`h-10 px-2 flex items-center rounded-lg ${activeIndex === index ? "bg-bg-base-light text-text-base" : "hover:bg-bg-base-light"}`}
             >
               <Text>{item.name}</Text>
