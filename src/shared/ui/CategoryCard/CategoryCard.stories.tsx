@@ -33,6 +33,9 @@ export const Selected: Story = {
 };
 
 export const Interactive: Story = {
+  args: {
+    children: "Нажми меня",
+  },
   render: function Render() {
     const [selected, setSelected] = useState(false);
     return (

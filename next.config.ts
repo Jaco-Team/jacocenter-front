@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: 'standalone', 
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     // eslint-disable-next-line

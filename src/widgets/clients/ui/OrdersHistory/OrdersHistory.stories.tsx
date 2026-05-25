@@ -17,7 +17,11 @@ export const Default: Story = {
     const [isOpen, setIsOpen] = useState(true);
     return <OrdersHistory {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />;
   },
-  args: { orders: orderHistoryMock },
+  args: { 
+    orders: orderHistoryMock, 
+    isOpen: false,
+    onClose: () => {},
+  },
 };
 
 export const ManyOrders: Story = {
@@ -35,5 +39,7 @@ export const ManyOrders: Story = {
       onShowComposition: () => alert(`Состав #${i + 1}`),
       onRepeat: () => alert(`Повторить #${i + 1}`),
     })),
+    isOpen: false,
+    onClose: () => {},
   },
 };
