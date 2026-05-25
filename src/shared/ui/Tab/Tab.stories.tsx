@@ -81,7 +81,7 @@ export const Group: Story = {
             active={index === activeIndex}
             onClick={() => setActiveIndex(index)}
             variant="default"
-            className="flex-1"  // для равномерного растягивания
+            className="flex-1" // для равномерного растягивания
           />
         ))}
       </div>
