@@ -4,18 +4,22 @@ import * as ReactDOM from "react-dom";
 import type { YMapLocationRequest, YMap as YMapType, LngLat } from "ymaps3";
 import { ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
-
-const LOCATION: YMapLocationRequest = {
-  center: [49.415377, 53.518271],
-  zoom: 12,
-};
-
-const ZOOM_RANGE = { min: 9, max: 19 };
+import {
+  COLORS,
+  ZOOM_RANGE,
+  defaultLocation,
+  deliveryZones,
+} from "../../data/constants";
 
 export const Map = () => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
-  const [location, setLocation] = React.useState<YMapLocationRequest>(LOCATION);
+  const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
+  const [selectedCafeId, setSelectedCafeId] = React.useState<string | null>(null);
+  
+  const toggleCafe = (id: string) => {
+    setSelectedCafeId((currentId) => (currentId === id ? null : id));
+  };
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -23,13 +27,6 @@ export const Map = () => {
         setReactifiedApi(reactify.bindTo(React, ReactDOM).module(ymaps3)),
     );
   }, []);
-
-  if (!reactifiedApi) {
-    return null;
-  }
-
-  const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } =
-    reactifiedApi;
 
   const changeZoom = (delta: number) => {
     const map = mapRef.current;
@@ -44,11 +41,39 @@ export const Map = () => {
     });
   };
 
+  if (!reactifiedApi) {
+    return null;
+  }
+
+  const {
+    YMap,
+    YMapDefaultSchemeLayer,
+    YMapDefaultFeaturesLayer,
+    YMapFeature,
+  } = reactifiedApi;
+
   return (
     <div className="relative h-full w-full overflow-hidden rounded-xl">
       <YMap ref={mapRef} location={location} zoomRange={ZOOM_RANGE}>
         <YMapDefaultSchemeLayer />
         <YMapDefaultFeaturesLayer />
+
+        {deliveryZones.map((zone) => {
+          const color =
+            zone.cafeId === selectedCafeId ? COLORS.selected : COLORS.default;
+          return (
+            <YMapFeature
+              key={zone.id}
+              geometry={{ type: "Polygon", coordinates: zone.coordinates }}
+              onClick={() => toggleCafe(zone.cafeId)}
+              style={{
+                fill: color.fill,
+                stroke: [{ width: 2, color: color.stroke }],
+                cursor: "pointer",
+              }}
+            />
+          );
+        })}
       </YMap>
       <ZoomControls
         onZoomIn={() => changeZoom(1)}
