@@ -8,7 +8,7 @@ export default function NavLayout({
   return (
     <div className="flex h-screen">
       <NavPanel />
-      <main className="flex-1 mx-5 my-3 min-w-0">
+      <main className="flex-1 flex flex-col mx-4 my-3 min-w-0">
         {children}
       </main>
     </div>

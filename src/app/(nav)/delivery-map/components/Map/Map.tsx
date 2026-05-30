@@ -2,7 +2,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import type { YMapLocationRequest, YMap as YMapType, LngLat } from "ymaps3";
-import { ReactifiedApi } from "./Map.types";
+import { MapProps, ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
 import {
   COLORS,
@@ -13,15 +13,13 @@ import {
 } from "../../data/constants";
 import { CafeMarker } from "./CafeMarker";
 
-export const Map = () => {
+export const Map = ({
+  selectedCafeId,
+  onToggleCafe,
+}: MapProps) => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
-  const [selectedCafeId, setSelectedCafeId] = React.useState<string | null>(null);
-  
-  const toggleCafe = (id: string) => {
-    setSelectedCafeId((currentId) => (currentId === id ? null : id));
-  };
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -68,7 +66,7 @@ export const Map = () => {
             <YMapFeature
               key={zone.id}
               geometry={{ type: "Polygon", coordinates: zone.coordinates }}
-              onClick={() => toggleCafe(zone.cafeId)}
+              onClick={() => onToggleCafe(zone.cafeId)}
               style={{
                 fill: color.fill,
                 stroke: [{ width: 2, color: color.stroke }],
@@ -82,7 +80,7 @@ export const Map = () => {
           <YMapMarker
             key={cafe.id}
             coordinates={cafe.coordinates}
-            onClick={() => toggleCafe(cafe.id)}
+            onClick={() => onToggleCafe(cafe.id)}
           >
             <CafeMarker cafe={cafe} isSelected={cafe.id === selectedCafeId} />
           </YMapMarker>
