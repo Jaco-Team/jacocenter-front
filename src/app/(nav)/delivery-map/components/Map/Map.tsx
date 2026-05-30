@@ -12,6 +12,7 @@ import {
   deliveryZones,
 } from "../../data/constants";
 import { CafeMarker } from "./CafeMarker";
+import { SearchInput } from "./SearchInput";
 
 export const Map = ({
   selectedCafeId,
@@ -20,6 +21,7 @@ export const Map = ({
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
+  const [searchCoords, setSearchCoords] = React.useState<LngLat | null>(null);
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -58,6 +60,8 @@ export const Map = ({
       <YMap ref={mapRef} location={location} zoomRange={ZOOM_RANGE}>
         <YMapDefaultSchemeLayer />
         <YMapDefaultFeaturesLayer />
+
+        <SearchInput onSelectAddress={setSearchCoords} className="absolute top-3 left-3 right-3 z-10"/>
 
         {deliveryZones.map((zone) => {
           const color =
