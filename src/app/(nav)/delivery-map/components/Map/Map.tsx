@@ -7,9 +7,11 @@ import { ZoomControls } from "./ZoomControls";
 import {
   COLORS,
   ZOOM_RANGE,
+  cafes,
   defaultLocation,
   deliveryZones,
 } from "../../data/constants";
+import { CafeMarker } from "./CafeMarker";
 
 export const Map = () => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
@@ -50,6 +52,7 @@ export const Map = () => {
     YMapDefaultSchemeLayer,
     YMapDefaultFeaturesLayer,
     YMapFeature,
+    YMapMarker,
   } = reactifiedApi;
 
   return (
@@ -74,6 +77,16 @@ export const Map = () => {
             />
           );
         })}
+
+        {cafes.map((cafe) => (
+          <YMapMarker
+            key={cafe.id}
+            coordinates={cafe.coordinates}
+            onClick={() => toggleCafe(cafe.id)}
+          >
+            <CafeMarker cafe={cafe} isSelected={cafe.id === selectedCafeId} />
+          </YMapMarker>
+        ))}
       </YMap>
       <ZoomControls
         onZoomIn={() => changeZoom(1)}
