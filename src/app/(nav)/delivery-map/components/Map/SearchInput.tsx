@@ -5,6 +5,7 @@ import type { LngLat, SuggestResponse } from "ymaps3";
 import { Input } from "@/shared/ui/Input/Input";
 import { SearchInputProps } from "./SearchInput.types";
 import { Text } from "@/shared/ui/Typography/Typography";
+import { DELIVERY_BOUNDS, SAMARA_REGION } from "../../data/constants";
 
 export const SearchInput = ({
   onSelectAddress,
@@ -14,7 +15,7 @@ export const SearchInput = ({
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<SuggestResponse>([]);
   const [isAddressFound, setIsAddressFound] = React.useState(false);
-  const [internalError, setInternalError] = React.useState<string | null>(null)
+  const [internalError, setInternalError] = React.useState<string | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -47,8 +48,16 @@ export const SearchInput = ({
     }
 
     debounceRef.current = setTimeout(async () => {
-      const results = await ymaps3.suggest({ text: value });
-      setSuggestions(results);
+      const results = await ymaps3.suggest({
+        text: value,
+        bounds: DELIVERY_BOUNDS,
+      });
+      const filtered = results.filter(
+        (item) =>
+          item.type === "toponym" &&
+          item.subtitle?.text?.includes(SAMARA_REGION),
+      );
+      setSuggestions(filtered);
     }, 300);
   };
 
@@ -67,7 +76,10 @@ export const SearchInput = ({
       return;
     }
 
-    const geocoded = await ymaps3.search({ text: fullText });
+    const geocoded = await ymaps3.search({
+      text: fullText,
+      bounds: DELIVERY_BOUNDS,
+    });
     const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
     if (coords) {
       setIsAddressFound(true);
