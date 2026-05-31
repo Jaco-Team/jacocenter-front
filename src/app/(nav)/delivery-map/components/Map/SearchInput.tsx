@@ -10,13 +10,13 @@ import { DELIVERY_BOUNDS, SAMARA_REGION } from "../../data/constants";
 const HOUSE_NUMBER_REGEX = /,\s*\d+/;
 
 export const SearchInput = ({
+  selectedAddress,
   onSelectAddress,
   externalError,
   className = "",
 }: SearchInputProps) => {
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<SuggestResponse>([]);
-  const [isAddressFound, setIsAddressFound] = React.useState(false);
   const [internalError, setInternalError] = React.useState<string | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -40,7 +40,6 @@ export const SearchInput = ({
 
   const handleChange = (value: string) => {
     setQuery(value);
-    setIsAddressFound(false);
     setInternalError(null);
     clearTimeout(debounceRef.current);
 
@@ -84,7 +83,6 @@ export const SearchInput = ({
 
     if (!HOUSE_NUMBER_REGEX.test(address)) {
       setInternalError("Укажите номер дома");
-      setIsAddressFound(false);
       return;
     }
 
@@ -102,7 +100,6 @@ export const SearchInput = ({
         return;
       }
 
-      setIsAddressFound(true);
       onSelectAddress({ coords, address });
     } catch (error) {
       if (requestId !== geocodeIdRef.current) return;
@@ -114,7 +111,6 @@ export const SearchInput = ({
   const handleClear = () => {
     setQuery("");
     setSuggestions([]);
-    setIsAddressFound(false);
     setInternalError(null);
     onSelectAddress(null);
   };
@@ -126,7 +122,7 @@ export const SearchInput = ({
           value={query}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Введите адрес"
-          helperText={isAddressFound && !externalError ? "Адрес входит в зону доставки" : undefined}
+          helperText={selectedAddress && !externalError ? "Адрес входит в зону доставки" : undefined}
           error={externalError ?? internalError ?? undefined}
           className="relative bg-bg-base-light border-none h-11 !pl-8"
         />

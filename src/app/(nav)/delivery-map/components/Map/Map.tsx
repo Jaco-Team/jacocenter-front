@@ -24,8 +24,11 @@ export const Map = ({
 }: MapProps) => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
-  const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
-  const [searchResult, setSearchResult] = React.useState<(SearchResult & { inDeliveryZone: boolean }) | null>(null);
+  const [location, setLocation] =
+    React.useState<YMapLocationRequest>(defaultLocation);
+  const [searchResult, setSearchResult] = React.useState<
+    (SearchResult & { inDeliveryZone: boolean }) | null
+  >(null);
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -85,6 +88,7 @@ export const Map = ({
   return (
     <div className="relative h-full w-full overflow-hidden rounded-xl">
       <SearchInput
+        selectedAddress={searchResult}
         onSelectAddress={handleSearchResult}
         externalError={isOutOfZone ? "Адрес вне зоны доставки" : null}
         className="absolute top-3 left-3 right-3 z-10"
