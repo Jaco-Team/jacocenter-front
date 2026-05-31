@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import type { LngLat, SuggestResponse } from "@yandex/ymaps3-types";
+import type { LngLat, SuggestResponse } from "ymaps3";
 import { Input } from "@/shared/ui/Input/Input";
 import { SearchInputProps } from "./SearchInput.types";
 import { Text } from "@/shared/ui/Typography/Typography";
@@ -44,14 +44,18 @@ export const SearchInput = ({
   };
 
   const handleSelect = async (item: SuggestResponse[number]) => {
-    setQuery(item.title.text);
+    const address = item.title.text;
+    const fullText = [address, item.subtitle?.text].filter(Boolean).join(", ");
+
+    setQuery(address);
     setIsOpen(false);
     setSuggestions([]);
+    onSelectAddress(null);
 
-    const geocoded = await ymaps3.search({ text: item.title.text });
-    const first = geocoded[0];
-    if (first?.geometry) {
-      onSelectAddress(first.geometry.coordinates as LngLat);
+    const geocoded = await ymaps3.search({ text: fullText });
+    const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
+    if (coords) {
+      onSelectAddress({ coords, address });
     }
   };
 
@@ -63,8 +67,8 @@ export const SearchInput = ({
   };
 
   return (
-    <div ref={containerRef} className={className}>
-      <div className="relative w-full">
+    <div className={className}>
+      <div ref={containerRef} className="relative w-full">
         <Input
           value={query}
           onChange={(e) => handleChange(e.target.value)}
@@ -95,17 +99,17 @@ export const SearchInput = ({
         )}
 
         {isOpen && suggestions.length > 0 && (
-          <ul className="absolute left-0 right-0 mt-1 max-h-72 overflow-y-auto rounded-xl bg-base shadow-[0px_4px_4px_0px_#3C3B3B29]">
+          <ul className="absolute left-0 right-0 top-full mt-1 max-h-72 overflow-y-auto rounded-xl bg-base py-2 shadow-[0px_4px_4px_0px_#3C3B3B29]">
             {suggestions.map((item, index) => (
               <li
                 key={index}
                 onClick={() => handleSelect(item)}
-                className="w-full px-4 py-2 hover:bg-bg-base-light cursor-pointer flex flex-col"
+                className="cursor-pointer px-4 py-2 hover:bg-bg-base-light"
               >
-                <Text>{item.title.text}</Text>
-                {item.subtitle && (
-                  <Text variant="label-s-regular-12" className="opacity-60">
-                    {item.subtitle.text}
+                <Text className="text-text-secondary">{item.title.text}</Text>
+                {item.subtitle?.text && (
+                  <Text className="text-text-secondary opacity-60">
+                    , {item.subtitle.text}
                   </Text>
                 )}
               </li>

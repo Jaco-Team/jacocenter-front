@@ -1,6 +1,11 @@
-import type { LngLat } from "@yandex/ymaps3-types";
+import type { LngLat } from "ymaps3";
+
+export type SearchResult = {
+  coords: LngLat;
+  address: string;
+};
 
 export type SearchInputProps = {
-  onSelectAddress: (coords: LngLat | null) => void;
+  onSelectAddress: (result: SearchResult | null) => void;
   className?: string;
 };

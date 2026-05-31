@@ -13,6 +13,8 @@ import {
 } from "../../data/constants";
 import { CafeMarker } from "./CafeMarker";
 import { SearchInput } from "./SearchInput";
+import { SearchMarker } from "./SearchMarker";
+import { SearchResult } from "./SearchInput.types";
 
 export const Map = ({
   selectedCafeId,
@@ -21,7 +23,7 @@ export const Map = ({
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
-  const [searchCoords, setSearchCoords] = React.useState<LngLat | null>(null);
+  const [searchResult, setSearchResult] = React.useState<SearchResult | null>(null);
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -43,6 +45,17 @@ export const Map = ({
     });
   };
 
+  const handleSearchResult = (result: SearchResult | null) => {
+    setSearchResult(result);
+    if (result) {
+      setLocation({
+        center: result.coords,
+        zoom: 12,
+        duration: 400,
+      });
+    }
+  };
+
   if (!reactifiedApi) {
     return null;
   }
@@ -57,11 +70,19 @@ export const Map = ({
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-xl">
+      <SearchInput
+        onSelectAddress={handleSearchResult}
+        className="absolute top-3 left-3 right-3 z-10"
+      />
       <YMap ref={mapRef} location={location} zoomRange={ZOOM_RANGE}>
         <YMapDefaultSchemeLayer />
         <YMapDefaultFeaturesLayer />
 
-        <SearchInput onSelectAddress={setSearchCoords} className="absolute top-3 left-3 right-3 z-10"/>
+        {searchResult && (
+          <YMapMarker coordinates={searchResult.coords}>
+            <SearchMarker address={searchResult.address} />
+          </YMapMarker>
+        )}
 
         {deliveryZones.map((zone) => {
           const color =
