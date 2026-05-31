@@ -6,8 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { PickupTabProps } from "./PickupTab.types";
 import "./PickupTab.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
+import { useRouter } from "next/navigation";
+import { cafes } from "@/app/(nav)/delivery-map/data/constants";
 
-export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTabProps) => {
+export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) => {
   const pickup = useOrderStore((s) => s.pickup);
   const setPickup = useOrderStore((s) => s.setPickup);
   const { cafe, cafeCheckStatus } = pickup;
@@ -16,6 +18,7 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
   const [showAll, setShowAll] = useState(false);
 
   const selectRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -39,7 +42,7 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
     };
   }, [isOpen]);
 
-  const visibleOptions = showAll ? options : options.slice(0, 4);
+  const visibleOptions = showAll ? cafes : cafes.slice(0, 4);
   const isMatch = (name: string) => cafe && name.toLowerCase().startsWith(cafe.toLowerCase());
 
   const handleCheckCafe = () => {
@@ -53,7 +56,7 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
   };
 
   const openMap = () => {
-    console.log("кнопка Посмотреть на карте")
+    router.push('/delivery-map');
   };
 
   return (
@@ -95,16 +98,16 @@ export const PickupTab = ({ options, activeTimeTab, setActiveTimeTab }: PickupTa
               <li
                 key={item.id}
                 onClick={() => {
-                  setPickup({ cafe: item.name, cafeCheckStatus: null });
+                  setPickup({ cafe: item.address, cafeCheckStatus: null });
                   setIsOpen(false);
                 }}
-                className={`pickup-cafe-item ${isMatch(item.name) ? "pickup-cafe-item-active" : ""}`}
+                className={`pickup-cafe-item ${isMatch(item.address) ? "pickup-cafe-item-active" : ""}`}
               >
-                <Text>{item.name}</Text>
+                <Text>{item.address}</Text>
               </li>
             ))}
 
-            {!showAll && options.length > 4 && (
+            {!showAll && cafes.length > 4 && (
               <li
                 onClick={() => setShowAll(true)}
                 className="button-all-cafes"

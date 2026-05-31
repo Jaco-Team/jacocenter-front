@@ -12,6 +12,7 @@ interface MapActions {
   setSearchResult: (result: MapSearchResult | null) => void;
   toggleCafe: (id: string) => void;
   selectCafe: (id: string | null) => void;
+  resetMap: () => void;
 }
 
 const initialState: MapState = {
@@ -25,4 +26,5 @@ export const useMapStore = create<MapState & MapActions>((set) => ({
   toggleCafe: (id) =>
     set((s) => ({ selectedCafeId: s.selectedCafeId === id ? null : id })),
   selectCafe: (selectedCafeId) => set({ selectedCafeId }),
+  resetMap: () => set(initialState),
 }));

@@ -9,7 +9,6 @@ import { Button } from "@/shared/ui/Button/Button";
 import { useRouter } from "next/navigation";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 
-
 export const CafeList = () => {
   const [isCitiesOpen, setIsCitiesOpen] = React.useState(false);
   const citySelectRef = React.useRef<HTMLDivElement>(null);
@@ -17,8 +16,13 @@ export const CafeList = () => {
 
   const city = useOrderStore((state) => state.city);
   const setCity = useOrderStore((state) => state.setCity);
-  const selectedCafeId = useMapStore((s) => s.selectedCafeId);
-  const toggleCafe = useMapStore((s) => s.toggleCafe);
+  const deliveryType = useOrderStore((state) => state.deliveryType);
+  const setDelivery = useOrderStore((state) => state.setDelivery);
+  const setPickup = useOrderStore((state) => state.setPickup);
+
+  const selectedCafeId = useMapStore((state) => state.selectedCafeId);
+  const searchResult = useMapStore((state) => state.searchResult);
+  const toggleCafe = useMapStore((state) => state.toggleCafe);
 
   React.useEffect(() => {
     if (!isCitiesOpen) return;
@@ -37,6 +41,17 @@ export const CafeList = () => {
   }, [isCitiesOpen]);
 
   const handleConfirm = () => {
+    if (deliveryType === "delivery" && searchResult?.inDeliveryZone) {
+      setDelivery({ address: searchResult.address });
+    }
+
+    if (deliveryType === "pickup" && selectedCafeId) {
+      const cafe = cafes.find((c) => c.id === selectedCafeId);
+      if (cafe) {
+        setPickup({ cafe: cafe.address });
+      }
+    }
+
     router.push("/order-new");
   };
 

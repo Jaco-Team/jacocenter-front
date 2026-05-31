@@ -7,7 +7,7 @@ import { StopOrder } from "@/features/order/ui/StopOrder/StopOrder";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
 import { Tab } from "@/shared/ui/Tab/Tab";
-import { mockStopOrders, mockCafeList } from "./data/mocks";
+import { mockStopOrders } from "./data/mocks";
 import { DeliveryForm } from "./components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
 import { HeaderNewOrder } from "./components/HeaderNewOrder/HeaderNewOrder";
@@ -106,7 +106,7 @@ export default function CurrentOrderPage() {
 
         <div className="current-order__content">
           {step === ORDER_STEP.CART && <OrderCatalogStep/>}
-          {step === ORDER_STEP.DELIVERY && <DeliveryForm cafeList={mockCafeList}/>}
+          {step === ORDER_STEP.DELIVERY && <DeliveryForm/>}
         </div>
       </main>
 
