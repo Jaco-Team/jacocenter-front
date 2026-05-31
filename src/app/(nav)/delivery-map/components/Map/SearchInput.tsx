@@ -12,35 +12,39 @@ export const SearchInput = ({
 }: SearchInputProps) => {
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<SuggestResponse>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   React.useEffect(() => {
-    if (!isOpen) return;
-
     const handleClickOutside = (e: MouseEvent) => {
       if (!containerRef.current?.contains(e.target as Node)) {
-        setIsOpen(false);
+        setSuggestions([]);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
 
-  const handleChange = async (value: string) => {
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  const handleChange = (value: string) => {
     setQuery(value);
+    clearTimeout(debounceRef.current);
 
     if (!value) {
       setSuggestions([]);
-      setIsOpen(false);
+
       onSelectAddress(null);
       return;
     }
 
-    const results = await ymaps3.suggest({ text: value });
-    setSuggestions(results);
-    setIsOpen(true);
+    debounceRef.current = setTimeout(async () => {
+      const results = await ymaps3.suggest({ text: value });
+      setSuggestions(results);
+    }, 300);
   };
 
   const handleSelect = async (item: SuggestResponse[number]) => {
@@ -48,7 +52,7 @@ export const SearchInput = ({
     const fullText = [address, item.subtitle?.text].filter(Boolean).join(", ");
 
     setQuery(address);
-    setIsOpen(false);
+
     setSuggestions([]);
     onSelectAddress(null);
 
@@ -62,7 +66,7 @@ export const SearchInput = ({
   const handleClear = () => {
     setQuery("");
     setSuggestions([]);
-    setIsOpen(false);
+
     onSelectAddress(null);
   };
 
@@ -72,7 +76,6 @@ export const SearchInput = ({
         <Input
           value={query}
           onChange={(e) => handleChange(e.target.value)}
-          onFocus={() => suggestions.length > 0 && setIsOpen(true)}
           placeholder="Введите адрес"
           className="relative bg-bg-base-light border-none h-11 !pl-8"
         />
@@ -98,7 +101,7 @@ export const SearchInput = ({
           </button>
         )}
 
-        {isOpen && suggestions.length > 0 && (
+        {suggestions.length > 0 && (
           <ul className="absolute left-0 right-0 top-full mt-1 max-h-72 overflow-y-auto rounded-xl bg-base py-2 shadow-[0px_4px_4px_0px_#3C3B3B29]">
             {suggestions.map((item, index) => (
               <li
