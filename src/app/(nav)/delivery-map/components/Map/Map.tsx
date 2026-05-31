@@ -15,15 +15,17 @@ import { CafeMarker } from "./CafeMarker";
 import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
+import { isPointInPolygon } from "../../data/utils";
 
 export const Map = ({
   selectedCafeId,
   onToggleCafe,
+  onSelectCafe,
 }: MapProps) => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] = React.useState<YMapLocationRequest>(defaultLocation);
-  const [searchResult, setSearchResult] = React.useState<SearchResult | null>(null);
+  const [searchResult, setSearchResult] = React.useState<(SearchResult & { inDeliveryZone: boolean }) | null>(null);
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -46,14 +48,24 @@ export const Map = ({
   };
 
   const handleSearchResult = (result: SearchResult | null) => {
-    setSearchResult(result);
-    if (result) {
-      setLocation({
-        center: result.coords,
-        zoom: 12,
-        duration: 400,
-      });
+    if (!result) {
+      setSearchResult(null);
+      onSelectCafe(null);
+      return;
     }
+
+    const matchingZone = deliveryZones.find((zone) =>
+      isPointInPolygon(result.coords, zone.coordinates[0]),
+    );
+
+    setSearchResult({ ...result, inDeliveryZone: !!matchingZone });
+    onSelectCafe(matchingZone?.cafeId ?? null);
+
+    setLocation({
+      center: result.coords,
+      zoom: 12,
+      duration: 400,
+    });
   };
 
   if (!reactifiedApi) {
@@ -68,10 +80,13 @@ export const Map = ({
     YMapMarker,
   } = reactifiedApi;
 
+  const isOutOfZone = searchResult !== null && !searchResult.inDeliveryZone;
+
   return (
     <div className="relative h-full w-full overflow-hidden rounded-xl">
       <SearchInput
         onSelectAddress={handleSearchResult}
+        externalError={isOutOfZone ? "Адрес вне зоны доставки" : null}
         className="absolute top-3 left-3 right-3 z-10"
       />
       <YMap ref={mapRef} location={location} zoomRange={ZOOM_RANGE}>
@@ -80,7 +95,10 @@ export const Map = ({
 
         {searchResult && (
           <YMapMarker coordinates={searchResult.coords}>
-            <SearchMarker address={searchResult.address} />
+            <SearchMarker
+              address={searchResult.address}
+              inDeliveryZone={searchResult.inDeliveryZone}
+            />
           </YMapMarker>
         )}
 

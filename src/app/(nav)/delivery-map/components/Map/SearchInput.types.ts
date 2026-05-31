@@ -7,5 +7,6 @@ export type SearchResult = {
 
 export type SearchInputProps = {
   onSelectAddress: (result: SearchResult | null) => void;
+  externalError?: string | null;
   className?: string;
 };

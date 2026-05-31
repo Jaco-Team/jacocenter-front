@@ -2,11 +2,11 @@ import Image from "next/image";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { SearchMarkerProps } from "./SearchMarker.types";
 
-export const SearchMarker = ({ address }: SearchMarkerProps) => (
+export const SearchMarker = ({ address, inDeliveryZone }: SearchMarkerProps) => (
   <div className="relative">
     <div className="absolute h-8 w-5 -translate-x-1/2 -translate-y-full">
       <Image
-        src="/icons/marker-error.svg"
+        src={inDeliveryZone ? "/icons/marker-success.svg" : "/icons/marker-error.svg"}
         alt=""
         fill
       />

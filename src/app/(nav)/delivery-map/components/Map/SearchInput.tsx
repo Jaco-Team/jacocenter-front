@@ -8,10 +8,12 @@ import { Text } from "@/shared/ui/Typography/Typography";
 
 export const SearchInput = ({
   onSelectAddress,
+  externalError,
   className = "",
 }: SearchInputProps) => {
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<SuggestResponse>([]);
+  const [isAddressFound, setIsAddressFound] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -32,6 +34,7 @@ export const SearchInput = ({
 
   const handleChange = (value: string) => {
     setQuery(value);
+    setIsAddressFound(false);
     clearTimeout(debounceRef.current);
 
     if (!value) {
@@ -59,6 +62,7 @@ export const SearchInput = ({
     const geocoded = await ymaps3.search({ text: fullText });
     const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
     if (coords) {
+      setIsAddressFound(true);
       onSelectAddress({ coords, address });
     }
   };
@@ -66,7 +70,7 @@ export const SearchInput = ({
   const handleClear = () => {
     setQuery("");
     setSuggestions([]);
-
+    setIsAddressFound(false);
     onSelectAddress(null);
   };
 
@@ -77,6 +81,8 @@ export const SearchInput = ({
           value={query}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Введите адрес"
+          helperText={isAddressFound && !externalError ? "Адрес входит в зону доставки" : undefined}
+          error={externalError ?? undefined}
           className="relative bg-bg-base-light border-none h-11 !pl-8"
         />
         <Image
