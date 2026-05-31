@@ -2,20 +2,23 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import Image from "next/image";
 import React from "react";
 import { CafeCard } from "../CafeCard/CafeCard";
-import { CafeListProps } from "./CafeList.types";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { mockCities } from "@/app/(nav)/order-new/data/mocks";
 import { cafes } from "../../data/constants";
 import { Button } from "@/shared/ui/Button/Button";
 import { useRouter } from "next/navigation";
+import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 
-export const CafeList = ({ selectedCafeId, onToggleCafe }: CafeListProps) => {
+
+export const CafeList = () => {
   const [isCitiesOpen, setIsCitiesOpen] = React.useState(false);
   const citySelectRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const city = useOrderStore((state) => state.city);
   const setCity = useOrderStore((state) => state.setCity);
+  const selectedCafeId = useMapStore((s) => s.selectedCafeId);
+  const toggleCafe = useMapStore((s) => s.toggleCafe);
 
   React.useEffect(() => {
     if (!isCitiesOpen) return;
@@ -100,7 +103,7 @@ export const CafeList = ({ selectedCafeId, onToggleCafe }: CafeListProps) => {
                 zoneNumber={cafe.id}
                 deliveryPrice={cafe.deliveryPrice}
                 isSelected={cafe.id === selectedCafeId}
-                onClick={() => onToggleCafe(cafe.id)}
+                onClick={() => toggleCafe(cafe.id)}
               />
             </li>
           ))}

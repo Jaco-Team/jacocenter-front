@@ -2,7 +2,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import type { YMapLocationRequest, YMap as YMapType, LngLat } from "ymaps3";
-import { MapProps, ReactifiedApi } from "./Map.types";
+import { ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
 import {
   COLORS,
@@ -16,19 +16,19 @@ import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
 import { isPointInPolygon } from "../../data/utils";
+import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 
-export const Map = ({
-  selectedCafeId,
-  onToggleCafe,
-  onSelectCafe,
-}: MapProps) => {
+export const Map = () => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] =
     React.useState<YMapLocationRequest>(defaultLocation);
-  const [searchResult, setSearchResult] = React.useState<
-    (SearchResult & { inDeliveryZone: boolean }) | null
-  >(null);
+
+  const searchResult = useMapStore((s) => s.searchResult);
+  const selectedCafeId = useMapStore((s) => s.selectedCafeId);
+  const setSearchResult = useMapStore((s) => s.setSearchResult);
+  const toggleCafe = useMapStore((s) => s.toggleCafe);
+  const selectCafe = useMapStore((s) => s.selectCafe);
 
   React.useEffect(() => {
     Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
@@ -53,7 +53,7 @@ export const Map = ({
   const handleSearchResult = (result: SearchResult | null) => {
     if (!result) {
       setSearchResult(null);
-      onSelectCafe(null);
+      selectCafe(null);
       return;
     }
 
@@ -62,7 +62,7 @@ export const Map = ({
     );
 
     setSearchResult({ ...result, inDeliveryZone: !!matchingZone });
-    onSelectCafe(matchingZone?.cafeId ?? null);
+    selectCafe(matchingZone?.cafeId ?? null);
 
     setLocation({
       center: result.coords,
@@ -75,14 +75,14 @@ export const Map = ({
     return null;
   }
 
-  const {
+   const {
     YMap,
     YMapDefaultSchemeLayer,
     YMapDefaultFeaturesLayer,
     YMapFeature,
     YMapMarker,
   } = reactifiedApi;
-
+  
   const isOutOfZone = searchResult !== null && !searchResult.inDeliveryZone;
 
   return (
@@ -113,7 +113,7 @@ export const Map = ({
             <YMapFeature
               key={zone.id}
               geometry={{ type: "Polygon", coordinates: zone.coordinates }}
-              onClick={() => onToggleCafe(zone.cafeId)}
+              onClick={() => toggleCafe(zone.cafeId)}
               style={{
                 fill: color.fill,
                 stroke: [{ width: 2, color: color.stroke }],
@@ -127,7 +127,7 @@ export const Map = ({
           <YMapMarker
             key={cafe.id}
             coordinates={cafe.coordinates}
-            onClick={() => onToggleCafe(cafe.id)}
+            onClick={() => toggleCafe(cafe.id)}
           >
             <CafeMarker cafe={cafe} isSelected={cafe.id === selectedCafeId} />
           </YMapMarker>
