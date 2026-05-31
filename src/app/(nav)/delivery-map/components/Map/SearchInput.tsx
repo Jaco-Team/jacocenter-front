@@ -14,6 +14,7 @@ export const SearchInput = ({
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<SuggestResponse>([]);
   const [isAddressFound, setIsAddressFound] = React.useState(false);
+  const [internalError, setInternalError] = React.useState<string | null>(null)
   const containerRef = React.useRef<HTMLDivElement>(null);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -35,6 +36,7 @@ export const SearchInput = ({
   const handleChange = (value: string) => {
     setQuery(value);
     setIsAddressFound(false);
+    setInternalError(null);
     clearTimeout(debounceRef.current);
 
     if (!value) {
@@ -59,6 +61,12 @@ export const SearchInput = ({
     setSuggestions([]);
     onSelectAddress(null);
 
+    if (!/,\s*\d+/.test(address)) {
+      setInternalError("Укажите номер дома");
+      setIsAddressFound(false);
+      return;
+    }
+
     const geocoded = await ymaps3.search({ text: fullText });
     const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
     if (coords) {
@@ -71,6 +79,7 @@ export const SearchInput = ({
     setQuery("");
     setSuggestions([]);
     setIsAddressFound(false);
+    setInternalError(null);
     onSelectAddress(null);
   };
 
@@ -82,7 +91,7 @@ export const SearchInput = ({
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Введите адрес"
           helperText={isAddressFound && !externalError ? "Адрес входит в зону доставки" : undefined}
-          error={externalError ?? undefined}
+          error={externalError ?? internalError ?? undefined}
           className="relative bg-bg-base-light border-none h-11 !pl-8"
         />
         <Image
