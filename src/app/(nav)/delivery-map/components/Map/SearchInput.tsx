@@ -7,6 +7,8 @@ import { SearchInputProps } from "./SearchInput.types";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { DELIVERY_BOUNDS, SAMARA_REGION } from "../../data/constants";
 
+const HOUSE_NUMBER_REGEX = /,\s*\d+/;
+
 export const SearchInput = ({
   onSelectAddress,
   externalError,
@@ -18,6 +20,8 @@ export const SearchInput = ({
   const [internalError, setInternalError] = React.useState<string | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const suggestIdRef = React.useRef(0);
+  const geocodeIdRef = React.useRef(0);
 
   React.useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -40,24 +44,33 @@ export const SearchInput = ({
     setInternalError(null);
     clearTimeout(debounceRef.current);
 
-    if (!value) {
+    if (!value.trim()) {
       setSuggestions([]);
-
       onSelectAddress(null);
       return;
     }
 
     debounceRef.current = setTimeout(async () => {
-      const results = await ymaps3.suggest({
-        text: value,
-        bounds: DELIVERY_BOUNDS,
-      });
-      const filtered = results.filter(
-        (item) =>
-          item.type === "toponym" &&
-          item.subtitle?.text?.includes(SAMARA_REGION),
-      );
-      setSuggestions(filtered);
+      const requestId = ++suggestIdRef.current;
+      try {
+        const results = await ymaps3.suggest({
+          text: value,
+          bounds: DELIVERY_BOUNDS,
+        });
+        if (requestId !== suggestIdRef.current) return;
+
+        const filtered = results.filter(
+          (item) =>
+            item.type === "toponym" &&
+            item.subtitle?.text?.includes(SAMARA_REGION),
+        );
+        setSuggestions(filtered);
+      } catch (error) {
+        if (requestId === suggestIdRef.current) {
+          console.error("Suggest failed:", error);
+          setSuggestions([]);
+        }
+      }
     }, 300);
   };
 
@@ -66,24 +79,35 @@ export const SearchInput = ({
     const fullText = [address, item.subtitle?.text].filter(Boolean).join(", ");
 
     setQuery(address);
-
     setSuggestions([]);
     onSelectAddress(null);
 
-    if (!/,\s*\d+/.test(address)) {
+    if (!HOUSE_NUMBER_REGEX.test(address)) {
       setInternalError("Укажите номер дома");
       setIsAddressFound(false);
       return;
     }
 
-    const geocoded = await ymaps3.search({
-      text: fullText,
-      bounds: DELIVERY_BOUNDS,
-    });
-    const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
-    if (coords) {
+    const requestId = ++geocodeIdRef.current;
+    try {
+      const geocoded = await ymaps3.search({
+        text: fullText,
+        bounds: DELIVERY_BOUNDS,
+      });
+      if (requestId !== geocodeIdRef.current) return;
+
+      const coords = geocoded[0]?.geometry?.coordinates as LngLat | undefined;
+      if (!coords) {
+        setInternalError("Адрес не найден");
+        return;
+      }
+
       setIsAddressFound(true);
       onSelectAddress({ coords, address });
+    } catch (error) {
+      if (requestId !== geocodeIdRef.current) return;
+      console.error("Search failed:", error);
+      setInternalError("Не удалось проверить адрес. Попробуйте ещё раз");
     }
   };
 
@@ -133,7 +157,7 @@ export const SearchInput = ({
             {suggestions.map((item, index) => (
               <li
                 key={index}
-                onClick={() => handleSelect(item)}
+                onMouseDown={() => handleSelect(item)}
                 className="cursor-pointer px-4 py-2 hover:bg-bg-base-light"
               >
                 <Text className="text-text-secondary">{item.title.text}</Text>
