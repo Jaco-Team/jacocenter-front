@@ -9,7 +9,7 @@ export default function DeliveryMapPage() {
 
   useEffect(() => {
     resetMap();
-  }, []);
+  }, [resetMap]);
 
   return (
     <div className="flex flex-1 justify-end min-h-0 gap-3">

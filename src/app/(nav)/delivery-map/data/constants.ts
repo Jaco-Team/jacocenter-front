@@ -1,4 +1,5 @@
 import type { YMapLocationRequest, LngLat, LngLatBounds } from "ymaps3";
+import { multiPolygon, bbox } from "@turf/turf";
 
 export type CafePoint = {
   id: string;
@@ -20,15 +21,9 @@ export const COLORS = {
 };
 
 export const ZOOM_RANGE = { min: 9, max: 19 };
-
-const PADDING = 0.1;
+export const DEFAULT_ZOOM = 12;
 
 export const SAMARA_REGION = "Самарская область";
-
-export const defaultLocation: YMapLocationRequest = {
-  center: [49.415377, 53.518271],
-  zoom: 12,
-};
 
 export const cafes: CafePoint[] = [
   {
@@ -352,11 +347,21 @@ export const deliveryZones: DeliveryZone[] = [
   },
 ];
 
-const allPoints = deliveryZones.flatMap((zone) => zone.coordinates[0]);
-const lons = allPoints.map(([lon]) => lon);
-const lats = allPoints.map(([, lat]) => lat);
+const allZones = multiPolygon(
+  deliveryZones.map((zone) => zone.coordinates) as [number, number][][][],
+);
 
+const [minLon, minLat, maxLon, maxLat] = bbox(allZones)
+const SEARCH_PADDING = 0.1
 export const DELIVERY_BOUNDS: LngLatBounds = [
-  [Math.min(...lons) - PADDING, Math.min(...lats) - PADDING],
-  [Math.max(...lons) + PADDING, Math.max(...lats) + PADDING],
-];
+  [minLon - SEARCH_PADDING, minLat - SEARCH_PADDING],
+  [maxLon + SEARCH_PADDING, maxLat + SEARCH_PADDING],
+]
+
+const VIEW_PADDING = 0.02
+export const defaultLocation: YMapLocationRequest = {
+  bounds: [
+    [minLon - VIEW_PADDING, minLat - VIEW_PADDING],
+    [maxLon + VIEW_PADDING, maxLat + VIEW_PADDING],
+  ] as LngLatBounds,
+};

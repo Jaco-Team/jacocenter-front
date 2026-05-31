@@ -6,6 +6,7 @@ import { ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
 import {
   COLORS,
+  DEFAULT_ZOOM,
   ZOOM_RANGE,
   cafes,
   defaultLocation,
@@ -15,8 +16,9 @@ import { CafeMarker } from "./CafeMarker";
 import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
-import { isPointInPolygon } from "../../data/utils";
+import { booleanPointInPolygon }from "@turf/turf";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
+import { isPointInBounds } from "../../data/utils";
 
 export const Map = () => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
@@ -36,6 +38,21 @@ export const Map = () => {
         setReactifiedApi(reactify.bindTo(React, ReactDOM).module(ymaps3)),
     );
   }, []);
+
+  React.useEffect(() => {
+    if (!selectedCafeId || !mapRef.current) return;
+
+    const cafe = cafes.find((c) => c.id === selectedCafeId);
+    if (!cafe) return;
+
+    if (!isPointInBounds(cafe.coordinates, mapRef.current.bounds)) {
+      setLocation({
+        center: cafe.coordinates,
+        zoom: DEFAULT_ZOOM,
+        duration: 400,
+      });
+    }
+  }, [selectedCafeId]);
 
   const changeZoom = (delta: number) => {
     const map = mapRef.current;
@@ -58,7 +75,10 @@ export const Map = () => {
     }
 
     const matchingZone = deliveryZones.find((zone) =>
-      isPointInPolygon(result.coords, zone.coordinates[0]),
+      booleanPointInPolygon(
+        { type: "Point", coordinates: result.coords as [number, number] },
+        { type: "Polygon", coordinates: zone.coordinates as [number, number][][] },
+      ),
     );
 
     setSearchResult({ ...result, inDeliveryZone: !!matchingZone });
@@ -66,7 +86,7 @@ export const Map = () => {
 
     setLocation({
       center: result.coords,
-      zoom: 12,
+      zoom: DEFAULT_ZOOM,
       duration: 400,
     });
   };
