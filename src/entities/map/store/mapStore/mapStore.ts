@@ -1,7 +1,10 @@
 import { SearchResult } from "@/app/(nav)/delivery-map/components/Map/SearchInput.types";
 import { create } from "zustand";
 
-type MapSearchResult = SearchResult & { inDeliveryZone: boolean };
+type MapSearchResult = SearchResult & { 
+  inDeliveryZone: boolean,
+  cafeId: string | null;
+};
 
 interface MapState {
   searchResult: MapSearchResult | null;

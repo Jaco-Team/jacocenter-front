@@ -8,6 +8,7 @@ type TimeMode = 'nearest' | 'by-time' | null;
 
 interface DeliveryForm {
   address: string;
+  cafeId: string | null;
   building: string;
   entrance: string;
   floor: string;
@@ -81,6 +82,7 @@ const initialState: OrderState = {
   deliveryType: 'delivery',
   delivery: {
     address: '',
+    cafeId: null,
     building: '',
     entrance: '',
     floor: '',

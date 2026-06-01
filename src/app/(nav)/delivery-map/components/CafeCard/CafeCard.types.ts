@@ -1,7 +1,7 @@
 export type CafeCardProps = {
   name: string;
   zoneNumber: string;
-  deliveryPrice: string;
+  deliveryPrice: number;
   isSelected: boolean;
   onClick: () => void;
 };

@@ -33,6 +33,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
               setDelivery({
                 address: e.target.value,
                 addressCheckStatus: null,
+                cafeId: null,
               })
             } 
             label="Улица" 

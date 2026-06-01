@@ -42,7 +42,10 @@ export const CafeList = () => {
 
   const handleConfirm = () => {
     if (deliveryType === "delivery" && searchResult?.inDeliveryZone) {
-      setDelivery({ address: searchResult.address });
+      setDelivery({ 
+        address: searchResult.address,
+        cafeId: searchResult.cafeId,
+      });
     }
 
     if (deliveryType === "pickup" && selectedCafeId) {

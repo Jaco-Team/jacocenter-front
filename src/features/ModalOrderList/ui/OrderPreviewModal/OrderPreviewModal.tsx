@@ -10,7 +10,8 @@ export const OrderPreviewModal: React.FC<OrderPreviewModalProps> = ({
   onClose,
   orderNumber,
   items, 
-  totalPrice
+  totalPrice,
+  deliveryPrice = 0,
 }) => {
   const title = (
     <div className="order-preview-title">
@@ -20,7 +21,7 @@ export const OrderPreviewModal: React.FC<OrderPreviewModalProps> = ({
   );
   return (
     <Modal title={title} isOpen={isOpen} onClose={onClose} isAccent={false}>
-      <OrderList items={items} totalPrice={totalPrice} className="order-preview-list"/>
+      <OrderList items={items} totalPrice={totalPrice} deliveryPrice={deliveryPrice} className="order-preview-list"/>
       <div className="order-preview-button-container">
         <Button variant="base" theme="primary" className="order-preview-button" onClick={onClose}>Ок</Button>
       </div>

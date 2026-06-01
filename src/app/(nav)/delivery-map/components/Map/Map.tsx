@@ -81,7 +81,11 @@ export const Map = () => {
       ),
     );
 
-    setSearchResult({ ...result, inDeliveryZone: !!matchingZone });
+    setSearchResult({ 
+      ...result,
+      inDeliveryZone: !!matchingZone,
+      cafeId: matchingZone?.cafeId ?? null,
+    });
     selectCafe(matchingZone?.cafeId ?? null);
 
     setLocation({

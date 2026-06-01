@@ -26,6 +26,7 @@ export const ModalOrderConfirm = ({
   comment,
   items,
   totalPrice,
+  deliveryPrice = 0,
 }: ModalOrderConfirmProps) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -132,6 +133,7 @@ export const ModalOrderConfirm = ({
             <OrderList
               items={items}
               totalPrice={totalPrice}
+              deliveryPrice={deliveryPrice}
               variant="wide"
               className="modal-order-confirm__order-list"
             />

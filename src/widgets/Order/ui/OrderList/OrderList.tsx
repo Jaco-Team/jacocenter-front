@@ -4,9 +4,12 @@ import { OrderListProps } from "./OrderList.types";
 export const OrderList = ({
   items,
   totalPrice,
+  deliveryPrice,
   variant = "narrow",
   className = "",
 }: OrderListProps) => {
+  const showDelivery = (deliveryPrice ?? 0) > 0;
+
   return (
     <div
       className={`order-list ${variant === "wide" ? "wide" : ""} ${className}`}
@@ -34,6 +37,13 @@ export const OrderList = ({
 
         {/* Разделитель */}
         <div className="order-divider" />
+
+        {showDelivery && (
+          <div className="order-row text-text-secondary pt-2">
+            <span className="order-name">Доставка</span>
+            <span className="order-price">{deliveryPrice} ₽</span>
+          </div>
+        )}
 
         {/* Итоговая сумма */}
         <div className="order-total order-row">

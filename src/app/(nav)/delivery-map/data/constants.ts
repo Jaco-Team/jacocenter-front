@@ -5,7 +5,7 @@ export type CafePoint = {
   id: string;
   address: string;
   district: string;
-  deliveryPrice: string;
+  deliveryPrice: number;
   coordinates: LngLat;
 };
 
@@ -22,7 +22,6 @@ export const COLORS = {
 
 export const ZOOM_RANGE = { min: 9, max: 19 };
 export const DEFAULT_ZOOM = 12;
-
 export const SAMARA_REGION = "Самарская область";
 
 export const cafes: CafePoint[] = [
@@ -30,28 +29,28 @@ export const cafes: CafePoint[] = [
     id: "1",
     address: "Ворошилова 12а",
     district: "Автозаводский р-н.",
-    deliveryPrice: "100",
+    deliveryPrice: 100,
     coordinates: [49.312353, 53.531521],
   },
   {
     id: "2",
     address: "Цветной 1",
     district: "Автозаводский р-н.",
-    deliveryPrice: "150",
+    deliveryPrice: 150,
     coordinates: [49.33923, 53.540848],
   },
   {
     id: "3",
     address: "Ленинградская 47",
     district: "Центральный р-н.",
-    deliveryPrice: "200",
+    deliveryPrice: 200,
     coordinates: [49.414321, 53.505389],
   },
   {
     id: "4",
     address: "Матросова 32",
     district: "Комсомольский р-н.",
-    deliveryPrice: "250",
+    deliveryPrice: 250,
     coordinates: [49.474651, 53.481084],
   },
 ];
