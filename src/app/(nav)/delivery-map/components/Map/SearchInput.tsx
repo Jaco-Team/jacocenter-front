@@ -60,7 +60,7 @@ export const SearchInput = ({
 
         const filtered = results.filter(
           (item) =>
-            item.type === "toponym" &&
+            item.uri?.startsWith("ymapsbm1://geo") &&
             item.subtitle?.text?.includes(SAMARA_REGION),
         );
         setSuggestions(filtered);
@@ -122,7 +122,7 @@ export const SearchInput = ({
           value={query}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Введите адрес"
-          helperText={selectedAddress && !externalError ? "Адрес входит в зону доставки" : undefined}
+          helperText={selectedAddress && !externalError  && !internalError ? "Адрес входит в зону доставки" : undefined}
           error={externalError ?? internalError ?? undefined}
           className="relative bg-bg-base-light border-none h-11 !pl-8"
         />

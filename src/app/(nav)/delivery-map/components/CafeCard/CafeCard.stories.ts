@@ -7,7 +7,7 @@ const meta = {
   args: {
     name: "Ворошилова 12А",
     zoneNumber: "1",
-    deliveryPrice: "199",
+    deliveryPrice: 199,
     isSelected: false,
     onClick: () => {},
   },
