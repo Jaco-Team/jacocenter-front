@@ -43,7 +43,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
             className="placeholder:ps-6"
           />
           {!address && <Image src="/icons/search.svg" alt="Поиск" width={20} height={20} className="icon-search"/>}
-          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null })} className="right-1 top-[24px]"/>}
+          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null, cafeId: null, })} className="right-1 top-[24px]"/>}
         </div>
         <div className="delivery-buttons-group">
           <Button 
