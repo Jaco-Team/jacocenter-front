@@ -1,3 +1,4 @@
+'use client';
 import './AuthForm.styles.css';
 import { Input } from '@/shared/ui/Input/Input';
 import { BaseForm } from '../BaseForm/BaseForm';
@@ -5,6 +6,7 @@ import { PasswordInput } from '@/shared/ui/PasswordInput/PasswordInput';
 import { Typography } from '@/shared/ui/Typography/Typography';
 import { useAuthStore } from '@/entities/auth/store/authStore/authStore';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ModalAccessDenied } from '@/features/auth/ui/ModalAccessDenied/ModalAccessDenied';
 
 export const AuthForm = () => {
@@ -42,10 +44,21 @@ export const AuthForm = () => {
     )
   };
 
+  const router = useRouter();
+
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    setIsAccessDeniedOpen(true);
+
+    if (!phone || !password) {
+      setIsAccessDeniedOpen(true);
+      return;
+    }
+
+    localStorage.setItem('auth', 'true');
+
     reset();
+
+    router.push('/orders');
   };
   
   return (
