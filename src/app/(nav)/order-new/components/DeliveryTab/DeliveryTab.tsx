@@ -6,6 +6,7 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { DeliveryTabProps } from "./DeliveryTab.types";
 import "./DeliveryTab.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
+import { useRouter } from "next/navigation";
 
 export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProps ) => {
   const delivery = useOrderStore((s) => s.delivery);
@@ -14,6 +15,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
   const { address, building, entrance, floor, apartment, intercom, addressCheckStatus } = delivery;
 
   const buildingRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
   if (addressCheckStatus === "success") {
@@ -31,6 +33,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
               setDelivery({
                 address: e.target.value,
                 addressCheckStatus: null,
+                cafeId: null,
               })
             } 
             label="Улица" 
@@ -40,7 +43,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
             className="placeholder:ps-6"
           />
           {!address && <Image src="/icons/search.svg" alt="Поиск" width={20} height={20} className="icon-search"/>}
-          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null })} className="right-1 top-[24px]"/>}
+          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null, cafeId: null, })} className="right-1 top-[24px]"/>}
         </div>
         <div className="delivery-buttons-group">
           <Button 
@@ -54,7 +57,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
           >
             <Text>Найти</Text>
           </Button>
-          <Button variant="icon" theme="secondary" size="icon-sm">
+          <Button variant="icon" theme="secondary" size="icon-sm" onClick={() => router.push('/delivery-map')}>
             <Image src="/icons/map-primary.svg" alt="Карта" width={14} height={20} className="icon-map"/>
           </Button>
         </div>

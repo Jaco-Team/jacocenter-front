@@ -7,6 +7,7 @@ export interface OrderItem {
 export interface OrderListProps {
   items: OrderItem[];
   totalPrice: number;
+  deliveryPrice?: number;
   variant?: 'narrow' | 'wide';
   className?: string;
 }

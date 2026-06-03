@@ -1,6 +1,5 @@
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
-import { DeliveryFormProps } from "./DeliveryForm.types";
 import { DeliveryTab } from "../DeliveryTab/DeliveryTab";
 import { PickupTab } from "../PickupTab/PickupTab";
 import { PaymentBlock } from "../PaymentBlock/PaymentBlock";
@@ -9,7 +8,7 @@ import { NearestTab } from "../NearestTab/NearestTab";
 import "./DeliveryForm.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 
-export function DeliveryForm({ cafeList }: DeliveryFormProps) {
+export function DeliveryForm() {
   const isTimeSaved = useOrderStore((s) => s.time.isTimeSaved);
   const activeDeliveryTab = useOrderStore((s) => s.deliveryType);
   const setActiveDeliveryTab = useOrderStore((s) => s.setDeliveryType);
@@ -50,7 +49,6 @@ export function DeliveryForm({ cafeList }: DeliveryFormProps) {
 
           {activeDeliveryTab==="pickup" && (
             <PickupTab 
-              options={cafeList} 
               activeTimeTab={activeTimeTab} 
               setActiveTimeTab={setActiveTimeTab}
             />

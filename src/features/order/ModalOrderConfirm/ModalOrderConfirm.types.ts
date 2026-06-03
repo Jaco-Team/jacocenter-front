@@ -25,4 +25,5 @@ export interface ModalOrderConfirmProps {
   // Правая колонка
   items: OrderItem[];
   totalPrice: number;
+  deliveryPrice?: number;
 }

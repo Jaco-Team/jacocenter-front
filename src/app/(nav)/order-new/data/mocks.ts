@@ -47,12 +47,6 @@ export const mockStopOrders = [
   { label: 'Зона 3 - Куйбышева 113', description: 'до 12.30' },
 ];
 
-export const mockCafeList = [
-  { id: 1, name: 'Молодёжная 2' },
-  { id: 2, name: 'Куйбышева 113' },
-  { id: 3, name: 'Ленинградская 27' },
-];
-
 export const mockCities = [
   'Тольятти',
   'Самара',

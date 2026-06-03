@@ -7,11 +7,12 @@ import { StopOrder } from "@/features/order/ui/StopOrder/StopOrder";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
 import { Tab } from "@/shared/ui/Tab/Tab";
-import { mockStopOrders, mockCafeList } from "./data/mocks";
+import { mockStopOrders } from "./data/mocks";
 import { DeliveryForm } from "./components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
 import { HeaderNewOrder } from "./components/HeaderNewOrder/HeaderNewOrder";
 import { OrderCatalogStep } from "./components/OrderCatalogStep/OrderCatalogStep";
+import { cafes } from "../delivery-map/data/constants";
 
 export default function CurrentOrderPage() {
   const step = useOrderStore((s) => s.step);
@@ -34,10 +35,18 @@ export default function CurrentOrderPage() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const totalPrice = items.reduce(
+  const deliveryPrice = (() => {
+    if (deliveryType !== "delivery") return 0;
+    const cafe = cafes.find((c) => c.id === delivery.cafeId);
+    return cafe?.deliveryPrice ?? 0;
+  })();
+
+  const itemsTotal = items.reduce(
     (acc, item) => acc + item.price * item.count,
     0,
   );
+
+  const totalPrice = itemsTotal + deliveryPrice;
 
   const handleConfirm = () => {
     setIsConfirmOpen(false);
@@ -106,12 +115,13 @@ export default function CurrentOrderPage() {
 
         <div className="current-order__content">
           {step === ORDER_STEP.CART && <OrderCatalogStep/>}
-          {step === ORDER_STEP.DELIVERY && <DeliveryForm cafeList={mockCafeList}/>}
+          {step === ORDER_STEP.DELIVERY && <DeliveryForm/>}
         </div>
       </main>
 
       <Cart
         items={items}
+        deliveryPrice={deliveryPrice}
         step={step}
         onOpenOrderInfo={() => setIsPreviewOpen(true)}
         onCancel={resetOrder}
@@ -137,6 +147,7 @@ export default function CurrentOrderPage() {
           price: i.price,
         }))}
         totalPrice={totalPrice}
+        deliveryPrice={deliveryPrice}
       />
 
       <ModalOrderConfirm
@@ -159,6 +170,7 @@ export default function CurrentOrderPage() {
           price: i.price,
         }))}
         totalPrice={totalPrice}
+        deliveryPrice={deliveryPrice}
         promocode={promocode || undefined}
       />
     </div>
