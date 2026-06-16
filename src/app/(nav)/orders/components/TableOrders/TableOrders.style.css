@@ -1,0 +1,27 @@
+@reference '../../../../../app/globals.css';
+
+.order-breakdown-group {
+  @apply flex flex-col gap-3;
+}
+
+.order-breakdown-summary {
+  @apply h-[44px] w-[484px] flex items-center justify-between border border-bg-base 
+  group-open:border-primary rounded-xl text-text-secondary px-3 cursor-pointer;
+}
+
+.order-breakdown-items-list {
+  @apply w-[484px] max-h-[30vh] rounded-xl border border-disabled shadow-[0px_4px_4px_0px_#3C3B3B29] 
+  py-3 pl-3 pr-6 mt-1 flex flex-col gap-1 overflow-y-scroll;
+}
+
+.order-breakdown-item {
+  @apply h-[44px] text-text-secondary flex items-center justify-between shrink-0;
+}
+
+.order-breakdown-cancel-button {
+  @apply w-[176px] self-end;
+}
+
+.modal-order-confirm__right:has(.order-breakdown-group) {
+  @apply max-h-[90vh];
+}

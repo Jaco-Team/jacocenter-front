@@ -1,0 +1,35 @@
+@reference '../../../../../app/globals.css';
+
+.order-cancel-container {
+  @apply w-[392px] h-[376px] px-5 pt-[6px] text-text-secondary;
+}
+
+.cancel-reasons-list {
+  @apply flex flex-col gap-1 mt-2 mb-1;
+}
+
+.cancel-reasons-item {
+  @apply h-[44px] flex items-center pl-2;
+}
+
+.cancel-item-checkbox {
+  @apply h-6 w-6 rounded-[4px];
+}
+
+.cancel-item-checkbox img {
+  @apply w-3.5 h-3.5;
+}
+
+.cancel-item-checkbox::before {
+  @apply w-[14px] h-[14px];
+}
+
+.order-cancel-btns-group {
+  @apply flex gap-4 pt-3;
+}
+
+.order-cancel-btn {
+  @apply w-[168px] h-[44px];
+}
+
+

@@ -1,0 +1,44 @@
+@reference '../../../app/globals.css';
+
+.select-base {
+  @apply relative;
+}
+
+.select-base__trigger {
+  @apply flex items-center justify-between
+         w-full h-11 ps-3 pe-[10px]
+         border border-transparent outline-none rounded-xl
+         active:border-[var(--color-button-primary-pressed)]
+         bg-[var(--color-base)]
+         text-[16px]
+         cursor-pointer duration-300 ease-in-out;
+}
+.select-base__trigger:hover {
+  @apply border-[var(--color-button-primary-hover)]
+}
+
+.select-base--open {
+  @apply border border-[var(--color-primary)];
+}
+
+.select-base__placeholder {
+  @apply text-[var(--color-text-muted)]
+}
+
+.select-base__value {
+  @apply text-[var(--color-text-base)];
+}
+
+.select-base__icon {
+  @apply flex items-center transition-transform;
+}
+
+.select-base__icon--rotated {
+  @apply rotate-180;
+}
+
+.select-base__dropdown {
+  @apply absolute top-0 mt-[48px]
+         bg-[var(--color-base)] border border-[var(--color-status-cooking)] 
+         rounded-xl shadow-[var(--shadow-card-dish)] z-20 overflow-hidden;
+}

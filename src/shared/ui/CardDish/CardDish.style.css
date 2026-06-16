@@ -1,0 +1,41 @@
+@reference '../../../app/globals.css';
+
+.card-dish {
+  @apply  relative inline-flex items-start justify-between bg-(--color-base)
+          py-3 pl-3 pr-1 w-42 h-23 rounded-[15px] 
+          font-medium cursor-pointer
+          transition-all duration-200
+          focus:outline-none disabled:pointer-events-none;
+}
+
+.card-dish:hover {
+  @apply shadow-[var(--shadow-card-dish)];
+}
+
+.content {
+  @apply  flex flex-col items-center justify-between 
+          text-center w-[115px] h-17 overflow-hidden
+          text-(--color-text-base) 
+}
+
+.card-dish-title {
+  @apply  block font-normal text-[16px] 
+          text-center whitespace-normal wrap-break-word
+          leading-5
+}
+
+.card-dish-price {
+  @apply block font-medium;
+}
+
+.card-dish-info {
+  @apply relative flex items-start justify-center;
+}
+
+.card-dish-info:hover .card-dish-icon {
+  @apply content-[url('/icons/info-hover.svg')];
+}
+
+  
+
+  

@@ -1,0 +1,34 @@
+@reference "../../../../app/globals.css";
+
+#filters-modal {
+  position-anchor: --filters-button;
+  inset: unset;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: 4px;
+}
+
+.filter-container {
+  @apply max-w-[652px] h-[436px] pt-4 pb-8 px-5 rounded-xl border border-bg-base bg-base shadow-[0px_4px_4px_4px_#3C3B3B29] text-text-secondary;
+}
+
+.filters-all {
+  @apply border-b border-bg-base-light py-[5px] h-[44px] mt-4;
+}
+
+.checkbox-accent {
+  @apply border-primary;
+}
+
+.filters-list {
+  @apply grid grid-flow-col grid-rows-5 gap-y-1 gap-x-3 my-4;
+}
+
+.filters-item {
+  @apply w-[196px] h-[44px] flex items-center;
+}
+
+.reset-button {
+  @apply text-error border-transparent bg-bg-base-light w-[96px] h-[36px]
+  hover:text-error hover:border-bg-base active:bg-bg-base active:text-error;
+}

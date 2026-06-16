@@ -1,0 +1,29 @@
+@reference '../../../../../app/globals.css';
+
+.payment-block {
+  @apply h-[184px] px-3 rounded-b-xl border-t border-transparent;
+}
+
+.payment-block-active {
+  @apply bg-base border-bg-base;
+}
+
+.payment-block-disabled {
+  @apply bg-bg-base-light;
+}
+
+.payment-method {
+  @apply grid grid-cols-2 items-end gap-3 pb-[22px];
+}
+
+.payment-input {
+  @apply bg-base placeholder:text-text-muted;
+}
+
+.payment-method .button-active {
+  @apply bg-primary-light text-text-secondary hover:bg-primary-light;
+}
+
+.payment-method .button-default {
+  @apply text-text-subtle hover:text-text-subtle;
+}

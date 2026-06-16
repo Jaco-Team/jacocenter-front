@@ -1,0 +1,21 @@
+@reference '../../../app/globals.css';
+
+.select-town__dropdown {
+  @apply flex flex-col py-3 gap-1;
+}
+
+.select-town__option {
+  @apply flex items-center h-10 px-3 cursor-pointer;
+}
+
+.select-town__option:hover {
+  @apply text-[var(--color-button-primary-hover)];
+}
+
+.select-town__option:active {
+  @apply text-[var(--color-button-primary-pressed)];
+}
+
+.select-town__option--all {
+  @apply text-[var(--color-primary)];
+}

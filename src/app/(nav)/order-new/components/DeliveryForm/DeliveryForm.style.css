@@ -1,0 +1,33 @@
+@reference '../../../../../app/globals.css';
+
+.delivery-form {
+  @apply w-[704px] h-[542px] bg-base rounded-b-xl;
+}
+
+.delivery-form-main {
+  @apply h-[358px] bg-base flex gap-3 pt-1 pb-3;
+}
+
+.delivery-form-column {
+  @apply px-3 w-[346px];
+}
+
+.tabs-container {
+  @apply flex h-[36px];
+}
+
+.delivery-tab {
+  @apply w-[161px] cursor-pointer; 
+}
+
+.delivery-tab.delivery-tab-default.text {
+  @apply text-text-subtle hover:text-text-subtle;
+}
+
+.delivery-tab.delivery-tab-active.text {
+  @apply border-primary text-primary hover:text-primary;
+}
+
+.delivery-tab.delivery-tab-active-muted {
+  @apply border-disabled text-text-subtle;
+}

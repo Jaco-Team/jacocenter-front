@@ -1,0 +1,58 @@
+@reference '../../../../app/globals.css';
+
+.header-orders__form {
+  @apply flex gap-3 w-full h-[64px];
+}
+
+.header-orders__date-container {
+  @apply relative w-[196px] shrink-0;
+}
+
+.header-orders__date-input {
+  @apply placeholder:text-text-muted bg-base h-[44px] border-none;
+}
+
+#date-calendar {
+  position-anchor: --date-calendar;
+  inset: unset;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: 6px;
+  margin-right: -8px;
+}
+
+.header-orders__calendar-dropdown {
+  @apply bg-base rounded-xl border border-bg-base shadow-[0px_4px_4px_0px_#3C3B3B29] p-5;
+}
+
+.header-orders__calendar-icon {
+  @apply flex items-center justify-center cursor-pointer absolute top-[2px] right-0 w-10 h-10;
+}
+
+.header-orders__form > .phone-root {
+  @apply w-[263px] shrink-0;
+}
+
+.header-orders__input-phone {
+  @apply border-none;
+}
+
+.header-orders__address {
+  @apply relative flex w-full;
+}
+
+.header-orders__address .input-root {
+  @apply w-full;
+}
+
+.icon-search {
+  @apply absolute left-2 top-[14px];
+}
+
+.header-orders__address .input-field {
+  @apply pl-7 pr-[48px] bg-(--color-base) border-none h-[44px];
+}
+
+.phone-clear {
+  @apply absolute right-[17px] top-1/2 cursor-pointer;
+}

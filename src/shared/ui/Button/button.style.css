@@ -1,0 +1,70 @@
+  @reference '../../../app/globals.css';
+
+  .base {
+    @apply inline-flex items-center justify-center gap-2.5 px-2 py-2.5
+    w-full rounded-xl font-medium cursor-pointer
+    focus:outline-none disabled:pointer-events-none;
+  }
+
+  .icon {
+    @apply inline-block items-center justify-center gap-2.5 px-3 py-2
+    w-full rounded-xl font-medium cursor-pointer
+    focus:outline-none disabled:pointer-events-none;
+  }
+
+  .text {
+     @apply cursor-pointer border-b-[1.5px] border-transparent;
+  }
+
+  .text.primary {
+    @apply bg-transparent text-primary 
+    hover:bg-transparent hover:text-button-primary-hover 
+    active:text-button-primary-pressed 
+    disabled:text-disabled disabled:bg-transparent;
+  }
+
+  .text.secondary {
+    @apply bg-transparent text-text-secondary hover:text-text-secondary;
+  }
+
+  .text.error {
+    @apply bg-transparent text-error 
+    hover:text-button-accent-hover 
+    active:text-button-accent-pressed;
+  }
+
+  .primary {
+    @apply bg-primary text-bg-base-light hover:bg-button-primary-hover
+    active:bg-button-primary-pressed disabled:bg-disabled;
+  }
+
+  .secondary {
+    @apply bg-white text-primary border border-disabled
+    hover:border-text-muted hover:text-button-primary-hover
+    active:border-text-subtle active:text-button-primary-pressed
+    disabled:border-disabled disabled:text-disabled
+  }
+
+  .error {
+    @apply bg-red-600 text-white;
+  }
+
+  .sm {
+    @apply w-19 h-11;
+  }
+
+  .md {
+    @apply w-42 h-11;
+  }
+
+  .lg {
+    @apply w-88 h-11;
+  }
+
+  .icon-md {
+    @apply w-12 h-12;
+  }
+
+  .icon-sm {
+    @apply w-11 h-11;
+  }

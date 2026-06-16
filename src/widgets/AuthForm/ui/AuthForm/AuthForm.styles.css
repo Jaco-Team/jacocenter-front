@@ -1,0 +1,13 @@
+@reference '../../../../app/globals.css';
+
+.input {
+  @apply h-13 border border-none !rounded-xl bg-gray-100 focus:bg-white;
+}
+
+.password-input {
+  @apply border border-none outline active:outline-gray-100;
+}
+
+.link {
+  @apply w-full text-right;
+}

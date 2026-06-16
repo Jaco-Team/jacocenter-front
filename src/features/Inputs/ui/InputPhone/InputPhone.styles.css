@@ -1,0 +1,32 @@
+@reference '../../../../app/globals.css';
+
+.phone-root {
+  @apply relative w-full rounded-xl 
+  text-(--color-text-secondary);
+}
+
+.phone-input {
+  @apply w-full pr-1 pl-[31px] h-11 bg-base
+  focus:outline-none;
+}
+
+.phone-prefix {
+  @apply absolute left-2 top-[10.5px] 
+  pointer-events-none;
+}
+
+.phone-prefix.with-icon {
+  @apply pl-5;
+}
+
+.phone-input.with-icon {
+  @apply pl-[51px];
+}
+
+.phone-icon {
+  @apply absolute left-2 top-[15px] flex items-center;
+}
+
+.phone-clear {
+  @apply absolute right-3 top-[14px] flex items-center cursor-pointer;
+}

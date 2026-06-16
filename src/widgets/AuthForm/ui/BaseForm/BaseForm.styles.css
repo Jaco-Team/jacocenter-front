@@ -1,0 +1,45 @@
+@reference '../../../../app/globals.css';
+
+.auth-wrapper {
+   @apply flex items-center justify-center
+   w-[484px] rounded-[20px]
+   shadow-[var(--shadow-card-dish)] bg-[var(--color-base)];
+ }
+
+ .auth-form {
+   @apply w-full min-h-[548px] flex flex-col items-center 
+   px-13 gap-5 text-(--color-text-secondary)
+   pb-20;
+ }
+
+ .auth-header {
+   @apply flex flex-col pt-11 pb-15;
+ }
+
+ .auth-body {
+   @apply flex flex-col w-full gap-6;
+ }
+
+ .auth-logo {
+   @apply flex items-center justify-center ;
+ }
+
+ .auth-title {
+   @apply text-center text-[var(--color-accent)];
+ }
+
+ .auth-subtitle {
+   @apply flex text-center flex-col w-full gap-1;
+ }
+
+ .auth-input {
+   @apply flex flex-col gap-9;
+ }
+
+ .auth-text {
+   @apply flex flex-col text-center w-full;
+ }
+
+ .auth-link {
+   @apply flex text-[var(--color-text-subtle)] cursor-pointer;
+ }

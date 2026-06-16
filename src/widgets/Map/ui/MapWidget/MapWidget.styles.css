@@ -1,0 +1,114 @@
+@reference '../../../../app/globals.css';
+
+.map-widget {
+  @apply w-full rounded-xl overflow-hidden;
+}
+
+.map-widget__map {
+  @apply relative h-full rounded-xl overflow-hidden;
+}
+
+.map-widget__toolbar {
+  @apply absolute flex rounded-xl top-3 left-3 right-3 z-10;
+}
+
+.map-widget__input-wrapper {
+  @apply flex-1;
+}
+
+.map-widget__input {
+  @apply !pl-10 !pr-[56px] w-full !rounded-r-none h-11 
+  bg-(--color-status-queue)
+  text-[16px] font-normal text-(--color-text-secondary)
+  placeholder:text-(--color-text-subtle)
+  focus:!border-none hover:!border-none;
+}
+
+.map-widget__input--error {
+  @apply !border-x-0 !border-t-0 !border-b-(--color-error);
+}
+
+.map-widget__button-wrapper {
+  @apply w-[106px] shrink-0;
+}
+.map-widget__button {
+  @apply h-11 !rounded-l-none;
+}
+
+.map-widget__dropdown {
+  @apply absolute flex flex-col w-full left-0 top-12 px-2 py-3 gap-1 
+  bg-(--color-base) border border-(--color-bg-base-light) rounded-xl z-200
+  text-(--color-text-base) shadow-[var(--shadow-card-dish)];
+}
+
+.map-widget__dropdown-item {
+  @apply w-full h-10 text-left px-1 rounded-lg
+  hover:bg-bg-base-light cursor-pointer;
+}
+
+.icon-search {
+  @apply absolute left-2 top-3;
+}
+
+.search-clear {
+  @apply absolute right-[121px] top-4 cursor-pointer;
+}
+
+.map-widget__zoom-controls {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 z-10
+         flex flex-col gap-4 overflow-hidden;
+}
+
+.map-widget__zoom-button {
+  @apply flex h-12 w-12 items-center justify-center
+   border border-slate-200 rounded-[8px]
+ bg-(--color-bg-base) hover:bg-bg-base-light cursor-pointer;
+}
+
+.map-widget__loader {
+  @apply flex h-[560px] items-center justify-center 
+  rounded-xl bg-slate-100 text-sm text-slate-500;
+}
+
+.map-widget__zone-marker {
+  @apply relative flex items-center bg-transparent border-0 cursor-pointer gap-1;
+}
+
+.map-widget__zone-badge {
+  @apply invisible translate-y-1 opacity-0 flex items-center h-11 px-3 
+    border-2 border-green-400 rounded-xl bg-(--color-base) 
+    text-(--color-text-secondary) whitespace-nowrap;
+}
+
+.map-widget__zone-badge--visible {
+  @apply visible translate-y-0 opacity-100;
+}
+
+.map-widget__zone-badge--stopped {
+  @apply border-(--color-accent);
+}
+
+.map-widget__zone-number {
+  @apply flex items-center justify-center w-10 h-10
+   border border-(--color-primary) rounded-[50px]
+   text-(--color-text-secondary) bg-(--color-base)
+   cursor-pointer;
+}
+
+.map-widget__zone-number--active {
+  @apply w-11 h-11 border-2;
+}
+
+.map-widget__zone-number--stopped {
+  @apply border-(--color-accent);
+}
+
+.map-widget__marker {
+  @apply absolute left-0 top-0 h-6 w-6 -translate-y-1/2 -translate-y-full;
+}
+
+.map-widget__tooltip {
+  @apply absolute left-7 top-2 -translate-y-1/2 -translate-y-full 
+  px-3 rounded-xl h-8 bg-(--color-base) whitespace-nowrap 
+  text-(--color-text-secondary) pointer-events-none;
+}

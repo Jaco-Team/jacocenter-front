@@ -1,0 +1,32 @@
+@reference "../../../app/globals.css";
+
+/* Базовые стили для одного таба */
+.tab {
+  @apply cursor-pointer select-none transition-colors h-10 flex items-center justify-center;
+}
+
+/* Вариант default */
+.tab-default {
+  @apply text-[20px] rounded-t-lg;
+}
+
+.tab-default.active {
+  @apply bg-[var(--color-primary-light)] text-text-base;
+}
+
+.tab-default.inactive {
+  @apply bg-[var(--color-bg-base-light)] text-[var(--color-text-secondary)];
+}
+
+/* Вариант underline */
+.tab-underline {
+  @apply px-4 py-2 text-[16px] text-center border-b-2 border-transparent;
+}
+
+.tab-underline.active {
+  @apply text-[var(--color-primary)] border-b-2 border-[var(--color-primary)];
+}
+
+.tab-underline.inactive {
+  @apply text-[var(--color-text-subtle)];
+}

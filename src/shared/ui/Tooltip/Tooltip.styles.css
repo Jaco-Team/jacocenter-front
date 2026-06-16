@@ -1,0 +1,42 @@
+@reference '../../../app/globals.css';
+
+.tooltip-wrapper {
+  @apply relative inline-block;
+  anchor-name: --tooltip-anchor;
+}
+
+.tooltip-content {
+  @apply  w-53 bg-[var(--color-text-subtle)] rounded-[8px] text-center px-4 py-3 shadow-[var(--shadow-card-dish)] leading-[130%];
+    position-anchor: --tooltip-anchor;
+    inset: unset;
+  }
+
+.tooltip-content-text.label-s-regular-12 {
+    @apply text-base;
+}
+
+  /* placements */
+
+.tooltip-top {
+  bottom: calc(anchor(top) + 8px);
+  left: anchor(center);
+  translate: -50% 0;
+}
+
+.tooltip-bottom {
+  top: calc(anchor(bottom) + 8px);
+  left: anchor(center);
+  translate: -50% 0;
+}
+
+.tooltip-left {
+  right: calc(anchor(left) + 8px);
+  top: anchor(center);
+  translate: 0 -50%;
+}
+
+.tooltip-right {
+  left: calc(anchor(right) + 8px);
+  top: anchor(center);
+  translate: 0 -50%;
+}

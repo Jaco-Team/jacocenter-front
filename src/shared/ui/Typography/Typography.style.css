@@ -1,0 +1,36 @@
+@reference "../../../app/globals.css";
+
+/* Heading / L-regular20 — Roboto Regular, 20px, lh 24 */
+.heading-l-regular-20 {
+  @apply text-[20px] leading-[24px] font-normal;
+}
+
+/* Body / L-medium20 — Roboto Medium, 20px, lh 130% */
+.body-l-medium-20 {
+  @apply  text-[20px] leading-[130%] font-medium;
+}
+
+/* Body / L-regular20 — Roboto Regular, 20px, lh 130% */
+.body-l-regular-20 {
+  @apply  text-[20px] leading-[130%] font-normal;
+}
+
+/* Body / M-medium16 — Roboto Medium, 16px, lh 20 */
+.body-m-medium-16 {
+  @apply  text-[16px] leading-[20px] font-medium;
+}
+
+/* Body / M-regular16 — Roboto Regular, 16px, lh 20 */
+.body-m-regular-16 {
+  @apply  text-[16px] leading-[20px] font-normal;
+}
+
+/* Label / S-regular12 — Roboto Regular, 12px, lh 130% */
+.label-s-regular-12 {
+  @apply  text-[12px] leading-[130%] font-normal;
+}
+
+/* Label / S-semibold12 — Roboto Semibold, 12px, lh 16 */
+.label-s-semibold-12 {
+  @apply text-[12px] leading-[16px] font-semibold;
+}

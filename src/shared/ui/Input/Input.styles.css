@@ -1,0 +1,49 @@
+@reference "../../../app/globals.css"
+
+.input-root {
+  @apply flex flex-col gap-1;
+}
+
+.input-label {
+  @apply text-xs text-text-secondary;
+}
+
+.input-field {
+  @apply w-full border border-disabled rounded-xl px-3 py-2 outline-none;
+}
+
+.input-error {
+  @apply border-error;
+}
+
+.input-message {
+  @apply flex items-center gap-1 text-xs pt-1;
+}
+
+.input-message.error {
+  @apply text-error bg-transparent;
+}
+
+.input-message.helper {
+  @apply text-primary;
+}
+
+.input-field {
+  @apply w-full border rounded-xl px-3 py-2 outline-none transition-colors;
+}
+
+.input-field:not(:disabled):hover {
+  @apply border-button-primary-hover;
+}
+
+.input-field:not(:disabled):focus {
+  @apply border-primary ring-1 ring-primary;
+}
+
+.input-field:disabled {
+  @apply bg-neutral-200 cursor-not-allowed;
+}
+
+.input-field:focus::placeholder {
+  @apply opacity-0;
+}

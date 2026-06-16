@@ -1,0 +1,5 @@
+ @reference "../../../app/globals.css";
+
+ .cards-dish {
+    @apply grid grid-cols-4 gap-[12px];
+ }
