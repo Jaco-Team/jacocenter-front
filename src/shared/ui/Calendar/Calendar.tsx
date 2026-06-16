@@ -1,6 +1,6 @@
 "use client";
 
-import { DayPicker, useNavigation } from "react-day-picker";
+import { DayPicker, useDayPicker, type MonthCaptionProps } from "react-day-picker";
 import { ru } from "date-fns/locale";
 import { format, isBefore, startOfDay } from "date-fns";
 import "./Calendar.styles.css";
@@ -12,22 +12,12 @@ import RightArrowIcon from "../../../../public/icons/arrow-right.svg?react";
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 // Кастомный заголовок со стрелками по бокам
-function CustomCaption(props: { calendarMonth?: any; locale?: any }) {
-  const { goToMonth, nextMonth, previousMonth } = useNavigation();
-  const locale = props.locale || ru;
-
-  // Извлекаем дату месяца из пропсов (или берём текущую)
-  let monthDate: Date;
-  if (props.calendarMonth?.date instanceof Date) {
-    monthDate = props.calendarMonth.date;
-  } else if (props.calendarMonth instanceof Date) {
-    monthDate = props.calendarMonth;
-  } else {
-    monthDate = new Date();
-  }
+function CustomCaption({ calendarMonth }: MonthCaptionProps) {
+  const { goToMonth, nextMonth, previousMonth } = useDayPicker();
+  const monthDate = calendarMonth.date;
 
   // Формат "Месяц, ГГГГ" с заглавной буквы
-  const monthYear = capitalize(format(monthDate, "LLLL, yyyy", { locale }));
+  const monthYear = capitalize(format(monthDate, "LLLL, yyyy", { locale: ru }));
 
   return (
     <div className="custom-caption">
