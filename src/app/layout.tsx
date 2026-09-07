@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { AuthProvider } from "@/features/auth/ui/AuthProvider/AuthProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body 
         className={`${roboto.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         {process.env.NEXT_PUBLIC_YMAPS_API_KEY ? (
           <Script
             src={`https://api-maps.yandex.ru/v3/?apikey=${process.env.NEXT_PUBLIC_YMAPS_API_KEY}&lang=ru_RU`}

@@ -9,4 +9,5 @@ export interface IBaseFormProps {
   buttonText: string;
   onSubmit?: (e: React.SubmitEvent<HTMLFormElement>) => void;
   className?: string;
+  isSubmitting?: boolean;
 };

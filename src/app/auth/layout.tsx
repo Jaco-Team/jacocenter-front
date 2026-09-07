@@ -1,11 +1,15 @@
+import { GuestOnly } from "@/features/auth/ui/GuestOnly/GuestOnly";
+
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <GuestOnly>
+      <div className="flex items-center justify-center min-h-screen">
         {children}
-    </div>
+      </div>
+    </GuestOnly>
   );
 }

@@ -20,6 +20,10 @@
   @apply h-12 w-12 flex flex-col items-center justify-center gap-2;
 }
 
+.sidebar-nav {
+  @apply flex-1 w-full;
+}
+
 .sidebar-list {
   @apply flex flex-col gap-1;
 }

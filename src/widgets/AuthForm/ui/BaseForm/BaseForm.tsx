@@ -14,6 +14,7 @@ export const BaseForm: React.FC<IBaseFormProps> = ({
   buttonText,
   onSubmit,
   className,
+  isSubmitting = false,
 }) => {
   return (
     <div className='auth-wrapper'>
@@ -49,9 +50,10 @@ export const BaseForm: React.FC<IBaseFormProps> = ({
             variant='base'
             theme='error'
             type='submit'
+            disabled={isSubmitting}
           >
             <Typography variant='body-l-medium-20'>
-              {buttonText}
+              {isSubmitting ? 'Вход...' : buttonText}
             </Typography>
           </Button>
         </div>

@@ -4,9 +4,13 @@ import { NavLink } from "@/shared/ui/NavLink/NavLink";
 import Image from "next/image";
 import "./NavPanel.style.css";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSessionStore } from "@/entities/auth/store/sessionStore/sessionStore";
 
 export function NavPanel() {
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
+  const logout = useSessionStore((s) => s.logout);
 
   return (
     <div className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
@@ -38,6 +42,19 @@ export function NavPanel() {
           ))}
         </ul>
       </nav>
+      <button
+        type="button"
+        className="mt-auto mb-6 text-[var(--color-text-subtle)] text-sm hover:text-[var(--color-accent)]"
+        onClick={async () => {
+          try {
+            await logout();
+          } finally {
+            router.replace("/auth/sign-in");
+          }
+        }}
+      >
+        Выйти
+      </button>
     </div>
   )
 }
