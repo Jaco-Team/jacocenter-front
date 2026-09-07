@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import "./FiltersBlock.style.css";
-import { FiltersBlockProps } from "./FiltersBlock.types";
-import { ModalFilters } from "../ModalFilters/ModalFilters";
-import { useOrdersStore } from "@/entities/Order/store/orders/ordersStore";
+import "@/features/orders/ui/filtersBlock/FiltersBlock.style.css";
+import { ModalFilters } from "@/features/orders/ui/ModalFilters/ModalFilters";
+import { CafeFilterTab } from "@/features/orders/ui/CafeFilterTab/CafeFilterTab";
+import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
 import { Text } from "@/shared/ui/Typography/Typography";
 import {
   STATUS_TABS,
@@ -13,12 +13,11 @@ import {
   StatusTabId,
   TypeTabId,
 } from "@/widgets/orders/utils/constants";
-import { mockAllOrders } from "@/app/(nav)/orders/data/allOrders.mock";
-import { CafeFilterTab } from "../CafeFilterTab/CafeFilterTab";
+import { cafeOptions, mockKitchenOrders } from "../../data/kitchenOrders.mock";
 
 const REFRESH_SECONDS = 60;
 
-export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
+export const KitchenFiltersBlock = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
 
@@ -32,7 +31,7 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
     setStatusTab,
     setTypeTab,
     triggerRefresh,
-  } = useOrdersStore();
+  } = useKitchenStore();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,7 +56,8 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
     const tab = STATUS_TABS.find((item) => item.id === tabId);
     if (!tab) return 0;
 
-    return mockAllOrders.filter((order) => {
+    return mockKitchenOrders.filter((order) => {
+      if (selectedCafe && order.cafe !== selectedCafe) return false;
       if (tabId === "preorder") return Boolean(order.isPreorder) && order.status !== "cancel";
       if (tabId === "active") return tab.statuses.includes(order.status) && !order.isPreorder;
       return tab.statuses.includes(order.status);
@@ -75,9 +75,8 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
                 className={`filters-tab ${statusTab === tab.id ? "filters-tab--active-dark" : ""}`}
                 onClick={() => setStatusTab(tab.id)}
               >
-                <Text variant="body-m-regular-16">
-                  {tab.label} {getStatusCount(tab.id)}
-                </Text>
+                <Text variant="body-m-regular-16">{tab.label}</Text>
+                <span className="filters-tab__count">{getStatusCount(tab.id)}</span>
               </button>
             </li>
           ))}
@@ -93,9 +92,7 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
                 className={`filters-tab ${typeTab === tab.id ? "filters-tab--active-light" : ""}`}
                 onClick={() => setTypeTab(tab.id as TypeTabId)}
               >
-                {tab.icon && (
-                  <Image src={tab.icon} alt="" width={18} height={18} />
-                )}
+                {tab.icon && <Image src={tab.icon} alt="" width={18} height={18} />}
                 <Text variant="body-m-regular-16">{tab.label}</Text>
               </button>
             </li>
@@ -126,7 +123,7 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
 
       <div className="filters-block__row">
         <ul className="cafe-filters-list">
-          {cafeList.map((cafe) => (
+          {cafeOptions.map((cafe) => (
             <li key={cafe}>
               <CafeFilterTab
                 cafe={cafe}

@@ -3,6 +3,8 @@ export interface CategoryCardProps {
   children: React.ReactNode;
   /** Выбрана ли карточка */
   isSelected?: boolean;
+  /** Акцентный стиль (красный текст) */
+  accent?: boolean;
   /** Обработчик клика */
   onClick?: () => void;
   /** Дополнительные CSS-классы */

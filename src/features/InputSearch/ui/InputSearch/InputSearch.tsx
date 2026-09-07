@@ -1,34 +1,54 @@
-'use client';
+"use client";
+
 import { Input } from "@/shared/ui/Input/Input";
 import { Text } from "@/shared/ui/Typography/Typography";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { OptionItem, SearchInputProps } from "./InputSearch.type";
 
-export const InputSearch = <T extends OptionItem>({ options, onSelect }: SearchInputProps<T>) => {
-  const [value, setValue] = useState("");
+export const InputSearch = <T extends OptionItem>({
+  options = [],
+  value: controlledValue,
+  placeholder = "Поиск товара",
+  onChange,
+  onSelect,
+}: SearchInputProps<T>) => {
+  const [internalValue, setInternalValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const filtered = options.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
+  const value = controlledValue ?? internalValue;
+  const showSuggestions = Boolean(onSelect) && options.length > 0;
 
-  const handleSelect = (item: typeof options[number]) => {
+  const filtered = options.filter((item) =>
+    item.name.toLowerCase().includes(value.toLowerCase()),
+  );
+
+  const updateValue = (next: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(next);
+    }
+    onChange?.(next);
+  };
+
+  const handleSelect = (item: T) => {
     onSelect?.(item);
-    setValue("");
+    updateValue("");
     setIsOpen(false);
     setActiveIndex(-1);
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen) return;
+    if (!showSuggestions || !isOpen) return;
 
     if (e.key === "ArrowDown") {
-      setActiveIndex(prev => Math.min(prev + 1, filtered.length - 1));
+      setActiveIndex((prev) => Math.min(prev + 1, filtered.length - 1));
     }
 
     if (e.key === "ArrowUp") {
-      setActiveIndex(prev => Math.max(prev - 1, 0));
+      setActiveIndex((prev) => Math.max(prev - 1, 0));
     }
 
     if (e.key === "Enter" && activeIndex >= 0) {
@@ -39,7 +59,7 @@ export const InputSearch = <T extends OptionItem>({ options, onSelect }: SearchI
       setIsOpen(false);
       setActiveIndex(-1);
     }
-  }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -63,35 +83,46 @@ export const InputSearch = <T extends OptionItem>({ options, onSelect }: SearchI
 
   return (
     <div ref={rootRef} onKeyDown={handleKeyDown} className="relative">
-      <div className="rounded-xl bg-base relative text-text-secondary">
+      <div className="relative rounded-full bg-bg-base-light text-text-secondary">
+        <Image
+          src="/icons/search.svg"
+          alt=""
+          width={16}
+          height={16}
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+        />
         <Input
           value={value}
           onChange={(e) => {
-            setValue(e.target.value);
-            setIsOpen(true);
+            updateValue(e.target.value);
+            if (showSuggestions) {
+              setIsOpen(true);
+              setActiveIndex(-1);
+            }
           }}
-          placeholder="Все товары"
-          className="h-11 border-none"
-        ></Input>
-        <button className="absolute p-3 top-0 right-0 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? (
-            <div className="w-3 h-3 border-t border-l border-text-subtle rotate-[45deg] mt-1"></div> //стрелка вверх
-          ) : (
-            <div className="w-3 h-3 border-b border-l border-text-subtle rotate-[-45deg] mb-1"></div> //стрелка вниз
-          )}           
-        </button>
+          onFocus={() => {
+            if (showSuggestions && value) setIsOpen(true);
+          }}
+          placeholder={placeholder}
+          style={{paddingLeft: '32px'}}
+          className="h-11 rounded-full border-transparent bg-transparent pl-10 pr-3 hover:border-transparent focus:border-transparent focus:ring-0"
+        />
       </div>
 
-      {isOpen && filtered.length > 0 && 
-      (
-        <ul 
+      {showSuggestions && isOpen && value && filtered.length > 0 && (
+        <ul
           ref={listRef}
-          className="absolute top-full left-0 right-0 z-10 max-h-[216px] bg-base rounded-xl overflow-auto mt-1 p-2 shadow-[0_4px_4px_rgba(60,59,59,0.16)] text-text-secondary">
+          className="absolute top-full left-0 right-0 z-10 mt-1 max-h-[216px] overflow-auto rounded-xl bg-base p-2 text-text-secondary shadow-[0_4px_4px_rgba(60,59,59,0.16)]"
+        >
           {filtered.map((item, index) => (
             <li
               key={item.id}
               onClick={() => handleSelect(item)}
-              className={`h-10 px-2 flex items-center rounded-lg ${activeIndex === index ? "bg-bg-base-light text-text-base" : "hover:bg-bg-base-light"}`}
+              className={`flex h-10 cursor-pointer items-center rounded-lg px-2 ${
+                activeIndex === index
+                  ? "bg-bg-base-light text-text-base"
+                  : "hover:bg-bg-base-light"
+              }`}
             >
               <Text>{item.name}</Text>
             </li>

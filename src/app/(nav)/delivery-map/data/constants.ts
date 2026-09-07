@@ -1,5 +1,6 @@
 import type { YMapLocationRequest, LngLat, LngLatBounds } from "ymaps3";
-import { multiPolygon, bbox } from "@turf/turf";
+import { multiPolygon } from "@turf/helpers";
+import { bbox } from "@turf/bbox";
 
 export type CafePoint = {
   id: string;

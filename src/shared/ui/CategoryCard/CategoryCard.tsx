@@ -7,12 +7,13 @@ import { CategoryCardProps } from "./CategoryCard.types";
 export const CategoryCard = ({
   children,
   isSelected = false,
+  accent = false,
   onClick,
   className = "",
 }: CategoryCardProps) => {
   return (
     <div
-      className={`category-card ${isSelected ? "selected" : ""} ${className}`}
+      className={`category-card ${isSelected ? "selected" : ""} ${accent ? "accent" : ""} ${className}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -22,7 +23,12 @@ export const CategoryCard = ({
         }
       }}
     >
-      <Text>{children}</Text>
+      <Text
+        variant={accent ? "body-m-medium-16" : "body-m-regular-16"}
+        className={accent ? "category-card__accent-text" : undefined}
+      >
+        {children}
+      </Text>
     </div>
   );
 };

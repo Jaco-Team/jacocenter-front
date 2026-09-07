@@ -18,3 +18,27 @@
 .category-card:not(.selected):active {
   @apply bg-[var(--color-bg-base)] text-[var(--color-text-base)];
 }
+.category-card.accent {
+  @apply border-transparent bg-[var(--color-bg-base-light)];
+}
+
+.category-card.accent .category-card__accent-text,
+.category-card__accent-text {
+  color: var(--color-error) !important;
+}
+
+.category-card.accent:not(.selected):hover {
+  @apply bg-[var(--color-bg-base)];
+}
+
+.category-card.accent:not(.selected):hover .category-card__accent-text {
+  color: var(--color-button-accent-hover) !important;
+}
+
+.category-card.accent:not(.selected):active {
+  @apply bg-[var(--color-bg-base)];
+}
+
+.category-card.accent:not(.selected):active .category-card__accent-text {
+  color: var(--color-button-accent-pressed) !important;
+}

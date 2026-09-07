@@ -1,0 +1,61 @@
+@reference "../../../app/globals.css";
+
+.modal-sauces {
+  @apply w-[420px] max-w-[calc(100vw-32px)] px-5 flex flex-col;
+}
+
+.modal-sauces__hint {
+  @apply text-[var(--color-text-subtle)] mb-3;
+}
+
+.modal-sauces__list {
+  @apply flex flex-col gap-3 max-h-[360px] overflow-y-auto pr-1;
+}
+
+.modal-sauces__row {
+  @apply flex items-center gap-3;
+}
+
+.modal-sauces__image {
+  @apply w-12 h-12 rounded-full bg-[var(--color-bg-base-light)] flex-shrink-0 object-cover flex items-center justify-center text-[var(--color-text-subtle)] text-sm overflow-hidden;
+}
+
+.modal-sauces__info {
+  @apply flex-1 min-w-0 flex flex-col gap-0.5;
+}
+
+.modal-sauces__name {
+  @apply text-[var(--color-text-base)] truncate;
+}
+
+.modal-sauces__price {
+  @apply text-[var(--color-text-secondary)];
+}
+
+.modal-sauces__counter {
+  @apply flex items-center gap-2 flex-shrink-0;
+}
+
+.modal-sauces__counter-btn {
+  @apply w-9 h-9 rounded-full border border-[var(--color-disabled)] bg-base
+         flex items-center justify-center cursor-pointer
+         text-[var(--color-text-secondary)]
+         hover:border-[var(--color-button-primary-hover)]
+         active:bg-[var(--color-bg-base-light)];
+}
+
+.modal-sauces__count {
+  @apply min-w-6 text-center text-[var(--color-text-secondary)];
+}
+
+.modal-sauces__count--active {
+  @apply w-7 h-7 rounded-full bg-primary text-base flex items-center justify-center text-sm;
+}
+
+.modal-sauces__actions {
+  @apply flex gap-3 pt-5;
+}
+
+.modal-sauces__actions .button {
+  @apply h-11 flex-1;
+}

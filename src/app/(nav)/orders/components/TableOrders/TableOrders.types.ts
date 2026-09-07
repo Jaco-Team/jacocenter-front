@@ -4,7 +4,7 @@ export type Order = {
   orderNumber: number;
   status: keyof typeof orderStatus;
   type: keyof typeof orderStatus;
-  createdBy: 'Клиент' | 'Кухня';
+  createdBy: "Клиент" | "Кухня";
   phone: string;
   address: string;
   openedAt: string;
@@ -17,4 +17,5 @@ export type Order = {
   payment: string;
   driver: string;
   cafe: string;
-}
+  isPreorder?: boolean;
+};

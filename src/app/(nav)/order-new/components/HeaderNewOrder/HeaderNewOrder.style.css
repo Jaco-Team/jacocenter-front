@@ -1,42 +1,63 @@
 @reference '../../../../../app/globals.css';
 
 .current-order__header {
-  @apply flex gap-3 h-[64px];
+  @apply flex flex-col gap-3 p-3 rounded-2xl bg-base;
+}
+
+.current-order__header-row {
+  @apply flex items-center gap-3;
 }
 
 .current-order__header-city {
   @apply w-[196px] flex-shrink-0;
 }
 
+.current-order__header-city .select-base__trigger {
+  @apply border-disabled;
+}
+
 .current-order__header-phone {
-  @apply w-[196px] flex-shrink-0;
+  @apply flex items-center gap-2 w-auto flex-shrink-0;
+}
+
+.current-order__header-phone .phone-root {
+  @apply w-[196px];
 }
 
 .current-order__header-phone .input-field {
-  @apply border-none pl-[31px];
+  @apply pl-[31px];
 }
 
 .current-order__header-promocode {
-  @apply flex gap-3 flex-1 w-[212px];
+  @apply flex items-stretch gap-3 min-w-0;
 }
 
 .current-order__header-promocode-input {
-  @apply relative w-[168px];
+  @apply relative w-[196px] flex-shrink-0;
 }
 
 .current-order__header-promocode-input .input-field {
-  @apply h-[44px] bg-base border-none;
+  @apply h-[44px] bg-base;
 }
 
-.current-order__header-tooltip-btn {
-  @apply w-5 h-5 flex items-center justify-center mt-3
-         text-text-muted rounded-full border border-text-muted text-sm;
+.current-order__header-info {
+  @apply flex flex-1 items-center gap-3 min-w-0
+         px-3 py-2 rounded-xl bg-bg-base-light;
 }
 
-.current-order__header-promocode .tooltip-bottom {
-  top: calc(anchor(bottom) - 16px );
+.current-order__header-info-text {
+  @apply flex-1 min-w-0 text-text-base;
+}
+
+.current-order__header-info-btn {
+  @apply flex-shrink-0 flex items-center justify-center w-5 h-5 cursor-pointer;
+}
+
+.current-order__header-info .tooltip-bottom,
+.current-order__header-phone .tooltip-bottom {
+  top: calc(anchor(bottom) - 16px);
 }
 
 .current-order__header-button {
-  @apply w-[76px] h-[44px];
+  @apply w-[76px] h-[44px] flex-shrink-0;
 }

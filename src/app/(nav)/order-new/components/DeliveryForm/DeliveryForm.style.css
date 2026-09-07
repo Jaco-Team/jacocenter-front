@@ -1,7 +1,7 @@
 @reference '../../../../../app/globals.css';
 
 .delivery-form {
-  @apply w-[704px] h-[542px] bg-base rounded-b-xl;
+  @apply h-[542px] bg-base rounded-b-xl;
 }
 
 .delivery-form-main {
@@ -17,7 +17,7 @@
 }
 
 .delivery-tab {
-  @apply w-[161px] cursor-pointer; 
+  @apply w-[161px] cursor-pointer;
 }
 
 .delivery-tab.delivery-tab-default.text {

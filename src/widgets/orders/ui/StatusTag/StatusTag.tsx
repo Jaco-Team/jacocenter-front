@@ -4,7 +4,7 @@ import { StatusTagProps } from "./StatusTag.types";
 
 export const StatusTag = ({ status, variant="orderStatus" }: StatusTagProps) => {
   const { label, bg, border, color } = orderStatus[status];
-  const width = variant === "orderType" ? "w-[84px]" : "w-[74px]";
+  const width = variant === "orderType" ? "w-[84px]" : "min-w-[74px] px-2 w-auto";
 
   return (
     <div className={`h-[24px] rounded-xl flex items-center justify-center border ${width} ${bg} ${border} ${color}`}>

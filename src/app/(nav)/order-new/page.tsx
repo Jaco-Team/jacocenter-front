@@ -96,16 +96,18 @@ export default function CurrentOrderPage() {
           <StopOrder options={mockStopOrders} />
         </div>
 
+        <p className="current-order__prep-time">Время приготовления от 10 до 15 минут</p>
+
         <div className="current-order__tabs">
           <Tab
-            title="Шаг 1. Заказ"
+            title="Заказ"
             active={step === ORDER_STEP.CART}
             variant="default"
             onClick={() => setStep(ORDER_STEP.CART)}
             className="current-order__tab"
           />
           <Tab
-            title="Шаг 2. Способ получения"
+            title="Время и место получения"
             active={step === ORDER_STEP.DELIVERY}
             variant="default"
             onClick={() => setStep(ORDER_STEP.DELIVERY)}

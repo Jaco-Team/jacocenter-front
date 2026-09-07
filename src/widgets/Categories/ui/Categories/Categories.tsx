@@ -16,7 +16,8 @@ export const Categories = ({
         <li key={item.id} className="categories-item">
           <CategoryCard
             key={item.id}
-            isSelected={item.id === selectedId}
+            isSelected={!item.accent && item.id === selectedId}
+            accent={Boolean(item.accent)}
             onClick={() => onSelect?.(item.id)}
           >
             {item.name}

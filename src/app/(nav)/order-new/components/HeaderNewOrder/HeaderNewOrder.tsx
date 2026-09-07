@@ -8,6 +8,7 @@ import { SelectTown } from "@/shared/ui/SelectTown/SelectTown"
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone"
 import Image from "next/image";
 import { useState } from "react";
+import { Text } from "@/shared/ui/Typography/Typography";
 
 export const HeaderNewOrder = () => {
   const {
@@ -37,22 +38,37 @@ export const HeaderNewOrder = () => {
       )
     : null;
 
-  const tooltipContent = !promocode ? "Введите промокод для получения скидки"
-    : foundPromocode ? foundPromocode.description
-    : "Промокод не найден";
+  const promocodeInfo = !promocode
+    ? "Здесь появится информация об условиях действия промокода."
+    : foundPromocode
+      ? foundPromocode.description
+      : "Промокод не найден";
 
   const promocodeError = isSubmitted && promocode && !foundPromocode ? "Промокод не найден" : undefined;
 
+  const phoneInfo = "Введите номер телефона клиента";
+
   return (
     <form onSubmit={handleSubmit} className="current-order__header">
-      <SelectTown value={city} options={mockCities} onSelect={setCity} className="current-order__header-city"/>
+      <div className="current-order__header-row">
+        <SelectTown value={city} options={mockCities} onSelect={setCity} className="current-order__header-city"/>
 
-      <div className="current-order__header-phone">
-        <InputPhone
-          value={phone}
-          onChange={setPhone}
-          placeholder="999 999-99-99"
-        />
+        <div className="current-order__header-phone">
+          <InputPhone
+            value={phone}
+            onChange={setPhone}
+            placeholder="999 999-99-99"
+          />
+          <Tooltip content={phoneInfo} placement="bottom">
+            <button type="button" className="current-order__header-info-btn" aria-label="Информация">
+              <Image src="/icons/info-base.svg" alt="" width={20} height={20} />
+            </button>
+          </Tooltip>
+        </div>
+
+        <Button type="submit" variant="base" theme="primary" className="current-order__header-button">
+          Найти
+        </Button>
       </div>
 
       <div className="current-order__header-promocode">
@@ -65,17 +81,17 @@ export const HeaderNewOrder = () => {
           />
           {promocode && (<ClearButton onClick={() => setPromocode("")} className="top-[2px] right-0"/>)}
         </div>
-        <Tooltip
-          content={tooltipContent}
-          placement="bottom"
-        >
-          <button type="button" className="current-order__header-tooltip-btn">?</button>
-        </Tooltip>
+        <div className="current-order__header-info">
+          <Text variant="label-s-regular-12" className="current-order__header-info-text">
+            {promocodeInfo}
+          </Text>
+          <Tooltip content={promocodeInfo} placement="bottom">
+            <button type="button" className="current-order__header-info-btn" aria-label="Информация">
+              <Image src="/icons/info-base.svg" alt="" width={20} height={20} />
+            </button>
+          </Tooltip>
+        </div>
       </div>
-
-      <Button type="submit" variant="base" theme="primary" className="current-order__header-button">
-        Найти
-      </Button>
     </form>
   )
 }

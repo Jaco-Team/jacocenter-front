@@ -38,28 +38,30 @@ export function Cart({
   const formatPrice = (value: number) => value.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(",", ".");
 
   return (
-    <aside className="min-w-[368px] w-full h-full flex flex-col">
-      <section className="flex flex-1 min-h-0 py-5 flex-col rounded-2xl bg-white text-text-secondary">
-        
-        <header className="px-3 mb-4 h-10 flex justify-between items-center">
+    <aside className="flex-1 min-w-[320px] h-full flex flex-col">
+      <section className="flex flex-1 min-h-0 flex-col overflow-hidden rounded-2xl bg-white text-text-secondary">
+
+        <header className="flex shrink-0">
           <Button
-            variant="text"
+            variant="base"
             theme="primary"
             onClick={onOpenOrderInfo}
+            className="h-12 flex-1 !rounded-none !rounded-tl-2xl"
           >
-            <Text className="underline underline-offset-[3px]">Весь заказ</Text>
+            <Text variant="body-m-medium-16" className="text-bg-base-light">Весь заказ</Text>
           </Button>
 
           <Button
-            variant="text"
+            variant="base"
             theme="error"
             onClick={() => setIsDeleteModalOpen(true)}
+            className="h-12 flex-1 !rounded-none !rounded-tr-2xl bg-error hover:bg-button-accent-hover active:bg-button-accent-pressed"
           >
-            <Text>Отменить заказ</Text>
+            <Text variant="body-m-medium-16" className="text-bg-base-light">Отменить заказ</Text>
           </Button>
         </header>
 
-        <ul className="flex-1 overflow-y-auto">
+        <ul className="flex-1 overflow-y-auto px-3">
           {items.map(item => (
             <li key={item.id}>
               <OrderDish
@@ -80,17 +82,19 @@ export function Cart({
           ))}
         </ul>
 
-        <footer className="border-t border-bg-base-light pt-5 px-3">
+        <footer className="border-t border-bg-base-light px-3 pt-5 pb-5">
           <div className="flex flex-col gap-[9px]">
             <div className="flex justify-between">
               <Text variant="body-m-regular-16">Сумма</Text>
               <Text variant="body-m-regular-16">{formatPrice(sumWithoutDiscount)} ₽</Text>
             </div>
 
-            {discountSum > 0 && (<div className="flex justify-between">
-              <Text variant="label-s-regular-12">Скидка ({discountPercent}%)</Text>
+            <div className="flex justify-between">
+              <Text variant="label-s-regular-12">
+                {discountSum > 0 ? `Скидка (${discountPercent}%)` : "Скидка"}
+              </Text>
               <Text variant="label-s-regular-12">{formatPrice(discountSum)} ₽</Text>
-            </div>)}
+            </div>
           </div>
 
           {deliveryPrice > 0 && discountSum > 0 && (
@@ -118,12 +122,12 @@ export function Cart({
         onClick={onNext}
         className="mt-3 h-[44px] shtink-0"
       >
-        <Text 
+        <Text
           variant="body-m-medium-16" className="text-bg-base-light">{step === ORDER_STEP.CART ? "Далее" : "Оформить заказ"}</Text>
       </Button>
 
-      <ModalOrderDelete 
-        isOpen={isDeleteModalOpen} 
+      <ModalOrderDelete
+        isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onCancelOrder={() => {
           setIsDeleteModalOpen(false);

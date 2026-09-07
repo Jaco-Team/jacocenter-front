@@ -25,10 +25,13 @@ export default function RootLayout({
         className={`${roboto.variable} antialiased`}
       >
         {children}
-        <Script
-          src={`https://api-maps.yandex.ru/v3/?apikey=${process.env.NEXT_PUBLIC_YMAPS_API_KEY}&lang=ru_RU`}
-          strategy="beforeInteractive"
-        />
+        {process.env.NEXT_PUBLIC_YMAPS_API_KEY ? (
+          <Script
+            src={`https://api-maps.yandex.ru/v3/?apikey=${process.env.NEXT_PUBLIC_YMAPS_API_KEY}&lang=ru_RU`}
+            strategy="beforeInteractive"
+            data-ymaps3="true"
+          />
+        ) : null}
       </body>
     </html>
   );

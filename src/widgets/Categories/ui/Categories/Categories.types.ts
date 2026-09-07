@@ -1,6 +1,7 @@
 export interface CategoryItem {
   id: string | number;
   name: string;
+  accent?: boolean;
 }
 
 export interface CategoriesProps {

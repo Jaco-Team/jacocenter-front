@@ -1,23 +1,57 @@
 @reference "../../../../app/globals.css";
 
-.filters-block-container {
-  @apply flex justify-between;
+.filters-block {
+  @apply flex flex-col gap-3;
+}
+
+.filters-block__row {
+  @apply flex items-center justify-between gap-3;
+}
+
+.filters-block__tabs {
+  @apply flex flex-wrap gap-2 list-none m-0 p-0;
+}
+
+.filters-tab {
+  @apply h-11 px-3 flex items-center justify-center gap-2 rounded-xl cursor-pointer
+         border border-transparent bg-transparent text-text-secondary;
+}
+
+.filters-tab--active-dark {
+  @apply bg-[var(--color-disabled)] text-text-base;
+}
+
+.filters-tab--active-light {
+  @apply bg-bg-base-light text-text-base;
+}
+
+.filters-tab__count {
+  @apply inline-flex min-w-6 h-6 px-1.5 items-center justify-center rounded-lg
+         bg-base text-text-secondary text-[12px] leading-none;
+}
+
+.filters-tab--active-dark .filters-tab__count {
+  @apply bg-bg-base-light text-text-base;
 }
 
 .cafe-filters-list {
-  @apply flex gap-3;
+  @apply flex flex-wrap gap-3 list-none m-0 p-0;
 }
 
 .filters-buttons-group {
-  @apply flex gap-3;
+  @apply flex gap-3 shrink-0;
 }
 
 .filters-button {
-  @apply flex items-center justify-center w-11 h-11 bg-base rounded-xl cursor-pointer;
+  @apply relative flex items-center justify-center w-11 h-11 bg-base rounded-xl cursor-pointer;
 }
 
 .filters-button-refresh {
-  @apply active:border active:border-primary;
+  @apply flex-col gap-0.5 active:border active:border-primary;
+}
+
+.filters-button-countdown {
+  @apply absolute -bottom-4 left-1/2 -translate-x-1/2 text-[11px] leading-none text-text-secondary whitespace-nowrap;
 }
 
 .filters-button-settings {

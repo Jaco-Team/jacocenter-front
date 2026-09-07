@@ -9,7 +9,17 @@ interface Dish {
 interface Category {
   id: string;
   name: string;
+  accent?: boolean;
 }
+
+export interface SauceUtensilItem {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+}
+
+export const SAUCES_UTENSILS_CATEGORY_ID = "sauces-utensils";
 
 export const mockCategories: Category[] = [
   { id: '1', name: 'Сеты' },
@@ -23,6 +33,7 @@ export const mockCategories: Category[] = [
   { id: '9', name: 'Фирменные роллы' },
   { id: '10', name: 'Жаренные роллы' },
   { id: '11', name: 'Запечённые роллы' },
+  { id: SAUCES_UTENSILS_CATEGORY_ID, name: 'Соусы. Приборы', accent: true },
 ];
 
 export const mockDishes: Dish[] = [
@@ -69,4 +80,16 @@ export const promocodesList = [
     promocode: 'КОКОДЖАМБО',
     description: 'Акция действует ежедневно до 20.09.2025 г. на доставку, самовывоз и заказы в кафе',
   },
+];
+
+export const mockSaucesUtensils: SauceUtensilItem[] = [
+  { id: 'sauce-1', name: 'Соевый соус', price: 30 },
+  { id: 'sauce-2', name: 'Сырный соус', price: 30 },
+  { id: 'sauce-3', name: 'Чесночный соус', price: 30 },
+  { id: 'sauce-4', name: 'Терияки', price: 40 },
+  { id: 'sauce-5', name: 'Васаби', price: 20 },
+  { id: 'sauce-6', name: 'Имбирь', price: 20 },
+  { id: 'sauce-7', name: 'Палочки', price: 0 },
+  { id: 'sauce-8', name: 'Вилка', price: 0 },
+  { id: 'sauce-9', name: 'Салфетки', price: 0 },
 ];

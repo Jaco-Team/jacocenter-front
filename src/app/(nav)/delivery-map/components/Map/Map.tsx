@@ -1,6 +1,6 @@
 "use client";
+
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import type { YMapLocationRequest, YMap as YMapType, LngLat } from "ymaps3";
 import { ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
@@ -16,12 +16,17 @@ import { CafeMarker } from "./CafeMarker";
 import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
-import { booleanPointInPolygon }from "@turf/turf";
+import { booleanPointInPolygon } from "@turf/boolean-point-in-polygon";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 import { isPointInBounds } from "../../data/utils";
+import { loadYmaps3 } from "@/lib/ymaps3";
+import { Text } from "@/shared/ui/Typography/Typography";
+
+const apiKey = process.env.NEXT_PUBLIC_YMAPS_API_KEY ?? "";
 
 export const Map = () => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
+  const [loadError, setLoadError] = React.useState<string | null>(null);
   const mapRef = React.useRef<YMapType | null>(null);
   const [location, setLocation] =
     React.useState<YMapLocationRequest>(defaultLocation);
@@ -33,10 +38,28 @@ export const Map = () => {
   const selectCafe = useMapStore((s) => s.selectCafe);
 
   React.useEffect(() => {
-    Promise.all([ymaps3.import("@yandex/ymaps3-reactify"), ymaps3.ready]).then(
-      ([{ reactify }]) =>
-        setReactifiedApi(reactify.bindTo(React, ReactDOM).module(ymaps3)),
-    );
+    let cancelled = false;
+
+    loadYmaps3(apiKey)
+      .then((modules) => {
+        if (!cancelled) {
+          setReactifiedApi(modules as ReactifiedApi);
+          setLoadError(null);
+        }
+      })
+      .catch((error: unknown) => {
+        if (cancelled) return;
+        console.error("YMaps error:", error);
+        setLoadError(
+          error instanceof Error
+            ? error.message
+            : "Не удалось загрузить карту",
+        );
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   React.useEffect(() => {
@@ -81,7 +104,7 @@ export const Map = () => {
       ),
     );
 
-    setSearchResult({ 
+    setSearchResult({
       ...result,
       inDeliveryZone: !!matchingZone,
       cafeId: matchingZone?.cafeId ?? null,
@@ -95,22 +118,46 @@ export const Map = () => {
     });
   };
 
-  if (!reactifiedApi) {
-    return null;
+  if (loadError) {
+    return (
+      <div className="relative flex h-full w-full min-w-0 flex-col items-center justify-center gap-2 overflow-hidden rounded-xl bg-bg-base-light px-6 text-center">
+        <Text variant="body-m-medium-16" className="text-text-base">
+          Карта недоступна
+        </Text>
+        <Text variant="body-m-regular-16" className="text-text-secondary">
+          {loadError}
+        </Text>
+        {!apiKey && (
+          <Text variant="label-s-regular-12" className="text-text-secondary">
+            Добавьте ключ в `.env.local`: NEXT_PUBLIC_YMAPS_API_KEY=…
+          </Text>
+        )}
+      </div>
+    );
   }
 
-   const {
+  if (!reactifiedApi) {
+    return (
+      <div className="relative flex h-full w-full min-w-0 items-center justify-center overflow-hidden rounded-xl bg-bg-base-light">
+        <Text variant="body-m-regular-16" className="text-text-secondary">
+          Загрузка карты…
+        </Text>
+      </div>
+    );
+  }
+
+  const {
     YMap,
     YMapDefaultSchemeLayer,
     YMapDefaultFeaturesLayer,
     YMapFeature,
     YMapMarker,
   } = reactifiedApi;
-  
+
   const isOutOfZone = searchResult !== null && !searchResult.inDeliveryZone;
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-xl">
+    <div className="relative h-full w-full min-w-0 overflow-hidden rounded-xl">
       <SearchInput
         selectedAddress={searchResult}
         onSelectAddress={handleSearchResult}

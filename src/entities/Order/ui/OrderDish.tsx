@@ -14,7 +14,7 @@ export function OrderDish({
   onDecrease,
   onDelete,
 }: OrderDishProps) {
-  
+
   const formatPrice = (value: number) => value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(',', '.');
 
   return (
@@ -63,7 +63,7 @@ export function OrderDish({
 
         <button
           onClick={onDelete}
-          className="bg-base text-text-secondary disabled:text-disabled hover:border-bg-base active:bg-bg-base-light flex h-10 w-10 items-center justify-center rounded-lg border border-transparent transition disabled:hover:border-transparent"
+          className="bg-base text-text-secondary disabled:text-disabled hover:border-bg-base active:bg-bg-base-light flex h-10 w-10 items-center justify-center rounded-lg border border-transparent transition disabled:hover:border-transparent mr-2"
         >
           <XIcon />
         </button>

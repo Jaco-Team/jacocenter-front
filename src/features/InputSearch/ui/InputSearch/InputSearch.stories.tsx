@@ -16,7 +16,7 @@ const meta = {
   title: 'features/InputSearch',
   component: InputSearch,
   args: {
-    options: mock,
+    placeholder: 'Поиск товара',
   },
   decorators: [
     (Story) => (
@@ -32,4 +32,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-
+export const WithSuggestions: Story = {
+  args: {
+    options: mock,
+    onSelect: () => undefined,
+  },
+};

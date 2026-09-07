@@ -1,9 +1,9 @@
-import { orderStatus } from "@/widgets/orders/utils/constants";
+import { OrderStatusKey, OrderTypeKey } from "@/widgets/orders/utils/constants";
 
 export type KitchenOrder = {
   number: number;
-  status: keyof typeof orderStatus;
-  type: keyof typeof orderStatus;
+  status: OrderStatusKey;
+  type: OrderTypeKey;
   orderedAt: string;
   readyAt?: string;
   assembledAt?: string;
@@ -13,4 +13,9 @@ export type KitchenOrder = {
   promisedIn?: string;
   city: string;
   cafe: string;
-}
+  amount: number;
+  timeToOverdue: string;
+  promisedAt: string;
+  receivedAt: string;
+  isPreorder?: boolean;
+};

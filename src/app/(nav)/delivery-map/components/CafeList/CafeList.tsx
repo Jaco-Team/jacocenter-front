@@ -59,7 +59,7 @@ export const CafeList = () => {
   };
 
   return (
-    <div className="h-full flex flex-col gap-3">
+    <div className="flex h-full w-[354px] shrink-0 flex-col gap-3">
       <Button
         variant="base"
         theme="primary"
