@@ -41,7 +41,13 @@ function scheduleRefresh() {
     return;
   }
 
-  const delay = Math.max(Date.parse(expiresAt) - Date.now() - REFRESH_MARGIN_MS, 15_000);
+  const expiresAtMs = Date.parse(expiresAt);
+  if (!Number.isFinite(expiresAtMs) || expiresAtMs <= Date.now()) {
+    useSessionStore.getState().clearSession();
+    return;
+  }
+
+  const delay = Math.max(expiresAtMs - Date.now() - REFRESH_MARGIN_MS, 15_000);
   refreshTimer = setTimeout(() => {
     void useSessionStore.getState().refresh();
   }, Math.min(delay, 2_147_483_647));
@@ -83,7 +89,14 @@ export const useSessionStore = create<SessionState>()(
         bootstrapPromise = (async () => {
           // persist пишет состояние в storage при каждом set, поэтому до
           // rehydrate() любое изменение статуса затирает сохранённый токен.
-          await useSessionStore.persist.rehydrate();
+          try {
+            await useSessionStore.persist.rehydrate();
+          } catch {
+            // A corrupt or unavailable session store must not leave the app in
+            // an unresolvable loading state or retain an unverifiable token.
+            get().clearSession();
+            return;
+          }
           set({ status: 'loading' });
 
           const token = get().token;
