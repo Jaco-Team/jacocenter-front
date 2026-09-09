@@ -1,9 +1,9 @@
 export interface IHeaderOrdersProps {
-  cities: string[];
+  cities: Array<{ id: number; name: string }>;
   phoneCheck?: 'success' | 'error';
 
   onSubmit?: (data: {
-    city?: string;
+    cityId?: number;
     date?: string;
     phone?: string;
     address?: string;

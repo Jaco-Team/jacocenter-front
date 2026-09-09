@@ -1,10 +1,12 @@
 import { orderStatus } from "@/widgets/orders/utils/constants";
 
 export type Order = {
+  id: number;
+  pointId: number;
   orderNumber: number;
   status: keyof typeof orderStatus;
   type: keyof typeof orderStatus;
-  createdBy: "Клиент" | "Кухня";
+  createdBy: "Клиент" | "Кухня" | "—";
   phone: string;
   address: string;
   openedAt: string;
@@ -16,6 +18,9 @@ export type Order = {
   amount: number;
   payment: string;
   driver: string;
-  cafe: string;
   isPreorder?: boolean;
+};
+
+export type TableOrdersProps = {
+  orders: Order[];
 };

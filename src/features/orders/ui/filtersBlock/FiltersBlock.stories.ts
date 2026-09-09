@@ -1,18 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { FiltersBlock } from './FiltersBlock';
+import { mockAllOrders } from '@/app/(nav)/orders/data/allOrders.mock';
 
-const cafeList = [
-    "Ленинградская 47",
-    "Ворошилова 12А",
-    "Матросова 32",
-    "Цветной 1"
-  ];
+const points = [
+  { id: 1, address: "Ленинградская 47" },
+  { id: 2, address: "Ворошилова 12А" },
+  { id: 3, address: "Матросова 32" },
+  { id: 4, address: "Цветной 1" },
+];
 
 const meta = {
   title: 'features/orders/FiltersBlock',
   component: FiltersBlock,
   args: {
-    cafeList: cafeList
+    points,
+    orders: mockAllOrders,
   },
 } satisfies Meta<typeof FiltersBlock>;
 

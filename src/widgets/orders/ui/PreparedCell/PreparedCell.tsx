@@ -19,7 +19,11 @@ const parseMinutesLeft = (timeToOverdue: string) => {
 };
 
 export const PreparedCell = ({ order }: PreparedCellProps) => {
-  if (order.status === "inQueue" || order.status === "cancel") {
+  if (
+    order.status === "inQueue" ||
+    order.status === "cancel" ||
+    order.timeToOverdue === "—"
+  ) {
     return <Text variant="label-s-regular-12">—</Text>;
   }
 

@@ -13,20 +13,19 @@ import {
   StatusTabId,
   TypeTabId,
 } from "@/widgets/orders/utils/constants";
-import { mockAllOrders } from "@/app/(nav)/orders/data/allOrders.mock";
 import { CafeFilterTab } from "../CafeFilterTab/CafeFilterTab";
 
 const REFRESH_SECONDS = 60;
 
-export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
+export const FiltersBlock = ({ points, orders }: FiltersBlockProps) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
 
   const {
     visibleColumns,
     setVisibleColumns,
-    selectedCafe,
-    setSelectedCafe,
+    selectedPointId,
+    setSelectedPointId,
     statusTab,
     typeTab,
     setStatusTab,
@@ -57,7 +56,7 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
     const tab = STATUS_TABS.find((item) => item.id === tabId);
     if (!tab) return 0;
 
-    return mockAllOrders.filter((order) => {
+    return orders.filter((order) => {
       if (tabId === "preorder") return Boolean(order.isPreorder) && order.status !== "cancel";
       if (tabId === "active") return tab.statuses.includes(order.status) && !order.isPreorder;
       return tab.statuses.includes(order.status);
@@ -126,12 +125,12 @@ export const FiltersBlock = ({ cafeList }: FiltersBlockProps) => {
 
       <div className="filters-block__row">
         <ul className="cafe-filters-list">
-          {cafeList.map((cafe) => (
-            <li key={cafe}>
+          {points.map((point) => (
+            <li key={point.id}>
               <CafeFilterTab
-                cafe={cafe}
-                isActive={selectedCafe === cafe}
-                onSelect={() => setSelectedCafe(cafe)}
+                cafe={point.address}
+                isActive={selectedPointId === point.id}
+                onSelect={() => setSelectedPointId(point.id)}
               />
             </li>
           ))}

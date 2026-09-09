@@ -1,15 +1,14 @@
 import { create } from "zustand";
 import { getOrdersColumns } from "@/app/(nav)/orders/components/TableOrders/TableOrders.columns";
 import { format } from "date-fns";
-import { cafeList, cities } from "@/app/(nav)/orders/constants";
 import { StatusTabId, TypeTabId } from "@/widgets/orders/utils/constants";
 
 type SortDir = "asc" | "desc" | null;
 
 type OrdersStore = {
-  selectedCafe: string;
+  selectedPointId: number | null;
   date: string;
-  city: string;
+  cityId: number | null;
   phone: string;
   address: string;
   searchQuery: string;
@@ -22,9 +21,9 @@ type OrdersStore = {
   sortKey: string | null;
   sortDir: SortDir;
   refreshKey: number;
-  setSelectedCafe: (cafe: string) => void;
+  setSelectedPointId: (pointId: number | null) => void;
   setDate: (date: string) => void;
-  setCity: (city: string) => void;
+  setCityId: (cityId: number | null) => void;
   setPhone: (phone: string) => void;
   setAddress: (address: string) => void;
   setSearchQuery: (query: string) => void;
@@ -48,9 +47,9 @@ const defaultVisibleColumns = Object.fromEntries(
 );
 
 export const useOrdersStore = create<OrdersStore>((set) => ({
-  selectedCafe: cafeList[0],
+  selectedPointId: null,
   date: format(new Date(), "dd.MM.yyyy"),
-  city: cities[0],
+  cityId: null,
   phone: "",
   address: "",
   searchQuery: "",
@@ -78,9 +77,9 @@ export const useOrdersStore = create<OrdersStore>((set) => ({
   sortKey: "openedAt",
   sortDir: "desc",
   refreshKey: 0,
-  setSelectedCafe: (cafe) => set({ selectedCafe: cafe }),
+  setSelectedPointId: (selectedPointId) => set({ selectedPointId }),
   setDate: (date) => set({ date }),
-  setCity: (city) => set({ city }),
+  setCityId: (cityId) => set({ cityId, selectedPointId: null }),
   setPhone: (phone) => set({ phone }),
   setAddress: (address) => set({ address }),
   setSearchQuery: (searchQuery) => set({ searchQuery }),

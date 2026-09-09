@@ -1,23 +1,21 @@
 "use client";
 import { Table } from "@/shared/ui/Table/Table";
 import { getOrdersColumns } from "./TableOrders.columns";
-import { mockAllOrders } from "../../data/allOrders.mock";
 import { useMemo, useState } from "react";
 import { useOrdersStore } from "@/entities/Order/store/orders/ordersStore";
 import { ColumnFilter } from "@/features/orders/ui/ColumnFilter/ColumnFilter";
 import { orderStatus, STATUS_TABS } from "@/widgets/orders/utils/constants";
-import { Order } from "./TableOrders.types";
+import { Order, TableOrdersProps } from "./TableOrders.types";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
-import { baseOrderDetails, sampleDecomposition } from "@/widgets/clients/data/mocks";
 import { Button } from "@/shared/ui/Button/Button";
 import { Text } from "@/shared/ui/Typography/Typography";
 import "./TableOrders.style.css";
 import Image from "next/image";
 import { ModalOrderCancel } from "../ModalOrderCancel/ModalOrderCancel";
+import { OrderDto, ordersApi } from "@/entities/Order/api/ordersApi";
 
-export const TableOrders = () => {
+export const TableOrders = ({ orders }: TableOrdersProps) => {
   const {
-    selectedCafe,
     visibleColumns,
     statusFilter,
     typeFilter,
@@ -30,13 +28,13 @@ export const TableOrders = () => {
     sortKey,
     sortDir,
     toggleSort,
-    refreshKey,
     phone,
     address,
     searchQuery,
   } = useOrdersStore();
   const [activeColumn, setActiveColumn] = useState<"status" | "type" | "createdBy" | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [orderDetails, setOrderDetails] = useState<OrderDto | null>(null);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   const columns = getOrdersColumns(activeColumn, sortKey, sortDir, toggleSort).filter(
@@ -46,11 +44,11 @@ export const TableOrders = () => {
   const filteredOrders = useMemo(() => {
     const statusTabConfig = STATUS_TABS.find((tab) => tab.id === statusTab);
 
-    let list = mockAllOrders.filter((order) => {
-      const matchesCafe = order.cafe === selectedCafe;
+    let list = orders.filter((order) => {
       const matchesStatusFilter = statusFilter[orderStatus[order.status]?.label];
       const matchesTypeFilter = typeFilter[orderStatus[order.type]?.label];
-      const matchesCreatedBy = createdByFilter[order.createdBy];
+      const matchesCreatedBy =
+        order.createdBy === "—" ? true : createdByFilter[order.createdBy];
 
       let matchesStatusTab = true;
       if (statusTab === "preorder") {
@@ -71,7 +69,6 @@ export const TableOrders = () => {
           order.address.toLowerCase().includes(query);
 
       return (
-        matchesCafe &&
         matchesStatusFilter &&
         matchesTypeFilter &&
         matchesCreatedBy &&
@@ -92,7 +89,7 @@ export const TableOrders = () => {
 
     return list;
   }, [
-    selectedCafe,
+    orders,
     statusFilter,
     typeFilter,
     createdByFilter,
@@ -100,11 +97,22 @@ export const TableOrders = () => {
     typeTab,
     sortKey,
     sortDir,
-    refreshKey,
     phone,
     address,
     searchQuery,
   ]);
+
+  const handleOrderSelect = async (order: Order) => {
+    setSelectedOrder(order);
+    setOrderDetails(null);
+
+    try {
+      const response = await ordersApi.show(order.id, order.pointId);
+      setOrderDetails(response.data);
+    } catch {
+      setSelectedOrder(null);
+    }
+  };
 
   const handleCancelOrder = () => {
     setIsCancelOpen(false);
@@ -128,19 +136,17 @@ export const TableOrders = () => {
             />
           </summary>
           <ul className="order-breakdown-items-list">
-            {sampleDecomposition.map((item, index) => (
-              <li key={index} className="order-breakdown-item">
-                <Text>{item.name}</Text>
+            {(orderDetails?.items ?? []).map((item) => (
+              <li key={item.item_id} className="order-breakdown-item">
+                <Text>{item.name ?? `Позиция ${item.item_id}`}</Text>
                 <Text
                   className={
-                    item.status === "Приготовлен"
+                    item.ready
                       ? "text-primary"
-                      : item.status === "В очереди"
-                        ? "text-text-subtle"
-                        : ""
+                      : "text-text-subtle"
                   }
                 >
-                  {item.status}
+                  {item.ready ? "Приготовлен" : "В очереди"}
                 </Text>
               </li>
             ))}
@@ -168,7 +174,7 @@ export const TableOrders = () => {
         rowHeight={52}
         rowGap={4}
         fontVariant="label-s-regular-12"
-        onRowClick={(order) => setSelectedOrder(order)}
+        onRowClick={(order) => void handleOrderSelect(order)}
       />
       <ColumnFilter
         options={statusFilter}
@@ -192,18 +198,24 @@ export const TableOrders = () => {
       />
       <ModalOrderConfirm
         isOpen={!!selectedOrder}
-        onClose={() => setSelectedOrder(null)}
+        onClose={() => {
+          setSelectedOrder(null);
+          setOrderDetails(null);
+        }}
         title={`Заказ ${selectedOrder?.orderNumber}`}
-        deliveryTime={baseOrderDetails.deliveryTime}
-        clientPhone={baseOrderDetails.clientPhone}
-        address={baseOrderDetails.address}
-        intercom={baseOrderDetails.intercom}
-        payment={baseOrderDetails.payment}
-        promocode={baseOrderDetails.promocode}
-        promocodeDescription={baseOrderDetails.promocodeDescription}
-        comment={baseOrderDetails.comment}
-        items={baseOrderDetails.items}
-        totalPrice={baseOrderDetails.totalPrice}
+        deliveryType={orderDetails?.type === 2 ? "pickup" : "delivery"}
+        deliveryTime={orderDetails?.date_time_preorder || orderDetails?.give_data_time || "Не указано"}
+        clientPhone={orderDetails?.phone || selectedOrder?.phone || "Не указан"}
+        address={formatAddress(orderDetails?.address) || selectedOrder?.address || "Не указан"}
+        intercom="Не указан"
+        payment={paymentLabel(orderDetails?.payment_type)}
+        comment={orderDetails?.comment ?? undefined}
+        items={(orderDetails?.items ?? []).map((item) => ({
+          name: item.name ?? `Позиция ${item.item_id}`,
+          quantity: Number(item.count),
+          price: Number(item.price),
+        }))}
+        totalPrice={orderDetails?.order_price ?? selectedOrder?.amount ?? 0}
         renderActions={renderOrderActions}
       />
       <ModalOrderCancel
@@ -214,4 +226,21 @@ export const TableOrders = () => {
       />
     </>
   );
+};
+
+const formatAddress = (address?: OrderDto["address"]) => {
+  if (!address) return "";
+
+  return [
+    address.street,
+    address.home && `д. ${address.home}`,
+    address.apartment && `кв. ${address.apartment}`,
+  ]
+    .filter(Boolean)
+    .join(", ");
+};
+
+const paymentLabel = (paymentType?: number) => {
+  if (paymentType === undefined) return "Не указана";
+  return paymentType === 1 ? "Наличный расчёт" : "Безналичный расчёт";
 };

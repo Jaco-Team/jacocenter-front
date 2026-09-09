@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HeaderOrders } from "./HeaderOrders";
 
 const meta = {
@@ -14,6 +13,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    cities:['Тольятти', 'Москва', 'Санкт-Петербург', 'Казань', 'Самара', 'Сочи', 'Тула'],
+    cities: [
+      { id: 1, name: 'Тольятти' },
+      { id: 2, name: 'Самара' },
+    ],
   }
 }

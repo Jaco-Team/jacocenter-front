@@ -17,7 +17,8 @@ export const HeaderOrders = ({
   onSubmit
 }: IHeaderOrdersProps) => {
 
-  const { date, city, phone, address, setCity, setDate, setPhone, setAddress } = useOrdersStore();
+  const { date, cityId, phone, address, setCityId, setDate, setPhone, setAddress } = useOrdersStore();
+  const selectedCity = cities.find((city) => city.id === cityId);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(
     (val) => setDate(val),
@@ -34,7 +35,7 @@ export const HeaderOrders = ({
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     onSubmit?.({
-      city,
+      cityId: cityId ?? undefined,
       date,
       phone,
       address,
@@ -49,9 +50,12 @@ export const HeaderOrders = ({
     <header>
       <form className='header-orders__form' onSubmit={handleSubmit}>
         <SelectTown
-          options={cities}
-          value={city}
-          onSelect={setCity}
+          options={cities.map((city) => city.name)}
+          value={selectedCity?.name}
+          onSelect={(name) => {
+            const city = cities.find((item) => item.name === name);
+            setCityId(city?.id ?? null);
+          }}
           dropdownClassName='w-full left-0'
           className='w-[196px] shrink-0'
         />

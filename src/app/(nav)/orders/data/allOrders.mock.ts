@@ -1,5 +1,4 @@
 import { Order } from "../components/TableOrders/TableOrders.types";
-import { cafeList } from "../constants";
 
 export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -8,6 +7,8 @@ export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
   const minutesLeft = (i * 5) % 45;
 
   return {
+    id: 800000 + i,
+    pointId: (i % 4) + 1,
     orderNumber: 800000 + i,
     status: statuses[i % statuses.length],
     type: types[i % types.length],
@@ -23,7 +24,6 @@ export const mockAllOrders: Order[] = Array.from({ length: 200 }, (_, i) => {
     amount: 500 + (i % 40) * 150,
     payment: ["б/н", "нал"][i % 2],
     driver: "Тимофеев М.Ф.",
-    cafe: cafeList[i % cafeList.length],
     isPreorder: i % 11 === 0,
   };
 });
