@@ -60,6 +60,7 @@
 Оставшиеся архитектурные разрывы:
 
 - runtime API подключён для авторизации, справочников, clients, delivery map и promos;
+- TanStack Query добавлен как optional server-state слой; новый order-creation catalog использует его, legacy screens не зависят от миграции;
 - orders, kitchen и new-order используют page-local mock-данные в frozen scope; client history detail использует mock payload до появления order-detail контракта;
 - API DTO и UI DTO смешаны в `entities/Order`, отсутствуют явные mapper-границы;
 - состояние workflow распределено между page-компонентами и Zustand stores;

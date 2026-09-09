@@ -53,12 +53,13 @@ Transport должен централизованно обеспечивать:
 - `sessionStorage` с Bearer token считать временным компромиссом; для усиленного production-контура предпочтительнее HttpOnly Secure cookie через BFF.
 - Добавить transport-тесты для timeout, abort, malformed JSON, 204, URL composition и concurrent refresh.
 
-## Рекомендуемый порядок
+## Текущий статус и порядок
 
-1. Инъектируемый transport-клиент без изменения импортов доменных API.
-2. Timeout, URL normalization, типизированные transport errors и тесты.
-3. Координированный refresh/retry.
-4. Решение по build-time или runtime API configuration.
-5. Отдельное решение по HttpOnly-cookie auth.
+1. Инъектируемый transport-клиент без изменения импортов доменных API — реализовано.
+2. Timeout, URL normalization, типизированные transport errors и тесты — реализовано.
+3. Координированный refresh/retry — реализовано.
+4. TanStack Query добавлен как optional слой: legacy-код может продолжать работать через прежние clients/stores; новый order-creation catalog уже использует query hooks.
+5. Решение по build-time или runtime API configuration.
+6. Отдельное решение по HttpOnly-cookie auth.
 
 Документ не расширяет frozen scope заказов, кухни и создания заказа.
