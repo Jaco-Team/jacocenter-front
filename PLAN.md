@@ -24,16 +24,24 @@
 
 ## Текущая волна работ
 
-Статус: API-layer implementation in progress. UI-компоненты не меняем.
+Статус: первая non-order API wave завершена; order/kitchen/new-order scope заморожен.
 
 | Срез | Владелец | Граница | Результат |
 | --- | --- | --- | --- |
-| Cities, points, catalog, allergens | API integration pass | `entities` reference-data only | typed clients, mappers, tests |
-| Customer, addresses, delivery, promos | API integration pass | `entities` customer/delivery/promo only | typed clients, mappers, tests |
+| Cities, points, catalog, allergens | завершено на API-слое | `entities` reference-data only | typed clients, mappers, tests |
+| Customer lookup/history, delivery map, client promos | завершено | customer/delivery/promo + existing widgets | runtime wiring, states, tests |
+| Catalog runtime screen | ожидает снятия frozen boundary | order-new scope | client готов, UI не менять |
 | Orders, kitchen, new order | отдельный разработчик | frozen | не изменять |
 | Review and UI smoke | review pass | read-only | findings without UI edits |
 
 Каждый срез принимается только после проверки реального backend-контракта, тестов transport/mapping и отсутствия изменений в frozen scope.
+
+## Подтверждённые ограничения API
+
+- delivery API возвращает доступные улицы и точки, но не polygon geometry; карта не должна рисовать выдуманные границы из legacy fixtures;
+- проверка адреса остаётся источником истины для доступности адреса до появления отдельного geometry-контракта;
+- `/promos` возвращает `name` промокода, но не отдельные `code` и customer-specific `isApplied`; frontend не подменяет эти поля догадками;
+- catalog API подключён на entity-уровне, но runtime catalog находится внутри frozen `order-new` scope.
 
 ## Базовый аудит
 
