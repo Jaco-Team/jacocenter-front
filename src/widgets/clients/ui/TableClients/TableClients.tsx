@@ -20,11 +20,17 @@ function mapClient(lookup: CustomerLookup | null): Client | null {
   };
 }
 
+function mapClientCityId(lookup: CustomerLookup | null): number | undefined {
+  const address = lookup?.addresses.find((item) => item.isMain) ?? lookup?.addresses[0];
+  return address?.cityId || lookup?.lastOrder?.cityId || undefined;
+}
+
 export const TableClients = () => {
   const [selectedClientHistory, setSelectedClientHistory] = useState<Client | null>(null);
   const [selectedClientPromo, setSelectedClientPromo] = useState<Client | null>(null);
   const { lookup, foundClientId } = useSearchFormStore();
   const client = mapClient(lookup);
+  const clientCityId = mapClientCityId(lookup);
   const [historyOrders, setHistoryOrders] = useState<CustomerOrder[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState<string | null>(null);
@@ -66,7 +72,7 @@ export const TableClients = () => {
         loading={historyLoading}
         error={historyError}
       />      
-      <PromocodeList isOpen={!!selectedClientPromo} onClose={() => setSelectedClientPromo(null)}/>
+      <PromocodeList isOpen={!!selectedClientPromo} cityId={clientCityId} onClose={() => setSelectedClientPromo(null)}/>
     </>
   );
 }
