@@ -1,8 +1,7 @@
 "use client";
 import { Map } from "./components/Map/Map";
 import { CafeList } from "./components/CafeList/CafeList";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { citiesApi } from "@/entities/city/api/citiesApi";
@@ -58,7 +57,7 @@ export default function DeliveryMapPage() {
     }
     let cancelled = false;
     setLoading(true);
-    Promise.all([pointsApi.list(selectedCity.id), deliveryApi.zones(selectedCity.id)])
+    Promise.all([pointsApi.list(selectedCity.id), deliveryApi.zones(selectedCity.id, { includeStreets: false })])
       .then(([nextPoints, nextZones]) => {
         if (cancelled) return;
         setPoints(nextPoints);
@@ -74,11 +73,12 @@ export default function DeliveryMapPage() {
     return () => { cancelled = true; };
   }, [selectedCity?.id]);
 
-  const cafes: CafePoint[] = points.map(mapPointToCafe);
+  const cafes: CafePoint[] = useMemo(() => points.map(mapPointToCafe), [points]);
+  const mapZones = useMemo(() => mapZonesToMapZones(zones), [zones]);
 
   return (
     <div className="flex flex-1 justify-end min-h-0 gap-3">
-      <Map cafes={cafes} deliveryZones={mapZonesToMapZones(zones)} />
+      <Map cafes={cafes} deliveryZones={mapZones} />
       {error && !cities.length ? (
         <div className="flex h-full w-[354px] items-center justify-center rounded-xl bg-base px-4 text-center">
           <Text className="text-accent">{error}</Text>

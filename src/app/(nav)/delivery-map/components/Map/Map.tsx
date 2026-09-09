@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type { YMapLocationRequest, YMap as YMapType, LngLat } from "ymaps3";
+import type { YMapLocationRequest, YMap as YMapType, LngLat, LngLatBounds } from "ymaps3";
 import { ReactifiedApi } from "./Map.types";
 import { ZoomControls } from "./ZoomControls";
 import {
@@ -17,7 +17,6 @@ import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
-import { isPointInBounds } from "../../data/utils";
 import { loadYmaps3 } from "@/lib/ymaps3";
 import { Text } from "@/shared/ui/Typography/Typography";
 
@@ -32,8 +31,32 @@ export const Map = ({ cafes, deliveryZones }: MapProps) => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const [loadError, setLoadError] = React.useState<string | null>(null);
   const mapRef = React.useRef<YMapType | null>(null);
-  const [location, setLocation] =
-    React.useState<YMapLocationRequest>(defaultLocation);
+  const [locationOverride, setLocationOverride] = React.useState<{
+    boundsKey: string;
+    location: YMapLocationRequest;
+  } | null>(null);
+
+  const dataBounds = React.useMemo<LngLatBounds | undefined>(() => {
+    const coordinates = [
+      ...cafes.flatMap((cafe) => cafe.coordinates ? [cafe.coordinates] : []),
+      ...deliveryZones.flatMap((zone) => zone.coordinates.flat()),
+    ];
+    if (coordinates.length === 0) return undefined;
+
+    const longitudes = coordinates.map(([longitude]) => longitude);
+    const latitudes = coordinates.map(([, latitude]) => latitude);
+    const padding = 0.02;
+
+    return [
+      [Math.min(...longitudes) - padding, Math.min(...latitudes) - padding],
+      [Math.max(...longitudes) + padding, Math.max(...latitudes) + padding],
+    ];
+  }, [cafes, deliveryZones]);
+
+  const boundsKey = JSON.stringify(dataBounds ?? null);
+  const location = locationOverride?.boundsKey === boundsKey
+    ? locationOverride.location
+    : dataBounds ? { bounds: dataBounds } : defaultLocation;
 
   const searchResult = useMapStore((s) => s.searchResult);
   const selectedCafeId = useMapStore((s) => s.selectedCafeId);
@@ -66,31 +89,19 @@ export const Map = ({ cafes, deliveryZones }: MapProps) => {
     };
   }, []);
 
-  React.useEffect(() => {
-    if (!selectedCafeId || !mapRef.current) return;
-
-    const cafe = cafes.find((c) => c.id === selectedCafeId);
-    if (!cafe?.coordinates) return;
-
-    if (!isPointInBounds(cafe.coordinates, mapRef.current.bounds)) {
-      setLocation({
-        center: cafe.coordinates,
-        zoom: DEFAULT_ZOOM,
-        duration: 400,
-      });
-    }
-  }, [selectedCafeId]);
-
   const changeZoom = (delta: number) => {
     const map = mapRef.current;
     if (!map) return;
-    setLocation({
-      center: map.center as LngLat,
-      zoom: Math.min(
-        Math.max(map.zoom + delta, ZOOM_RANGE.min),
-        ZOOM_RANGE.max,
-      ),
-      duration: 200,
+    setLocationOverride({
+      boundsKey,
+      location: {
+        center: map.center as LngLat,
+        zoom: Math.min(
+          Math.max(map.zoom + delta, ZOOM_RANGE.min),
+          ZOOM_RANGE.max,
+        ),
+        duration: 200,
+      },
     });
   };
 
@@ -110,10 +121,13 @@ export const Map = ({ cafes, deliveryZones }: MapProps) => {
     });
     selectCafe(null);
 
-    setLocation({
-      center: result.coords,
-      zoom: DEFAULT_ZOOM,
-      duration: 400,
+    setLocationOverride({
+      boundsKey,
+      location: {
+        center: result.coords,
+        zoom: DEFAULT_ZOOM,
+        duration: 400,
+      },
     });
   };
 

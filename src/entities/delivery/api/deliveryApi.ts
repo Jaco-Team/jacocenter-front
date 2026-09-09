@@ -9,13 +9,29 @@ const cart = (items: CartItemInput[]) => items.map((item) => ({ item_id: item.it
 export const deliveryApi = {
   async cities() { const response = await apiRequest<{ data: CityDto[] }>('/cities'); return (response.data ?? []).map(mapCity); },
   async points(cityId?: number) { const response = await apiRequest<{ data: PointDto[] }>(`/points${queryString({ city_id: cityId })}`); return (response.data ?? []).map(mapPoint); },
-  async zones(cityId: number) {
-    const response = await apiRequest<{ data: { zones?: ZoneDto[]; polygons?: PolygonDto[] } }>(`/delivery/zones${queryString({ city_id: cityId })}`);
-    const polygons = new Map((response.data.polygons ?? []).map(mapPolygon).map((polygon) => [polygon.zoneId, polygon] as const));
-    return (response.data.zones ?? []).map(mapZone).map((zone) => {
-      const polygon = zone.id === undefined ? undefined : polygons.get(zone.id);
-      return polygon ? { ...zone, coordinates: polygon.coordinates } : zone;
-    });
+  async zones(cityId: number, options: { includeStreets?: boolean } = {}) {
+    const response = await apiRequest<{ data: { zones?: ZoneDto[]; polygons?: PolygonDto[] } }>(`/delivery/zones${queryString({ city_id: cityId, map: options.includeStreets === false ? 1 : undefined })}`);
+    const polygons = (response.data.polygons ?? []).map(mapPolygon);
+    const zones = (response.data.zones ?? []).map(mapZone);
+    const zonesById = new Map(zones.flatMap((zone) => zone.id == null ? [] : [[zone.id, zone] as const]));
+
+    for (const polygon of polygons) {
+      const zone = zonesById.get(polygon.zoneId);
+      if (zone) {
+        zone.coordinates = polygon.coordinates;
+        continue;
+      }
+
+      zones.push({
+        id: polygon.zoneId,
+        pointId: polygon.pointId,
+        pointName: '',
+        streets: [],
+        coordinates: polygon.coordinates,
+      });
+    }
+
+    return zones;
   },
   async streets(cityId: number, search: string) { const response = await apiRequest<{ data: { streets?: StreetDto[] } }>(`/delivery/streets${queryString({ city_id: cityId, q: search })}`); return (response.data.streets ?? []).map(mapStreet); },
   async validateAddress(input: { cityId: number; street: string; home: string; entrance?: string }): Promise<AddressValidation> {
