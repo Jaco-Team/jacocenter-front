@@ -14,6 +14,7 @@ import type { Point } from "@/entities/point/model/types";
 export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) => {
   const pickup = useOrderStore((s) => s.pickup);
   const setPickup = useOrderStore((s) => s.setPickup);
+  const setPointId = useOrderStore((s) => s.setPointId);
   const { cafe, cafeCheckStatus } = pickup;
   const city = useOrderStore((s) => s.city);
 
@@ -64,8 +65,10 @@ export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) =
   const isMatch = (name: string) => cafe && name.toLowerCase().startsWith(cafe.toLowerCase());
 
   const handleCheckCafe = () => {
-    const newStatus: "success" | "error" = points.some((point) => point.address === cafe || point.name === cafe) ? "success" : "error";
+    const selectedPoint = points.find((point) => point.address === cafe || point.name === cafe);
+    const newStatus: "success" | "error" = selectedPoint ? "success" : "error";
     setPickup({ cafeCheckStatus: newStatus });
+    setPointId(selectedPoint?.id ?? null);
     if (newStatus === "success" && activeTimeTab === null) {
       setActiveTimeTab("nearest");
     }
@@ -104,7 +107,7 @@ export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) =
       </button>
 
 
-      {cafe && <ClearButton onClick={() => setPickup({ cafe: "", cafeCheckStatus: null })} className="top-6 right-14"/>}
+      {cafe && <ClearButton onClick={() => { setPickup({ cafe: "", cafeCheckStatus: null }); setPointId(null); }} className="top-6 right-14"/>}
       
       {isOpen && 
         (
@@ -115,6 +118,7 @@ export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) =
                 key={item.id}
                 onClick={() => {
                   setPickup({ cafe: item.address || item.name, cafeCheckStatus: null });
+                  setPointId(item.id);
                   setIsOpen(false);
                 }}
                 className={`pickup-cafe-item ${isMatch(item.address || item.name) ? "pickup-cafe-item-active" : ""}`}

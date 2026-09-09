@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Text } from "@/shared/ui/Typography/Typography";
 import { citiesApi } from "@/entities/city/api/citiesApi";
 import { promoApi } from "@/entities/promo/api/promoApi";
+import { customerApi } from "@/entities/customer/api/customerApi";
 
 export const HeaderNewOrder = () => {
   const {
@@ -17,7 +18,10 @@ export const HeaderNewOrder = () => {
     phone,
     promocode,
     setCity,
+    setCityId: setStoreCityId,
     setPhone,
+    setCustomerId,
+    setAddressId,
     setPromocode,
   } = useOrderStore();
 
@@ -35,17 +39,29 @@ export const HeaderNewOrder = () => {
       const selected = cities.find((item) => item.name === city) ?? cities[0];
       if (selected) {
         setCityId(selected.id);
+        setStoreCityId(selected.id);
         if (selected.name !== city) setCity(selected.name);
       }
     }).catch(() => {
       if (!cancelled) setCityOptions([]);
     });
     return () => { cancelled = true; };
-  }, [city, setCity]);
+  }, [city, setCity, setStoreCityId]);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
+    setCustomerId(null);
+    if (phone.trim()) {
+      void customerApi.lookup(phone.trim(), cityId ?? undefined).then((result) => {
+        setCustomerId(result.customer?.id ?? null);
+        const address = result.addresses.find((item) => item.cityId === cityId) ?? result.addresses[0];
+        setAddressId(address?.id ?? null);
+      }).catch(() => {
+        setCustomerId(null);
+        setAddressId(null);
+      });
+    }
     if (!promocode.trim() || cityId === null) {
       setPromoValid(null);
       setPromoDescription(null);

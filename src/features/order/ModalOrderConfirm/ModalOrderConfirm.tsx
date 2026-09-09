@@ -14,6 +14,8 @@ export const ModalOrderConfirm = ({
   onCancel,
   onEdit,
   onConfirm,
+  confirmError,
+  isConfirming = false,
   title,
   deliveryType="delivery",
   deliveryTime,
@@ -45,9 +47,13 @@ export const ModalOrderConfirm = ({
     setIsDeleteOpen(false);
   };
 
-  const handleConfirmClick = () => {
-    onConfirm?.();
-    setIsSuccessOpen(true);
+  const handleConfirmClick = async () => {
+    try {
+      await onConfirm?.();
+      setIsSuccessOpen(true);
+    } catch {
+      // The parent exposes the actionable API error while the modal remains open.
+    }
   };
 
   const handleCloseSuccess = () => {
@@ -166,10 +172,12 @@ export const ModalOrderConfirm = ({
                     theme="primary"
                     size="md"
                     onClick={handleConfirmClick}
+                    disabled={isConfirming}
                     className="!w-auto px-5"
                   >
-                    Подтвердить заказ
+                    {isConfirming ? "Создание…" : "Подтвердить заказ"}
                   </Button>
+                  {confirmError && <span role="alert" className="modal-order-confirm__error">{confirmError}</span>}
                 </>
               )}
             </div>

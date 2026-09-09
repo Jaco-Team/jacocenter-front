@@ -8,6 +8,8 @@ type TimeMode = 'nearest' | 'by-time' | null;
 
 interface DeliveryForm {
   address: string;
+  streetId: number | null;
+  pointId: number | null;
   cafeId: string | null;
   building: string;
   entrance: string;
@@ -38,7 +40,11 @@ interface OrderState {
   step: ORDER_STEP;
   items: CartItem[];
   city: string;
+  cityId: number | null;
   phone: string;
+  customerId: number | null;
+  addressId: number | null;
+  pointId: number | null;
   promocode: string;
   deliveryType: DeliveryType;
   delivery: DeliveryForm;
@@ -58,7 +64,11 @@ interface OrderActions {
   deleteItem: (id: string) => void;
 
   setCity: (city: string) => void;
+  setCityId: (cityId: number | null) => void;
   setPhone: (val: string) => void;
+  setCustomerId: (customerId: number | null) => void;
+  setAddressId: (addressId: number | null) => void;
+  setPointId: (pointId: number | null) => void;
   setPromocode: (val: string) => void;
 
   setDeliveryType: (val: DeliveryType) => void;
@@ -77,11 +87,17 @@ const initialState: OrderState = {
   step: ORDER_STEP.CART,
   items: [],
   city: mockCities[0],
+  cityId: null,
   phone: '',
+  customerId: null,
+  addressId: null,
+  pointId: null,
   promocode: '',
   deliveryType: 'delivery',
   delivery: {
     address: '',
+    streetId: null,
+    pointId: null,
     cafeId: null,
     building: '',
     entrance: '',
@@ -145,7 +161,11 @@ export const useOrderStore = create<OrderStore>((set) => ({
 
   // Шапка
   setCity: (city) => set({ city }),
+  setCityId: (cityId) => set({ cityId }),
   setPhone: (phone) => set({ phone }),
+  setCustomerId: (customerId) => set({ customerId }),
+  setAddressId: (addressId) => set({ addressId }),
+  setPointId: (pointId) => set({ pointId }),
   setPromocode: (promocode) => set({ promocode }),
   setOrderNumber: (orderNumber) => set({ orderNumber }),
 

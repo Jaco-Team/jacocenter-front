@@ -40,14 +40,19 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
   }, [city]);
 
   const validateAddress = async () => {
-    if (!address.trim() || !building.trim() || cityId === null) {
+    const parsedAddress = splitStreetAndHome(address);
+    if (!parsedAddress || cityId === null) {
       setDelivery({ addressCheckStatus: "error" });
       return;
     }
     setValidating(true);
     try {
-      const result = await deliveryApi.validateAddress({ cityId, street: address.trim(), home: building.trim(), entrance: entrance.trim() || undefined });
-      setDelivery({ addressCheckStatus: result.valid ? "success" : "error" });
+      const result = await deliveryApi.validateAddress({ cityId, street: parsedAddress.street, home: parsedAddress.home, entrance: entrance.trim() || undefined });
+      setDelivery({
+        addressCheckStatus: result.valid ? "success" : "error",
+        streetId: result.streetId ?? null,
+        pointId: result.pointId ?? null,
+      });
       if (result.valid && activeTimeTab === null) setActiveTimeTab("nearest");
     } catch {
       setDelivery({ addressCheckStatus: "error" });
@@ -66,6 +71,8 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
               setDelivery({
                 address: e.target.value,
                 addressCheckStatus: null,
+                streetId: null,
+                pointId: null,
                 cafeId: null,
               })
             } 
@@ -76,7 +83,7 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
             className="placeholder:ps-6"
           />
           {!address && <Image src="/icons/search.svg" alt="Поиск" width={20} height={20} className="icon-search"/>}
-          {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null, cafeId: null, })} className="right-1 top-[24px]"/>}
+  {address && <ClearButton onClick={() => setDelivery({ address: "", addressCheckStatus: null, streetId: null, pointId: null, cafeId: null, })} className="right-1 top-[24px]"/>}
         </div>
         <div className="delivery-buttons-group">
           <Button 
@@ -95,11 +102,11 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
       </div>
       <div className="delivery-address-details">
         <Input 
-          type="number"
-          ref={buildingRef} 
-          value={building} 
+          type="text"
+          ref={buildingRef}
+          value={building}
           onChange={(e) => setDelivery({ building: e.target.value })}
-          label="Корпус" 
+          label="Корпус"
           placeholder="___" 
           className="delivery-address-details-input"/>
         <Input 
@@ -155,6 +162,14 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
       </div>
     </div>
 )};
+
+function splitStreetAndHome(value: string): { street: string; home: string } | null {
+  const normalized = value.trim().replace(/,\s*$/, '');
+  const match = normalized.match(/^(.+?)[,\s]+(\d+[А-Яа-яA-Za-z]?(?:[/-]\d+[А-Яа-яA-Za-z]?)?)$/);
+  if (!match) return null;
+  const street = match[1].trim().replace(/,\s*$/, '').trim();
+  return street ? { street, home: match[2] } : null;
+}
 
 const ClearButton = ({ onClick, className="" }: { onClick: () => void; className?: string }) => (
   <button type="button" className={`clear-button ${className}`} onClick={onClick}>

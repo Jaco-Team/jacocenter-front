@@ -13,6 +13,8 @@ import "./CurrentOrderPage.styles.css";
 import { HeaderNewOrder } from "./components/HeaderNewOrder/HeaderNewOrder";
 import { OrderCatalogStep } from "./components/OrderCatalogStep/OrderCatalogStep";
 import { cafes } from "../delivery-map/data/constants";
+import { submitOrder } from "@/entities/order-creation/api/orderCreationWorkflow";
+import { ApiError } from "@/shared/api/http";
 
 export default function CurrentOrderPage() {
   const step = useOrderStore((s) => s.step);
@@ -22,6 +24,10 @@ export default function CurrentOrderPage() {
   const decreaseItem = useOrderStore((s) => s.decreaseItem);
   const deleteItem = useOrderStore((s) => s.deleteItem);
   const phone = useOrderStore((s) => s.phone);
+  const cityId = useOrderStore((s) => s.cityId);
+  const customerId = useOrderStore((s) => s.customerId);
+  const addressId = useOrderStore((s) => s.addressId);
+  const pointId = useOrderStore((s) => s.pointId);
   const delivery = useOrderStore((s) => s.delivery);
   const payment = useOrderStore((s) => s.payment);
   const orderNumber = useOrderStore((s) => s.orderNumber);
@@ -34,6 +40,8 @@ export default function CurrentOrderPage() {
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmError, setConfirmError] = useState<string | null>(null);
 
   const deliveryPrice = (() => {
     if (deliveryType !== "delivery") return 0;
@@ -48,9 +56,45 @@ export default function CurrentOrderPage() {
 
   const totalPrice = itemsTotal + deliveryPrice;
 
-  const handleConfirm = () => {
-    setIsConfirmOpen(false);
-    resetOrder();
+  const handleConfirm = async () => {
+    setConfirmError(null);
+    const selectedPointId = deliveryType === "delivery" ? delivery.pointId : pointId;
+    const typeOrder = deliveryType === "delivery" ? 1 : 2;
+    if (!cityId || !customerId || !selectedPointId) {
+      const error = new Error("Заполните город, телефон клиента и точку получения");
+      setConfirmError(error.message);
+      throw error;
+    }
+    if (deliveryType === "delivery" && !addressId) {
+      const error = new Error("Для доставки нужен сохранённый адрес клиента");
+      setConfirmError(error.message);
+      throw error;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await submitOrder({
+        cityId,
+        pointId: selectedPointId,
+        customerId,
+        typeOrder,
+        addressId: deliveryType === "delivery" ? addressId ?? undefined : undefined,
+        streetId: deliveryType === "delivery" ? delivery.streetId ?? undefined : undefined,
+        promoCode: promocode || undefined,
+        phone: phone || undefined,
+        items: items.map((item) => ({ itemId: Number(item.id), quantity: item.count })),
+      });
+      setIsConfirmOpen(false);
+      resetOrder();
+    } catch (error) {
+      const message = error instanceof ApiError && error.code
+        ? `${error.code}: ${error.message}`
+        : error instanceof Error ? error.message : "Не удалось создать заказ";
+      setConfirmError(message);
+      throw error;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancelConfirm = () => {
@@ -158,6 +202,8 @@ export default function CurrentOrderPage() {
         onCancel={handleCancelConfirm}
         onEdit={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirm}
+        confirmError={confirmError ?? undefined}
+        isConfirming={isSubmitting}
         title={`Заказ № ${orderNumber} от ${new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}`}
         deliveryType={deliveryType}
         deliveryTime={deliveryTime}
