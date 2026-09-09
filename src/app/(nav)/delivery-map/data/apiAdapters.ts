@@ -27,14 +27,10 @@ export function mapCitiesToOptions(cities: City[]): string[] {
   return cities.map((city) => city.name).filter(Boolean);
 }
 
-/**
- * The API returns street coverage, not polygon geometry. Keep this adapter
- * explicit so the map never renders invented boundaries from legacy fixtures.
- */
 export function mapZonesToMapZones(zones: ApiZone[]): DeliveryZone[] {
   return zones.map((zone) => ({
-    id: `point-${zone.pointId}`,
+    id: zone.id == null ? `point-${zone.pointId}` : `zone-${zone.id}`,
     cafeId: String(zone.pointId),
-    coordinates: [],
+    coordinates: zone.coordinates,
   }));
 }

@@ -11,7 +11,7 @@ import { deliveryApi } from "@/entities/delivery/api/deliveryApi";
 import type { City } from "@/entities/city/model/types";
 import type { Point } from "@/entities/point/model/types";
 import type { DeliveryZone } from "@/entities/delivery/model/types";
-import { mapPointToCafe } from "./data/apiAdapters";
+import { mapPointToCafe, mapZonesToMapZones } from "./data/apiAdapters";
 import type { CafePoint } from "./data/constants";
 import { Text } from "@/shared/ui/Typography/Typography";
 
@@ -78,7 +78,7 @@ export default function DeliveryMapPage() {
 
   return (
     <div className="flex flex-1 justify-end min-h-0 gap-3">
-      <Map cafes={cafes} deliveryZones={zones.map((zone) => ({ id: `point-${zone.pointId}`, cafeId: String(zone.pointId), coordinates: [] }))} />
+      <Map cafes={cafes} deliveryZones={mapZonesToMapZones(zones)} />
       {error && !cities.length ? (
         <div className="flex h-full w-[354px] items-center justify-center rounded-xl bg-base px-4 text-center">
           <Text className="text-accent">{error}</Text>
