@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ApiError, apiRequest, configureHttp } from './http';
+import { ApiError, ApiTransportError, apiRequest, configureHttp, createApiClient } from './http';
 import { API_BASE_URL } from '../config/api';
 
 describe('apiRequest', () => {
@@ -78,5 +78,36 @@ describe('apiRequest', () => {
 
     await expect(apiRequest('/auth/me')).rejects.toBeInstanceOf(ApiError);
     expect(onUnauthorized).toHaveBeenCalledOnce();
+  });
+
+  it('normalizes base URLs and adds an explicit JSON accept header', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ st: true }), { status: 200 }));
+    const client = createApiClient({ baseUrl: 'https://api.example.test///', fetch: fetchMock });
+
+    await client.request('/health');
+
+    expect(fetchMock.mock.calls[0][0]).toBe('https://api.example.test/health');
+    expect((fetchMock.mock.calls[0][1].headers as Headers).get('Accept')).toBe('application/json');
+  });
+
+  it('classifies a timed-out request as a transport error', async () => {
+    const fetchMock = vi.fn((_url: string, init: RequestInit) => new Promise<Response>((_, reject) => {
+      init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    }));
+    const client = createApiClient({ baseUrl: API_BASE_URL, fetch: fetchMock, timeoutMs: 1 });
+
+    await expect(client.request('/slow')).rejects.toMatchObject<ApiTransportError>({ name: 'ApiTransportError', kind: 'timeout' });
+  });
+
+  it('supports caller cancellation without treating it as a network failure', async () => {
+    const fetchMock = vi.fn((_url: string, init: RequestInit) => new Promise<Response>((_, reject) => {
+      init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    }));
+    const client = createApiClient({ baseUrl: API_BASE_URL, fetch: fetchMock, timeoutMs: 1000 });
+    const controller = new AbortController();
+    const pending = client.request('/cancelled', { signal: controller.signal });
+    controller.abort();
+
+    await expect(pending).rejects.toMatchObject<ApiTransportError>({ kind: 'aborted' });
   });
 });
