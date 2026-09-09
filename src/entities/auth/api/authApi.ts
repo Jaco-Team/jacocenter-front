@@ -45,7 +45,7 @@ export const authApi = {
   },
 
   refresh() {
-    return apiRequest<AuthSessionDto>('/auth/token/refresh', { method: 'POST' }).then(mapSession);
+    return apiRequest<AuthSessionDto>('/auth/token/refresh', { method: 'POST', retryOnUnauthorized: false }).then(mapSession);
   },
 
   logout() {

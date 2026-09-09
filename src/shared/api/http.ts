@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '@/shared/config/api';
 
-type HttpConfig = { getToken: () => string | null; onUnauthorized: () => void };
-type RequestOptions = Omit<RequestInit, 'body'> & { body?: unknown; auth?: boolean; timeoutMs?: number };
+type HttpConfig = { getToken: () => string | null; onUnauthorized: () => void; refreshToken?: () => Promise<boolean> };
+type RequestOptions = Omit<RequestInit, 'body'> & { body?: unknown; auth?: boolean; timeoutMs?: number; retryOnUnauthorized?: boolean };
 type ApiBody = { st?: boolean; text?: string; message?: string; code?: string; errors?: Record<string, string[]> };
 type TransportErrorKind = 'network' | 'timeout' | 'aborted';
 
@@ -38,6 +38,7 @@ export type ApiClientOptions = {
   baseUrl: string;
   getToken?: () => string | null;
   onUnauthorized?: () => void;
+  refreshToken?: () => Promise<boolean>;
   fetch?: typeof globalThis.fetch;
   timeoutMs?: number;
 };
@@ -47,11 +48,12 @@ export function createApiClient(options: ApiClientOptions) {
   const fetcher = options.fetch ?? ((...args: Parameters<typeof globalThis.fetch>) => globalThis.fetch(...args));
   const getToken = options.getToken ?? (() => null);
   const onUnauthorized = options.onUnauthorized ?? (() => undefined);
+  const refreshToken = options.refreshToken;
   const defaultTimeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
 
   return {
     request<T>(path: string, requestOptions: RequestOptions = {}): Promise<T> {
-      return request<T>(baseUrl, fetcher, getToken, onUnauthorized, defaultTimeoutMs, path, requestOptions);
+      return request<T>(baseUrl, fetcher, getToken, onUnauthorized, refreshToken, defaultTimeoutMs, path, requestOptions);
     },
   };
 }
@@ -60,6 +62,7 @@ export const apiClient = createApiClient({
   baseUrl: API_BASE_URL,
   getToken: () => httpConfig.getToken(),
   onUnauthorized: () => httpConfig.onUnauthorized(),
+  refreshToken: () => httpConfig.refreshToken?.() ?? Promise.resolve(false),
 });
 
 export function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -71,11 +74,12 @@ async function request<T>(
   fetcher: typeof globalThis.fetch,
   getToken: () => string | null,
   onUnauthorized: () => void,
+  refreshToken: (() => Promise<boolean>) | undefined,
   defaultTimeoutMs: number,
   path: string,
   options: RequestOptions,
 ): Promise<T> {
-  const { body, auth = true, timeoutMs = defaultTimeoutMs, signal: externalSignal, headers, ...init } = options;
+  const { body, auth = true, retryOnUnauthorized = true, timeoutMs = defaultTimeoutMs, signal: externalSignal, headers, ...init } = options;
   const token = getToken();
   const requestHeaders = new Headers(headers);
   requestHeaders.set('Accept', 'application/json');
@@ -96,7 +100,15 @@ async function request<T>(
       body: body === undefined ? undefined : JSON.stringify(body),
     });
     const payload = (await parseBody(response)) as ApiBody & T;
-    if (response.status === 401 && auth && token) onUnauthorized();
+    if (response.status === 401 && auth && token) {
+      if (retryOnUnauthorized && refreshToken && await refreshOnce(refreshToken)) {
+        return request<T>(baseUrl, fetcher, getToken, onUnauthorized, refreshToken, defaultTimeoutMs, path, {
+          ...options,
+          retryOnUnauthorized: false,
+        });
+      }
+      onUnauthorized();
+    }
     if (!response.ok || payload?.st === false) {
       throw new ApiError(response.status, payload?.text || payload?.message || 'Ошибка запроса', payload?.code, payload?.errors);
     }
@@ -110,6 +122,15 @@ async function request<T>(
     clearTimeout(timeout);
     externalSignal?.removeEventListener('abort', abortFromCaller);
   }
+}
+
+let refreshPromise: Promise<boolean> | null = null;
+
+function refreshOnce(refreshToken: () => Promise<boolean>): Promise<boolean> {
+  if (!refreshPromise) {
+    refreshPromise = refreshToken().catch(() => false).finally(() => { refreshPromise = null; });
+  }
+  return refreshPromise;
 }
 
 function normalizeBaseUrl(value: string): string { return value.trim().replace(/\/+$/, ''); }

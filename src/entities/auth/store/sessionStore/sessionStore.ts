@@ -178,4 +178,13 @@ export const useSessionStore = create<SessionState>()(
 configureHttp({
   getToken: () => useSessionStore.getState().token,
   onUnauthorized: () => useSessionStore.getState().clearSession(),
+  refreshToken: async () => {
+    try {
+      const session = await authApi.refresh();
+      useSessionStore.getState().setSession(session);
+      return true;
+    } catch {
+      return false;
+    }
+  },
 });

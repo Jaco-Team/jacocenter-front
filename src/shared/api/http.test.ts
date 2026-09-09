@@ -9,6 +9,7 @@ describe('apiRequest', () => {
     configureHttp({
       getToken: () => 'test-token',
       onUnauthorized,
+      refreshToken: undefined,
     });
     onUnauthorized.mockReset();
   });
@@ -109,5 +110,27 @@ describe('apiRequest', () => {
     controller.abort();
 
     await expect(pending).rejects.toMatchObject<ApiTransportError>({ kind: 'aborted' });
+  });
+
+  it('shares one refresh and retries concurrent unauthorized requests once', async () => {
+    let calls = 0;
+    const refresh = vi.fn().mockResolvedValue(true);
+    const fetchMock = vi.fn().mockImplementation(async () => {
+      calls += 1;
+      if (calls <= 2) return new Response(JSON.stringify({ st: false, text: 'Истек токен' }), { status: 401 });
+      return new Response(JSON.stringify({ st: true, data: { ok: true } }), { status: 200 });
+    });
+    const client = createApiClient({
+      baseUrl: API_BASE_URL,
+      fetch: fetchMock,
+      getToken: () => 'test-token',
+      refreshToken: refresh,
+      onUnauthorized,
+    });
+
+    await expect(Promise.all([client.request('/one'), client.request('/two')])).resolves.toHaveLength(2);
+    expect(refresh).toHaveBeenCalledOnce();
+    expect(onUnauthorized).not.toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledTimes(4);
   });
 });
