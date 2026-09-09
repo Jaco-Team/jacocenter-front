@@ -1,51 +1,85 @@
-# Проект mr-jacco-frontend
+# JACO Call Center Frontend
 
-*  [Репозиторий:](https://github.com/mr-jaco-masterskaya/frontend)
-*  [Доска:](https://github.com/orgs/mr-jaco-masterskaya/projects/1/views/1)
+Next.js frontend for the Call Center operator workspace. The application is being migrated from presentation-only mock data to the versioned Call Center API in `../api-callcenter`.
 
-## Основные скрипты для работы с проектом:
+## Local development
 
-* `npm run dev` запуск dev режима
-* `npm run storybook` запуск storybook
-* `npm run lint` запуск линтеров
+### Host mode
 
-## Правила работы с доской:
+```bash
+cp .env.example .env.local
+npm ci
+npm run dev
+```
 
-### На доске несколько колонок:
+The default API URL is `http://localhost:8083/api/v1`. Set `NEXT_PUBLIC_API_BASE_URL` in `.env.local` when the API uses another host or port.
 
-* `Backlog` - Общий список задач. Будет пополняться задачами которые предстоит реализовать. Задачи отсюда напрямую в работу не беруться
-* `TO DO` - Задачи которые можно брать в работу прямо сейчас
-* `In progress` - Задачи привязанные к исполнителю в процессе разработки
-* `In review` - Завершенные задачи на проверке у тимлида
-* `Fix` - Есть замечания к задаче. Нужны правки исполнителя
-* `Done` - Задача готова и влита в dev. Вы великолепны!
+### Docker development mode
 
-### Алгоритм движения задач между колонками:
+```bash
+cp .env.example .env.local
+docker compose -f docker-compose.dev.yml up --build
+```
 
-1. Задачи в TO DO приоретизированы в порядке убывания приоритета. Лучше всего брать задачи сверху
-2. При решении взять задачу в работу, необходимо перенести карточку в `In progress` и асайним себя исполнителем (пункт Assigned в правой колонке деталей задачи). Выбираем себя из списка.
-3. При завершении задачи, переносим карточку в In review, а в комментарии к карточке прикладываем ссылку на открытый PR в ветку dev
-4. После того как задача выполнена, можно брать следующую из TODO. Ревью не ждем.
-5. Ревью буду проводить вечером каждый день (текущие готовые задачи)
-6. Если нужны будут доработки, карточка с задачей будет перенесена в `Fix`. Правки по задачи вносятся в эту же ветку, в этот же PR. Открывать новые ветки или PR не следует.
+The development container publishes the app at `http://localhost:3000`, mounts source files for hot reload, and keeps dependencies and `.next` in named volumes. The browser calls the API through the host URL, so `localhost:8083` is correct when the API is published by its own Compose stack.
 
-## Правила работы с репозиторием:
+Stop it with:
 
-1. Никто не пушит в develop и main.
-2. Все изменения вносятся через PR, который обязательно проходит код-ревью.
-3. Все PR должны быть открыты в dev, кроме случаев когда нужно срочно в main.
-4. Все PR должны быть открыты из ветки с названием в формате `feat/название-фичи` или `fix/название-фикса`.
-5. Все PR должны быть открыты dev. Перед PR в эту ветку должны быть слиты или ребазированы последние изменения dev.
-6. Создавайте PR только после того как закончили работу над фичей или фиксом.  Обязательно проверяйте линтером и применяйте форматирование.
-7. Время работы над задачей не более трех дней. Если задача не закончена за это время, то нужно открыть PR с текущим результатом и попросить помощи у тимлида или наставника, чтобы скорректировать задачу, поделить ее на более мелкие, помочь с решением или передать кому-то другому.
-8. Время на ревью задачи не более двух дней.
-9. Спринт длится неделю, в конце спринта все задачи должны быть закрыты, ветки удалены или смерджены. Из develop должен быть сделан релиз в main.
+```bash
+docker compose -f docker-compose.dev.yml down
+```
 
-## Правила формирования коммитов:
-Во время работы не делайте больших коммитов, создавайте маленькие атомарные коммиты с фиксированным функционалом, описывайте что сделали в комментарии к коммиту. Например, добавили новый компонент, исправили одну конкретную ошибку. Не делайте коммиты вида "Исправил ошибки", "Добавил компоненты", "Рефакторинг кода". Все это должно быть разбито на маленькие коммиты с описанием, что именно было сделано.
+### Production image
 
-При именовании коммитов используйте следующие конвенционные префиксы:
-- `feat: ` - новый функционал
-- `fix: ` - исправление ошибок
-- `refactor: ` - рефакторинг кода
-- `chore: ` - изменения не связанные с продакшен кодом, например тесты, документация, настройка сборки
+```bash
+docker compose build
+docker compose up -d
+```
+
+`Dockerfile` builds a Next standalone image. Public Next variables are build-time values; pass them through the Compose environment before building:
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8083/api/v1 docker compose build
+```
+
+Do not put API or database credentials in frontend variables. Only the public API URL and the optional Yandex Maps key belong here.
+
+## API access and CORS
+
+The API must allow the browser origin. In the API's ignored `.env` configure, for local development:
+
+```dotenv
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
+
+Restart or recreate the API container after changing it. Authentication uses a Bearer token returned by `POST /api/v1/auth/token/login`; the frontend stores the operator session in browser session storage and refreshes it before expiry.
+
+## Architecture
+
+The target structure follows Feature-Sliced Design:
+
+- `app` — routes and page composition only;
+- `widgets` — composed screen blocks;
+- `features` — user actions and workflows;
+- `entities` — domain models, API clients, and domain state;
+- `shared` — transport, configuration, UI primitives, and utilities.
+
+All feature paths use lowercase names. Domain API clients must live under their entity and must not import page-local mock data. Mock data remains allowed for stories and isolated visual development, but not for runtime screens once their API slice is delivered.
+
+## Verification
+
+```bash
+npm run build
+npm run test
+```
+
+The Docker equivalent is:
+
+```bash
+docker compose -f docker-compose.dev.yml run --rm frontend npm run build
+docker compose -f docker-compose.dev.yml run --rm frontend npm run test
+```
+
+## Current integration status
+
+Authentication transport and session handling are implemented. The remaining runtime migration is tracked in [PLAN.md](./PLAN.md). Until those slices are completed, several screens intentionally render local mock data and are not yet an end-to-end API client.

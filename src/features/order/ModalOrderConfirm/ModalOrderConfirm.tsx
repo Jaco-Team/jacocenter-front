@@ -4,7 +4,7 @@ import { Button } from "@/shared/ui/Button/Button";
 import { ModalOrderConfirmProps } from "./ModalOrderConfirm.types";
 import "./ModalOrderConfirm.styles.css";
 import { ModalOrderDelete } from "../ModalOrderDelete/ModalOrderDelete";
-import { ModalOrderSuccess } from "../../Order/ModalOrderSuccess/ModalOrderSuccess";
+import { ModalOrderSuccess } from "../ModalOrderSuccess/ModalOrderSuccess";
 import { useState } from "react";
 
 export const ModalOrderConfirm = ({

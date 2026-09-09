@@ -9,7 +9,7 @@ import {
   mockSaucesUtensils,
   SAUCES_UTENSILS_CATEGORY_ID,
 } from "@/app/(nav)/order-new/data/mocks"
-import { ModalSaucesUtensils } from "@/features/Order/ModalSaucesUtensils/ModalSaucesUtensils"
+import { ModalSaucesUtensils } from "@/features/order/ModalSaucesUtensils/ModalSaucesUtensils"
 
 export const OrderCatalogStep = () => {
   const addItem = useOrderStore((s) => s.addItem);
