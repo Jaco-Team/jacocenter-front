@@ -1,0 +1,21 @@
+import { apiRequest } from '@/shared/api/http';
+import { queryString } from '@/shared/api/query';
+import type { AddressValidation, CartItemInput } from '@/entities/delivery/model/types';
+import { mapCity, mapPoint, mapSlots, mapStreet, mapValidation, mapZone } from './deliveryMapper';
+
+const cart = (items: CartItemInput[]) => items.map((item) => ({ item_id: item.itemId, quantity: item.quantity, ...(item.unitPrice === undefined ? {} : { unit_price: item.unitPrice }), ...(item.modifiers ? { modifiers: item.modifiers.map((modifier) => ({ item_id: modifier.itemId, quantity: modifier.quantity })) } : {}) }));
+
+export const deliveryApi = {
+  async cities() { const response = await apiRequest<{ data: any[] }>('/cities'); return (response.data ?? []).map(mapCity); },
+  async points(cityId?: number) { const response = await apiRequest<{ data: any[] }>(`/points${queryString({ city_id: cityId })}`); return (response.data ?? []).map(mapPoint); },
+  async zones(cityId: number) { const response = await apiRequest<{ data: { zones?: any[] } }>(`/delivery/zones${queryString({ city_id: cityId })}`); return (response.data.zones ?? []).map(mapZone); },
+  async streets(cityId: number, search: string) { const response = await apiRequest<{ data: { streets?: any[] } }>(`/delivery/streets${queryString({ city_id: cityId, q: search })}`); return (response.data.streets ?? []).map(mapStreet); },
+  async validateAddress(input: { cityId: number; street: string; home: string; entrance?: string }): Promise<AddressValidation> {
+    const response = await apiRequest<{ data: any }>('/delivery/address/validate', { method: 'POST', body: { city_id: input.cityId, street: input.street, home: input.home, ...(input.entrance ? { entrance: input.entrance } : {}) } });
+    return mapValidation(response.data);
+  },
+  async preorderSlots(input: { date: string; pointId: number; typeOrder: number; items: CartItemInput[] }) {
+    const response = await apiRequest<{ data: any }>('/delivery/preorder-slots', { method: 'POST', body: { date: input.date, point_id: input.pointId, type_order: input.typeOrder, items: cart(input.items) } });
+    return mapSlots(response.data);
+  },
+};

@@ -4,6 +4,37 @@
 
 Сделать типизированный, устойчивый к регистру и запускаемый в Docker Next.js frontend оператора, использующий существующий `/api/v1` Call Center API без изменений схемы базы данных.
 
+## Граница текущей работы
+
+Экран заказов и кухонный workflow находятся в работе у другого разработчика. До отдельного согласования не изменяем:
+
+- `app/(nav)/orders/**`;
+- `app/(nav)/kitchen/**`;
+- `app/(nav)/order-new/**`;
+- `entities/Order/**` и связанные order/kitchen widgets/features.
+
+Общий transport и независимые shared-типы можно расширять только так, чтобы не менять поведение этих экранов.
+
+## Приоритет работ
+
+1. Сначала подключаем API к mock-срезам вне заказов и кухни через typed clients и mappers, сохраняя текущие UI-модели.
+2. Для каждого подключённого среза сразу добавляем unit/component-тесты success/loading/empty/error и access-denied состояний.
+3. После прохождения поведения удаляем заменённые runtime mocks и выполняем FSD-рефакторинг, не затрагивая чужой order/kitchen scope.
+4. В конце проводим общую интеграционную проверку Docker и полный аудит контрактов.
+
+## Текущая волна работ
+
+Статус: API-layer implementation in progress. UI-компоненты не меняем.
+
+| Срез | Владелец | Граница | Результат |
+| --- | --- | --- | --- |
+| Cities, points, catalog, allergens | API integration pass | `entities` reference-data only | typed clients, mappers, tests |
+| Customer, addresses, delivery, promos | API integration pass | `entities` customer/delivery/promo only | typed clients, mappers, tests |
+| Orders, kitchen, new order | отдельный разработчик | frozen | не изменять |
+| Review and UI smoke | review pass | read-only | findings without UI edits |
+
+Каждый срез принимается только после проверки реального backend-контракта, тестов transport/mapping и отсутствия изменений в frozen scope.
+
 ## Базовый аудит
 
 Сделано на стабилизационном этапе:
