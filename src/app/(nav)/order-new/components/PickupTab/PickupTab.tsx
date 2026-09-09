@@ -7,18 +7,36 @@ import { PickupTabProps } from "./PickupTab.types";
 import "./PickupTab.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { useRouter } from "next/navigation";
-import { cafes } from "@/app/(nav)/delivery-map/data/constants";
+import { citiesApi } from "@/entities/city/api/citiesApi";
+import { pointsApi } from "@/entities/point/api/pointsApi";
+import type { Point } from "@/entities/point/model/types";
 
 export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) => {
   const pickup = useOrderStore((s) => s.pickup);
   const setPickup = useOrderStore((s) => s.setPickup);
   const { cafe, cafeCheckStatus } = pickup;
+  const city = useOrderStore((s) => s.city);
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [points, setPoints] = useState<Point[]>([]);
 
   const selectRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    let cancelled = false;
+    citiesApi.list().then(async (cities) => {
+      const selectedCity = cities.find((item) => item.name === city) ?? cities[0];
+      if (!selectedCity) return [];
+      return pointsApi.list(selectedCity.id);
+    }).then((nextPoints) => {
+      if (!cancelled && nextPoints) setPoints(nextPoints);
+    }).catch(() => {
+      if (!cancelled) setPoints([]);
+    });
+    return () => { cancelled = true; };
+  }, [city]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -42,15 +60,13 @@ export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) =
     };
   }, [isOpen]);
 
-  const visibleOptions = showAll ? cafes : cafes.slice(0, 4);
+  const visibleOptions = showAll ? points : points.slice(0, 4);
   const isMatch = (name: string) => cafe && name.toLowerCase().startsWith(cafe.toLowerCase());
 
   const handleCheckCafe = () => {
-    // TODO: mock, заменить на реальную проверку кафе
-    // const newStatus = "success";
-    const newStatus: "success" | "error" = "error";
+    const newStatus: "success" | "error" = points.some((point) => point.address === cafe || point.name === cafe) ? "success" : "error";
     setPickup({ cafeCheckStatus: newStatus });
-    if ((newStatus as string) === "success" && activeTimeTab === null) {
+    if (newStatus === "success" && activeTimeTab === null) {
       setActiveTimeTab("nearest");
     }
   };
@@ -98,16 +114,16 @@ export const PickupTab = ({ activeTimeTab, setActiveTimeTab }: PickupTabProps) =
               <li
                 key={item.id}
                 onClick={() => {
-                  setPickup({ cafe: item.address, cafeCheckStatus: null });
+                  setPickup({ cafe: item.address || item.name, cafeCheckStatus: null });
                   setIsOpen(false);
                 }}
-                className={`pickup-cafe-item ${isMatch(item.address) ? "pickup-cafe-item-active" : ""}`}
+                className={`pickup-cafe-item ${isMatch(item.address || item.name) ? "pickup-cafe-item-active" : ""}`}
               >
-                <Text>{item.address}</Text>
+                <Text>{item.address || item.name}</Text>
               </li>
             ))}
 
-            {!showAll && cafes.length > 4 && (
+            {!showAll && points.length > 4 && (
               <li
                 onClick={() => setShowAll(true)}
                 className="button-all-cafes"
