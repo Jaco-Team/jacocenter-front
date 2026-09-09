@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { ORDER_STEP } from "@/utils/constants";
 import { Cart } from "@/widgets/Order/ui/Cart/Cart";
-import { StopOrder } from "@/features/order/ui/StopOrder/StopOrder";
+import { StopOrder } from "@/features/Order/ui/StopOrder/StopOrder";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
 import { Tab } from "@/shared/ui/Tab/Tab";
