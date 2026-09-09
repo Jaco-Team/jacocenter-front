@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/shared/ui/Button/Button";
 import { Input } from "@/shared/ui/Input/Input";
@@ -7,12 +7,17 @@ import { DeliveryTabProps } from "./DeliveryTab.types";
 import "./DeliveryTab.style.css";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
 import { useRouter } from "next/navigation";
+import { citiesApi } from "@/entities/city/api/citiesApi";
+import { deliveryApi } from "@/entities/delivery/api/deliveryApi";
 
 export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProps ) => {
   const delivery = useOrderStore((s) => s.delivery);
   const setDelivery = useOrderStore((s) => s.setDelivery);
 
   const { address, building, entrance, floor, apartment, intercom, addressCheckStatus } = delivery;
+  const city = useOrderStore((s) => s.city);
+  const [cityId, setCityId] = useState<number | null>(null);
+  const [validating, setValidating] = useState(false);
 
   const buildingRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -22,6 +27,34 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
       buildingRef.current?.focus();
     }
   }, [addressCheckStatus]);
+
+  useEffect(() => {
+    let cancelled = false;
+    citiesApi.list().then((cities) => {
+      if (cancelled) return;
+      setCityId(cities.find((item) => item.name === city)?.id ?? cities[0]?.id ?? null);
+    }).catch(() => {
+      if (!cancelled) setCityId(null);
+    });
+    return () => { cancelled = true; };
+  }, [city]);
+
+  const validateAddress = async () => {
+    if (!address.trim() || !building.trim() || cityId === null) {
+      setDelivery({ addressCheckStatus: "error" });
+      return;
+    }
+    setValidating(true);
+    try {
+      const result = await deliveryApi.validateAddress({ cityId, street: address.trim(), home: building.trim(), entrance: entrance.trim() || undefined });
+      setDelivery({ addressCheckStatus: result.valid ? "success" : "error" });
+      if (result.valid && activeTimeTab === null) setActiveTimeTab("nearest");
+    } catch {
+      setDelivery({ addressCheckStatus: "error" });
+    } finally {
+      setValidating(false);
+    }
+  };
 
   return (
     <div>
@@ -48,12 +81,10 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
         <div className="delivery-buttons-group">
           <Button 
             variant="base" 
-            theme={address && !addressCheckStatus ? "primary" : "secondary"} 
+            theme={address && !addressCheckStatus && !validating ? "primary" : "secondary"}
             size="sm" 
-            onClick={() => {
-              // TODO: mock, заменить на реальную проверку адреса
-              setDelivery({ addressCheckStatus: "success" });
-            }}
+            onClick={() => void validateAddress()}
+            disabled={validating}
           >
             <Text>Найти</Text>
           </Button>
