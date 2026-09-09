@@ -1,4 +1,3 @@
-import { mockCities, promocodesList } from "@/app/(nav)/order-new/data/mocks"
 import { Button } from "@/shared/ui/Button/Button"
 import { Input } from "@/shared/ui/Input/Input"
 import { Tooltip } from "@/shared/ui/Tooltip/Tooltip"
@@ -7,8 +6,10 @@ import { useOrderStore } from "@/entities/Order/store/new-order/orderStore"
 import { SelectTown } from "@/shared/ui/SelectTown/SelectTown"
 import { InputPhone } from "@/features/Inputs/ui/InputPhone/InputPhone"
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text } from "@/shared/ui/Typography/Typography";
+import { citiesApi } from "@/entities/city/api/citiesApi";
+import { promoApi } from "@/entities/promo/api/promoApi";
 
 export const HeaderNewOrder = () => {
   const {
@@ -21,37 +22,65 @@ export const HeaderNewOrder = () => {
   } = useOrderStore();
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  const [cityId, setCityId] = useState<number | null>(null);
+  const [promoDescription, setPromoDescription] = useState<string | null>(null);
+  const [promoValid, setPromoValid] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    citiesApi.list().then((cities) => {
+      if (cancelled) return;
+      setCityOptions(cities.map((item) => item.name));
+      const selected = cities.find((item) => item.name === city) ?? cities[0];
+      if (selected) {
+        setCityId(selected.id);
+        if (selected.name !== city) setCity(selected.name);
+      }
+    }).catch(() => {
+      if (!cancelled) setCityOptions([]);
+    });
+    return () => { cancelled = true; };
+  }, [city, setCity]);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
-    //добавить поиск
+    if (!promocode.trim() || cityId === null) {
+      setPromoValid(null);
+      setPromoDescription(null);
+      return;
+    }
+    void promoApi.check(promocode.trim(), cityId).then((result) => {
+      setPromoValid(result.valid);
+      setPromoDescription(result.promo?.text || result.promo?.conditionText || null);
+    }).catch(() => {
+      setPromoValid(false);
+      setPromoDescription(null);
+    });
   };
 
   const handlePromocodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPromocode(e.target.value);
+    setPromoValid(null);
+    setPromoDescription(null);
     if (isSubmitted) setIsSubmitted(false);
   };
 
-  const foundPromocode = promocode ? promocodesList.find(
-        (p) => p.promocode.toLowerCase() === promocode.trim().toLowerCase()
-      )
-    : null;
-
   const promocodeInfo = !promocode
     ? "Здесь появится информация об условиях действия промокода."
-    : foundPromocode
-      ? foundPromocode.description
+    : promoDescription
+      ? promoDescription
       : "Промокод не найден";
 
-  const promocodeError = isSubmitted && promocode && !foundPromocode ? "Промокод не найден" : undefined;
+  const promocodeError = isSubmitted && promocode && promoValid === false ? "Промокод не найден" : undefined;
 
   const phoneInfo = "Введите номер телефона клиента";
 
   return (
     <form onSubmit={handleSubmit} className="current-order__header">
       <div className="current-order__header-row">
-        <SelectTown value={city} options={mockCities} onSelect={setCity} className="current-order__header-city"/>
+        <SelectTown value={city} options={cityOptions} onSelect={(value) => { setCity(value); setPromoValid(null); setPromoDescription(null); }} className="current-order__header-city"/>
 
         <div className="current-order__header-phone">
           <InputPhone
