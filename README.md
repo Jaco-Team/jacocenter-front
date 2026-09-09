@@ -1,10 +1,10 @@
-# JACO Call Center Frontend
+# Frontend колл-центра JACO
 
-Next.js frontend for the Call Center operator workspace. The application is being migrated from presentation-only mock data to the versioned Call Center API in `../api-callcenter`.
+Next.js-приложение рабочего места оператора колл-центра. Frontend переводится с демонстрационных mock-данных на версионированный Call Center API из `../api-callcenter`.
 
-## Local development
+## Локальная разработка
 
-### Host mode
+### Запуск на хосте
 
 ```bash
 cp .env.example .env.local
@@ -12,74 +12,74 @@ npm ci
 npm run dev
 ```
 
-The default API URL is `http://localhost:8083/api/v1`. Set `NEXT_PUBLIC_API_BASE_URL` in `.env.local` when the API uses another host or port.
+По умолчанию API доступен по адресу `http://localhost:8083/api/v1`. Если API опубликован на другом host/port, укажите `NEXT_PUBLIC_API_BASE_URL` в `.env.local`.
 
-### Docker development mode
+### Разработка в Docker
 
 ```bash
 cp .env.example .env.local
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-The development container publishes the app at `http://localhost:3000`, mounts source files for hot reload, and keeps dependencies and `.next` in named volumes. The browser calls the API through the host URL, so `localhost:8083` is correct when the API is published by its own Compose stack.
+Dev-контейнер публикует приложение на `http://localhost:3000`, монтирует исходники для hot reload и хранит `node_modules` и `.next` в именованных volumes. Браузер обращается к API через host URL, поэтому `localhost:8083` корректен, когда API опубликован своим Compose-стеком.
 
-Stop it with:
+Остановка:
 
 ```bash
 docker compose -f docker-compose.dev.yml down
 ```
 
-### Production image
+### Production-образ
 
 ```bash
 docker compose build
 docker compose up -d
 ```
 
-`Dockerfile` builds a Next standalone image. Public Next variables are build-time values; pass them through the Compose environment before building:
+`Dockerfile` собирает standalone-образ Next. Публичные переменные Next подставляются во время сборки:
 
 ```bash
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8083/api/v1 docker compose build
 ```
 
-Do not put API or database credentials in frontend variables. Only the public API URL and the optional Yandex Maps key belong here.
+Не помещайте API- или database-credentials во frontend-переменные. Здесь допустимы только публичный URL API и необязательный публичный ключ Yandex Maps.
 
-## API access and CORS
+## API и CORS
 
-The API must allow the browser origin. In the API's ignored `.env` configure, for local development:
+API должен разрешать origin браузера. В ignored `.env` репозитория API для локальной разработки укажите:
 
 ```dotenv
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
-Restart or recreate the API container after changing it. Authentication uses a Bearer token returned by `POST /api/v1/auth/token/login`; the frontend stores the operator session in browser session storage and refreshes it before expiry.
+После изменения переменной пересоздайте API-контейнер. Авторизация использует Bearer token из `POST /api/v1/auth/token/login`; frontend хранит сессию в session storage браузера и обновляет токен до истечения срока.
 
-## Architecture
+## Архитектура
 
-The target structure follows Feature-Sliced Design:
+Целевая структура следует Feature-Sliced Design:
 
-- `app` — routes and page composition only;
-- `widgets` — composed screen blocks;
-- `features` — user actions and workflows;
-- `entities` — domain models, API clients, and domain state;
-- `shared` — transport, configuration, UI primitives, and utilities.
+- `app` — маршруты и композиция страниц;
+- `widgets` — составные блоки экранов;
+- `features` — пользовательские действия и workflow;
+- `entities` — доменные модели, API-клиенты и состояние;
+- `shared` — transport, configuration, UI-примитивы и утилиты.
 
-All feature paths use lowercase names. Domain API clients must live under their entity and must not import page-local mock data. Mock data remains allowed for stories and isolated visual development, but not for runtime screens once their API slice is delivered.
+Все feature-пути используют lowercase. Доменные API-клиенты находятся внутри entity и не импортируют mock-данные из page-local каталогов. Mock-данные допустимы для Storybook и изолированной визуальной разработки, но не для runtime-экранов после подключения соответствующего API-среза.
 
-## Verification
+## Проверка
 
 ```bash
 npm run build
 npm run test
 ```
 
-The Docker equivalent is:
+Docker-вариант:
 
 ```bash
 docker compose -f docker-compose.dev.yml run --rm frontend npm run build
 docker compose -f docker-compose.dev.yml run --rm frontend npm run test
 ```
 
-## Current integration status
+## Текущий статус интеграции
 
-Authentication transport and session handling are implemented. The remaining runtime migration is tracked in [PLAN.md](./PLAN.md). Until those slices are completed, several screens intentionally render local mock data and are not yet an end-to-end API client.
+Transport авторизации и управление сессией реализованы. Остальная миграция mock → API описана в [PLAN.md](./PLAN.md). Пока эти этапы не завершены, несколько экранов намеренно используют локальные mock-данные и не являются end-to-end API-клиентами.
