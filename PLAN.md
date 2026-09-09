@@ -28,6 +28,7 @@
 
 | Срез | Владелец | Граница | Результат |
 | --- | --- | --- | --- |
+| Session/auth boundary | завершено | `entities/auth` + `shared/api` | DTO mapping, expiry handling, recovery tests |
 | Cities, points, catalog, allergens | завершено на API-слое | `entities` reference-data only | typed clients, mappers, tests |
 | Customer lookup/history, delivery map, client promos | завершено | customer/delivery/promo + existing widgets | runtime wiring, states, tests |
 | Catalog runtime screen | ожидает снятия frozen boundary | order-new scope | client готов, UI не менять |
@@ -38,7 +39,7 @@
 
 ## Подтверждённые ограничения API
 
-- delivery API возвращает доступные улицы и точки, но не polygon geometry; карта не должна рисовать выдуманные границы из legacy fixtures;
+- delivery API возвращает доступные улицы, точки и отдельные валидированные polygon coordinates; карта не должна рисовать выдуманные границы из legacy fixtures;
 - проверка адреса остаётся источником истины для доступности адреса до появления отдельного geometry-контракта;
 - `/promos` возвращает `name` промокода, но не отдельные `code` и customer-specific `isApplied`; frontend не подменяет эти поля догадками;
 - catalog API подключён на entity-уровне, но runtime catalog находится внутри frozen `order-new` scope.
@@ -57,11 +58,11 @@
 
 Оставшиеся архитектурные разрывы:
 
-- в runtime API сейчас вызывается только для авторизации;
+- runtime API подключён для авторизации, справочников, clients, delivery map и promos;
 - orders, kitchen, clients, catalog, delivery, promos и new-order используют page-local mock-данные;
 - API DTO и UI DTO смешаны в `entities/Order`, отсутствуют явные mapper-границы;
 - состояние workflow распределено между page-компонентами и Zustand stores;
-- нет полного набора тестов для session recovery, DTO mapping и order workflow;
+- order workflow остаётся без полного набора тестов до снятия frozen boundary;
 - для runtime-состояний нужны единые loading, empty, retry и authorization states;
 - production public env нужно задавать во время сборки образа.
 
