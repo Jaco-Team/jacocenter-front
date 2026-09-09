@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { customerApi } from './customerApi';
+import { API_BASE_URL } from '@/shared/config/api';
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -17,5 +18,23 @@ describe('customerApi', () => {
     vi.stubGlobal('fetch', fetchMock);
     await customerApi.createAddress(4, { cityId: 12, streetId: 2, domTrue: true, isMain: true });
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ city_id: 12, street_id: 2, dom_true: true, is_main: true });
+  });
+
+  it('supports address listing, partial updates, and deletion', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ st: true, data: { items: [{ id: 9, customer_id: 4, city_id: 12, street_id: 2, street: 'Ленина', home: '1' }] } }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ st: true, data: { id: 9, customer_id: 4, city_id: 12, street_id: 2, apartment: '10' } }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ st: true, data: {} }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(customerApi.addresses(4, 12)).resolves.toMatchObject([{ id: 9, cityId: 12, streetId: 2 }]);
+    await expect(customerApi.updateAddress(4, 9, { apartment: '10' })).resolves.toMatchObject({ id: 9, apartment: '10' });
+    await expect(customerApi.deleteAddress(4, 9)).resolves.toBeUndefined();
+
+    expect(fetchMock.mock.calls.map(([url, init]) => [url, init.method])).toEqual([
+      ['/customers/4/addresses?city_id=12', undefined],
+      ['/customers/4/addresses/9', 'PATCH'],
+      ['/customers/4/addresses/9', 'DELETE'],
+    ].map(([url, method]) => [`${API_BASE_URL}${url}`, method]));
   });
 });
