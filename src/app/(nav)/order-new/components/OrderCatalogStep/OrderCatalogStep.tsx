@@ -2,10 +2,8 @@ import { InputSearch } from "@/features/InputSearch/ui/InputSearch/InputSearch"
 import { CardsDish } from "@/widgets/CardsDish/ui/CardsDish"
 import { Categories } from "@/widgets/Categories/ui/Categories/Categories"
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore"
-import { useState } from "react"
-import { useEffect } from "react"
-import { catalogApi } from "@/entities/catalog/api/catalogApi"
-import { citiesApi } from "@/entities/city/api/citiesApi"
+import { useMemo, useState } from "react"
+import { useOrderCreationCatalogQuery, useOrderCreationCitiesQuery } from "@/entities/order-creation/api/orderCreationQueries"
 import { mapCatalogCategories, mapCatalogDishes } from "@/entities/order-creation/model/catalogView"
 import { ModalSaucesUtensils } from "@/features/order/ModalSaucesUtensils/ModalSaucesUtensils"
 import { mockSaucesUtensils, SAUCES_UTENSILS_CATEGORY_ID } from "@/app/(nav)/order-new/data/mocks"
@@ -17,39 +15,13 @@ export const OrderCatalogStep = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSaucesModalOpen, setIsSaucesModalOpen] = useState(false);
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
-  const [catalogDishes, setCatalogDishes] = useState<{ id: string; categoryId: string; name: string; price: number; description?: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-    citiesApi.list()
-      .then(async (cities) => {
-        const selectedCity = cities.find((item) => item.name === city) ?? cities[0];
-        if (!selectedCity) throw new Error("Город недоступен оператору");
-        return catalogApi.get(selectedCity.id);
-      })
-      .then((catalog) => {
-        if (cancelled) return;
-        setCategories(catalog.categories.map(mapCatalogCategories));
-          setCatalogDishes(mapCatalogDishes(catalog));
-        setSelectedCategory(null);
-      })
-      .catch((reason: unknown) => {
-        if (!cancelled) {
-          setCategories([]);
-          setCatalogDishes([]);
-          setError(reason instanceof Error ? reason.message : "Не удалось загрузить каталог");
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => { cancelled = true; };
-  }, [city]);
+  const citiesQuery = useOrderCreationCitiesQuery();
+  const cityId = citiesQuery.data?.find((item) => item.name === city)?.id ?? citiesQuery.data?.[0]?.id ?? null;
+  const catalogQuery = useOrderCreationCatalogQuery(cityId);
+  const categories = useMemo(() => catalogQuery.data?.categories.map(mapCatalogCategories) ?? [], [catalogQuery.data]);
+  const catalogDishes = useMemo(() => catalogQuery.data ? mapCatalogDishes(catalogQuery.data) : [], [catalogQuery.data]);
+  const loading = citiesQuery.isLoading || catalogQuery.isLoading;
+  const error = citiesQuery.error ?? catalogQuery.error;
 
   const filteredDishes = catalogDishes.filter((d) => {
     const matchesCategory = selectedCategory ? d.categoryId === selectedCategory : true;
@@ -84,7 +56,7 @@ export const OrderCatalogStep = () => {
 
   return (
     <>
-      {loading ? <Text>Загрузка каталога…</Text> : error ? <Text>{error}</Text> : <Categories items={categories} selectedId={selectedCategory} onSelect={handleCategorySelect} />}
+      {loading ? <Text>Загрузка каталога…</Text> : error ? <Text>{error instanceof Error ? error.message : "Не удалось загрузить каталог"}</Text> : <Categories items={categories} selectedId={selectedCategory} onSelect={handleCategorySelect} />}
       <div className="current-order__search">
         <InputSearch
           value={searchQuery}
@@ -92,7 +64,7 @@ export const OrderCatalogStep = () => {
           placeholder="Поиск товара"
         />
       </div>
-      <div className="current-order__cards"><CardsDish dishes={filteredDishes} /></div>
+      <div className="current-order__cards"><CardsDish dishes={dishes} /></div>
 
       <ModalSaucesUtensils
         isOpen={isSaucesModalOpen}
