@@ -7,7 +7,7 @@ export type CafePoint = {
   address: string;
   district: string;
   deliveryPrice: number;
-  coordinates: LngLat;
+  coordinates: LngLat | null;
 };
 
 export type DeliveryZone = {
@@ -25,35 +25,13 @@ export const ZOOM_RANGE = { min: 9, max: 19 };
 export const DEFAULT_ZOOM = 12;
 export const SAMARA_REGION = "Самарская область";
 
+// Compatibility data for the existing order-new pickup selector. The
+// delivery-map runtime loads points from the API and does not use this list.
 export const cafes: CafePoint[] = [
-  {
-    id: "1",
-    address: "Ворошилова 12а",
-    district: "Автозаводский р-н.",
-    deliveryPrice: 100,
-    coordinates: [49.312353, 53.531521],
-  },
-  {
-    id: "2",
-    address: "Цветной 1",
-    district: "Автозаводский р-н.",
-    deliveryPrice: 150,
-    coordinates: [49.33923, 53.540848],
-  },
-  {
-    id: "3",
-    address: "Ленинградская 47",
-    district: "Центральный р-н.",
-    deliveryPrice: 200,
-    coordinates: [49.414321, 53.505389],
-  },
-  {
-    id: "4",
-    address: "Матросова 32",
-    district: "Комсомольский р-н.",
-    deliveryPrice: 250,
-    coordinates: [49.474651, 53.481084],
-  },
+  { id: "1", address: "Ворошилова 12а", district: "", deliveryPrice: 0, coordinates: null },
+  { id: "2", address: "Цветной 1", district: "", deliveryPrice: 0, coordinates: null },
+  { id: "3", address: "Ленинградская 47", district: "", deliveryPrice: 0, coordinates: null },
+  { id: "4", address: "Матросова 32", district: "", deliveryPrice: 0, coordinates: null },
 ];
 
 export const deliveryZones: DeliveryZone[] = [

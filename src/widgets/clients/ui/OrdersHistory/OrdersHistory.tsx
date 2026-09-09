@@ -14,6 +14,8 @@ export const OrdersHistory = ({
   isOpen,
   onClose,
   orders,
+  loading = false,
+  error = null,
 }: OrdersHistoryProps) => {
   const [selectedOrder, setSelectedOrder] = useState<OrderHistoryRow | null>(null);
 
@@ -58,15 +60,7 @@ export const OrdersHistory = ({
             Последние 3 заказа можно повторить
           </span>
           <div className="orders-history__table-wrapper">
-            <Table
-              data={mappedOrders}
-              columns={ordersHistoryColumns}
-              width={796}
-              height={304}
-              rowHeight={56}
-              headerHeight={52}
-              variant="secondary"
-            />
+            {loading ? <span>Загрузка истории заказов…</span> : error ? <span>{error}</span> : <Table data={mappedOrders} columns={ordersHistoryColumns} width={796} height={304} rowHeight={56} headerHeight={52} variant="secondary" />}
           </div>
         </div>
       </Modal>

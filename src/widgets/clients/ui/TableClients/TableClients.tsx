@@ -3,33 +3,68 @@ import { Table } from "@/shared/ui/Table/Table";
 import { Client } from "./TableClients.types";
 import { useState } from "react";
 import { PromocodeList } from "../PromocodeList/PromocodeList";
-import { clients } from "../../utils/constants";
 import { useSearchFormStore } from "@/entities/client/store/searchForm/searchForm";
 import { OrdersHistory } from "../OrdersHistory/OrdersHistory";
-import { orderHistoryMock } from "../../data/mocks";
 import { getClientsColumns } from "./TableClients.columns";
+import { customerApi } from "@/entities/customer/api/customerApi";
+import type { CustomerLookup, CustomerOrder } from "@/entities/customer/model/types";
+
+function mapClient(lookup: CustomerLookup | null): Client | null {
+  if (!lookup?.customer) return null;
+  const address = lookup.addresses[0];
+  return {
+    id: lookup.customer.id,
+    name: lookup.customer.name,
+    phone: lookup.customer.phone,
+    address: address ? [address.cityName, address.street, address.home, address.apartment ? `кв. ${address.apartment}` : ""].filter(Boolean).join(", ") : "",
+  };
+}
 
 export const TableClients = () => {
   const [selectedClientHistory, setSelectedClientHistory] = useState<Client | null>(null);
   const [selectedClientPromo, setSelectedClientPromo] = useState<Client | null>(null);
-  const { foundClientId } = useSearchFormStore();
-  const foundRow = foundClientId !== null ? clients.findIndex(c => c.id === foundClientId) : null;
-  const columns = getClientsColumns(setSelectedClientHistory, setSelectedClientPromo);
+  const { lookup, foundClientId } = useSearchFormStore();
+  const client = mapClient(lookup);
+  const [historyOrders, setHistoryOrders] = useState<CustomerOrder[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const handleHistoryClick = async (row: Client) => {
+    setSelectedClientHistory(row);
+    setHistoryOrders([]);
+    setHistoryError(null);
+    setHistoryLoading(true);
+    try {
+      setHistoryOrders(await customerApi.orders(row.id));
+    } catch (error) {
+      setHistoryError(error instanceof Error ? error.message : "Не удалось загрузить историю заказов");
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
+  const columns = getClientsColumns(handleHistoryClick, setSelectedClientPromo);
 
   return (
     <>
       <Table 
-        data={clients} 
+        data={client ? [client] : []}
         columns={columns}
         height={592}
         rowHeight={56}
         rowGap={8}
-        foundRow={foundRow === -1 ? null : foundRow}
+        foundRow={client && foundClientId !== null ? 0 : null}
       />
       <OrdersHistory
         isOpen={!!selectedClientHistory}
         onClose={() => setSelectedClientHistory(null)}
-        orders={orderHistoryMock}
+        orders={historyOrders.map((order, index) => ({
+          date: order.dateTime ? new Date(order.dateTime).toLocaleDateString("ru-RU") : "—",
+          orderNumber: `#${order.orderId}`,
+          status: order.statusLabel || "—",
+          total: order.sum,
+          canRepeat: index < 3,
+        }))}
+        loading={historyLoading}
+        error={historyError}
       />      
       <PromocodeList isOpen={!!selectedClientPromo} onClose={() => setSelectedClientPromo(null)}/>
     </>

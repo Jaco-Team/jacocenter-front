@@ -1,6 +1,7 @@
 import { apiRequest } from '@/shared/api/http';
 import { queryString } from '@/shared/api/query';
 import { mapAddress, mapLookup, mapOrder } from './customerMapper';
+import type { AddressDto, CustomerDto, LookupDto, OrderDto } from './customerMapper';
 import type { CustomerAddress, CustomerAddressInput, CustomerLookup, CustomerOrder } from '@/entities/customer/model/types';
 
 const writeAddress = (input: CustomerAddressInput) => ({
@@ -12,31 +13,31 @@ const writeAddress = (input: CustomerAddressInput) => ({
 
 export const customerApi = {
   async lookup(phone: string, cityId?: number): Promise<CustomerLookup> {
-    const response = await apiRequest<{ data: any }>(`/customers/lookup${queryString({ phone, city_id: cityId })}`);
+    const response = await apiRequest<{ data: LookupDto }>(`/customers/lookup${queryString({ phone, city_id: cityId })}`);
     return mapLookup(response.data);
   },
   async profile(customerId: number): Promise<CustomerLookup> {
-    const response = await apiRequest<{ data: any }>(`/customers/${customerId}`);
+    const response = await apiRequest<{ data: LookupDto | CustomerDto }>(`/customers/${customerId}`);
     return mapLookup(response.data);
   },
   async orders(customerId: number): Promise<CustomerOrder[]> {
-    const response = await apiRequest<{ data: { items?: any[] } }>(`/customers/${customerId}/orders`);
+    const response = await apiRequest<{ data: { items?: OrderDto[] } }>(`/customers/${customerId}/orders`);
     return (response.data.items ?? []).map(mapOrder);
   },
   async addresses(customerId: number, cityId?: number): Promise<CustomerAddress[]> {
-    const response = await apiRequest<{ data: { items?: any[] } }>(`/customers/${customerId}/addresses${queryString({ city_id: cityId })}`);
+    const response = await apiRequest<{ data: { items?: AddressDto[] } }>(`/customers/${customerId}/addresses${queryString({ city_id: cityId })}`);
     return (response.data.items ?? []).map(mapAddress);
   },
   async address(customerId: number, addressId: number): Promise<CustomerAddress> {
-    const response = await apiRequest<{ data: any }>(`/customers/${customerId}/addresses/${addressId}`);
+    const response = await apiRequest<{ data: AddressDto }>(`/customers/${customerId}/addresses/${addressId}`);
     return mapAddress(response.data);
   },
   async createAddress(customerId: number, input: Required<Pick<CustomerAddressInput, 'cityId' | 'streetId'>> & CustomerAddressInput): Promise<CustomerAddress> {
-    const response = await apiRequest<{ data: any }>(`/customers/${customerId}/addresses`, { method: 'POST', body: writeAddress(input) });
+    const response = await apiRequest<{ data: AddressDto }>(`/customers/${customerId}/addresses`, { method: 'POST', body: writeAddress(input) });
     return mapAddress(response.data);
   },
   async updateAddress(customerId: number, addressId: number, input: CustomerAddressInput): Promise<CustomerAddress> {
-    const response = await apiRequest<{ data: any }>(`/customers/${customerId}/addresses/${addressId}`, { method: 'PATCH', body: writeAddress(input) });
+    const response = await apiRequest<{ data: AddressDto }>(`/customers/${customerId}/addresses/${addressId}`, { method: 'PATCH', body: writeAddress(input) });
     return mapAddress(response.data);
   },
   async deleteAddress(customerId: number, addressId: number): Promise<void> {

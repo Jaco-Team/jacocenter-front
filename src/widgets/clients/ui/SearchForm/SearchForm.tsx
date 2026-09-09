@@ -6,12 +6,12 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import React from "react";
 
 export const SearchForm = () => {
-  const { phone, searched, setPhone, foundClientId, search } = useSearchFormStore();
+  const { phone, searched, loading, error, setPhone, foundClientId, search } = useSearchFormStore();
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (phone.length !== 10) return;
-    search();
+    void search();
   };
 
   return (
@@ -21,12 +21,12 @@ export const SearchForm = () => {
           value={phone}
           withSearchIcon
           onChange={setPhone}
-          error={ searched && foundClientId === null ? "Клиент с таким номером не найден" : undefined }
+          error={searched && (foundClientId === null || error !== null) ? (error ?? "Клиент с таким номером не найден") : undefined}
           helperText={ foundClientId !== null ? "Клиент есть в базе" : undefined }
         />
       </div>
 
-      <Button type="submit" variant="base" theme={phone.length === 10 && !searched ? "primary" : "secondary"} size="sm">
+      <Button type="submit" variant="base" theme={phone.length === 10 && !searched && !loading ? "primary" : "secondary"} size="sm" disabled={loading}>
         <Text variant="body-m-medium-16">Найти</Text>
       </Button>
     </form>

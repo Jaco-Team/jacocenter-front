@@ -3,13 +3,20 @@ import Image from "next/image";
 import React from "react";
 import { CafeCard } from "../CafeCard/CafeCard";
 import { useOrderStore } from "@/entities/Order/store/new-order/orderStore";
-import { mockCities } from "@/app/(nav)/order-new/data/mocks";
-import { cafes } from "../../data/constants";
+import type { CafePoint } from "../../data/constants";
+import type { City } from "@/entities/city/model/types";
 import { Button } from "@/shared/ui/Button/Button";
 import { useRouter } from "next/navigation";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 
-export const CafeList = () => {
+type CafeListProps = {
+  cities: City[];
+  cafes: CafePoint[];
+  loading?: boolean;
+  error?: string | null;
+};
+
+export const CafeList = ({ cities, cafes, loading = false, error = null }: CafeListProps) => {
   const [isCitiesOpen, setIsCitiesOpen] = React.useState(false);
   const citySelectRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -89,23 +96,26 @@ export const CafeList = () => {
 
             {isCitiesOpen && (
               <ul className="absolute z-10 left-0 top-full mt-1.5 py-3 flex flex-col gap-1 bg-base rounded-lg shadow-[0px_4px_4px_0px_#3C3B3B29] w-[329px] border border-bg-base-light">
-                {mockCities.map((cityOption) => (
-                  <li key={cityOption}>
+                {cities.map((cityOption) => (
+                  <li key={cityOption.id}>
                     <button
                       className="w-full h-10 px-3 flex items-center cursor-pointer hover:bg-bg-base-light"
                       onClick={() => {
-                        setCity(cityOption);
+                        setCity(cityOption.name);
                         setIsCitiesOpen(false);
                       }}
                     >
-                      <Text
-                        className={cityOption === city ? "text-primary" : ""}
-                      >
-                        {cityOption}
+                      <Text className={cityOption.name === city ? "text-primary" : ""}>
+                        {cityOption.name}
                       </Text>
                     </button>
                   </li>
                 ))}
+                {!cities.length && !loading && !error && (
+                  <li className="px-3 py-2"><Text>Города не найдены</Text></li>
+                )}
+                {loading && <li className="px-3 py-2"><Text>Загрузка городов…</Text></li>}
+                {error && <li className="px-3 py-2"><Text className="text-accent">{error}</Text></li>}
               </ul>
             )}
           </div>
@@ -114,6 +124,9 @@ export const CafeList = () => {
         </div>
 
         <ul className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-2">
+          {!loading && !error && !cafes.length && <li className="px-2 py-3"><Text>Точки не найдены</Text></li>}
+          {loading && <li className="px-2 py-3"><Text>Загрузка точек…</Text></li>}
+          {error && <li className="px-2 py-3"><Text className="text-accent">{error}</Text></li>}
           {cafes.map((cafe) => (
             <li key={cafe.id} className="pb-3 border-b border-bg-base">
               <CafeCard

@@ -12,4 +12,6 @@ export interface OrdersHistoryProps {
   isOpen: boolean;
   onClose: () => void;
   orders: OrderHistoryRow[];
+  loading?: boolean;
+  error?: string | null;
 }

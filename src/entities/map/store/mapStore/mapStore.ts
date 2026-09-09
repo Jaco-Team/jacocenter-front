@@ -2,7 +2,7 @@ import { SearchResult } from "@/app/(nav)/delivery-map/components/Map/SearchInpu
 import { create } from "zustand";
 
 type MapSearchResult = SearchResult & { 
-  inDeliveryZone: boolean,
+  inDeliveryZone: boolean | null,
   cafeId: string | null;
 };
 

@@ -8,23 +8,27 @@ import {
   COLORS,
   DEFAULT_ZOOM,
   ZOOM_RANGE,
-  cafes,
   defaultLocation,
-  deliveryZones,
+  type CafePoint,
+  type DeliveryZone,
 } from "../../data/constants";
 import { CafeMarker } from "./CafeMarker";
 import { SearchInput } from "./SearchInput";
 import { SearchMarker } from "./SearchMarker";
 import { SearchResult } from "./SearchInput.types";
-import { booleanPointInPolygon } from "@turf/boolean-point-in-polygon";
 import { useMapStore } from "@/entities/map/store/mapStore/mapStore";
 import { isPointInBounds } from "../../data/utils";
 import { loadYmaps3 } from "@/lib/ymaps3";
 import { Text } from "@/shared/ui/Typography/Typography";
 
+type MapProps = {
+  cafes: CafePoint[];
+  deliveryZones: DeliveryZone[];
+};
+
 const apiKey = process.env.NEXT_PUBLIC_YMAPS_API_KEY ?? "";
 
-export const Map = () => {
+export const Map = ({ cafes, deliveryZones }: MapProps) => {
   const [reactifiedApi, setReactifiedApi] = React.useState<ReactifiedApi>();
   const [loadError, setLoadError] = React.useState<string | null>(null);
   const mapRef = React.useRef<YMapType | null>(null);
@@ -66,7 +70,7 @@ export const Map = () => {
     if (!selectedCafeId || !mapRef.current) return;
 
     const cafe = cafes.find((c) => c.id === selectedCafeId);
-    if (!cafe) return;
+    if (!cafe?.coordinates) return;
 
     if (!isPointInBounds(cafe.coordinates, mapRef.current.bounds)) {
       setLocation({
@@ -97,19 +101,14 @@ export const Map = () => {
       return;
     }
 
-    const matchingZone = deliveryZones.find((zone) =>
-      booleanPointInPolygon(
-        { type: "Point", coordinates: result.coords as [number, number] },
-        { type: "Polygon", coordinates: zone.coordinates as [number, number][][] },
-      ),
-    );
-
     setSearchResult({
       ...result,
-      inDeliveryZone: !!matchingZone,
-      cafeId: matchingZone?.cafeId ?? null,
+      // The API supplies street coverage, not polygon geometry. Address
+      // validation remains the source of truth until polygon data is exposed.
+      inDeliveryZone: null,
+      cafeId: null,
     });
-    selectCafe(matchingZone?.cafeId ?? null);
+    selectCafe(null);
 
     setLocation({
       center: result.coords,
@@ -154,7 +153,7 @@ export const Map = () => {
     YMapMarker,
   } = reactifiedApi;
 
-  const isOutOfZone = searchResult !== null && !searchResult.inDeliveryZone;
+  const isOutOfZone = searchResult?.inDeliveryZone === false;
 
   return (
     <div className="relative h-full w-full min-w-0 overflow-hidden rounded-xl">
@@ -172,12 +171,12 @@ export const Map = () => {
           <YMapMarker coordinates={searchResult.coords}>
             <SearchMarker
               address={searchResult.address}
-              inDeliveryZone={searchResult.inDeliveryZone}
+              inDeliveryZone={searchResult.inDeliveryZone === true}
             />
           </YMapMarker>
         )}
 
-        {deliveryZones.map((zone) => {
+        {deliveryZones.filter((zone) => zone.coordinates.length > 0).map((zone) => {
           const color =
             zone.cafeId === selectedCafeId ? COLORS.selected : COLORS.default;
           return (
@@ -194,7 +193,9 @@ export const Map = () => {
           );
         })}
 
-        {cafes.map((cafe) => (
+        {cafes.filter((cafe) => cafe.coordinates).map((cafe) => {
+          if (!cafe.coordinates) return null;
+          return (
           <YMapMarker
             key={cafe.id}
             coordinates={cafe.coordinates}
@@ -202,7 +203,8 @@ export const Map = () => {
           >
             <CafeMarker cafe={cafe} isSelected={cafe.id === selectedCafeId} />
           </YMapMarker>
-        ))}
+          );
+        })}
       </YMap>
       <ZoomControls
         onZoomIn={() => changeZoom(1)}
