@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./FiltersBlock.style.css";
 import { FiltersBlockProps } from "./FiltersBlock.types";
 import { ModalFilters } from "../ModalFilters/ModalFilters";
@@ -20,6 +20,7 @@ const REFRESH_SECONDS = 60;
 export const FiltersBlock = ({ points, orders }: FiltersBlockProps) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
+  const secondsLeftRef = useRef(REFRESH_SECONDS);
 
   const {
     visibleColumns,
@@ -35,19 +36,21 @@ export const FiltersBlock = ({ points, orders }: FiltersBlockProps) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          triggerRefresh();
-          return REFRESH_SECONDS;
-        }
-        return prev - 1;
-      });
+      const nextSeconds = secondsLeftRef.current <= 1
+        ? REFRESH_SECONDS
+        : secondsLeftRef.current - 1;
+
+      secondsLeftRef.current = nextSeconds;
+      setSecondsLeft(nextSeconds);
+
+      if (nextSeconds === REFRESH_SECONDS) triggerRefresh();
     }, 1000);
 
     return () => clearInterval(timer);
   }, [triggerRefresh]);
 
   const handleRefresh = () => {
+    secondsLeftRef.current = REFRESH_SECONDS;
     triggerRefresh();
     setSecondsLeft(REFRESH_SECONDS);
   };
