@@ -31,6 +31,7 @@
 | Session/auth boundary | завершено | `entities/auth` + `shared/api` | DTO mapping, expiry handling, recovery tests |
 | Cities, points, catalog, allergens | завершено на API-слое | `entities` reference-data only | typed clients, mappers, tests |
 | Customer lookup/history, delivery map, client promos | завершено | customer/delivery/promo + existing widgets | runtime wiring, states, tests |
+| Notifications API | завершено на API-слое | `entities/notifications` | typed client, mapper, read actions, tests; widget mounting pending |
 | Catalog runtime screen | ожидает снятия frozen boundary | order-new scope | client готов, UI не менять |
 | Orders, kitchen, new order | отдельный разработчик | frozen | не изменять |
 | Review and UI smoke | review pass | read-only | findings without UI edits |
@@ -59,10 +60,11 @@
 Оставшиеся архитектурные разрывы:
 
 - runtime API подключён для авторизации, справочников, clients, delivery map и promos;
-- orders, kitchen, clients, catalog, delivery, promos и new-order используют page-local mock-данные;
+- orders, kitchen и new-order используют page-local mock-данные в frozen scope; client history detail использует mock payload до появления order-detail контракта;
 - API DTO и UI DTO смешаны в `entities/Order`, отсутствуют явные mapper-границы;
 - состояние workflow распределено между page-компонентами и Zustand stores;
 - order workflow остаётся без полного набора тестов до снятия frozen boundary;
+- notifications client готов, но durable polling и mounting в layout требуют отдельного UI решения;
 - для runtime-состояний нужны единые loading, empty, retry и authorization states;
 - production public env нужно задавать во время сборки образа.
 
