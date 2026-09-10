@@ -1,3 +1,5 @@
+export type NotificationVariant = 'cafe.stopped' | 'cafe.available';
+
 export type Notification = {
   id: number;
   type: string;

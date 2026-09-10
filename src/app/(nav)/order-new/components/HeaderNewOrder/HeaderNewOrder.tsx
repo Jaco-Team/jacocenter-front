@@ -11,6 +11,8 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { citiesApi } from "@/entities/city/api/citiesApi";
 import { promoApi } from "@/entities/promo/api/promoApi";
 import { customerApi } from "@/entities/customer/api/customerApi";
+import { CustomerCreateModal } from "../CustomerCreateModal/CustomerCreateModal";
+import type { CustomerCreateResult } from "@/entities/customer/model/types";
 
 export const HeaderNewOrder = () => {
   const {
@@ -30,6 +32,8 @@ export const HeaderNewOrder = () => {
   const [cityId, setCityId] = useState<number | null>(null);
   const [promoDescription, setPromoDescription] = useState<string | null>(null);
   const [promoValid, setPromoValid] = useState<boolean | null>(null);
+  const [customerCreateOpen, setCustomerCreateOpen] = useState(false);
+  const [customerStatus, setCustomerStatus] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -55,11 +59,14 @@ export const HeaderNewOrder = () => {
     if (phone.trim()) {
       void customerApi.lookup(phone.trim(), cityId ?? undefined).then((result) => {
         setCustomerId(result.customer?.id ?? null);
+        setCustomerStatus(result.customer ? `Клиент найден: ${result.customer.name || result.customer.phone}` : 'Клиент не найден');
         const address = result.addresses.find((item) => item.cityId === cityId) ?? result.addresses[0];
         setAddressId(address?.id ?? null);
+        if (!result.customer) setCustomerCreateOpen(true);
       }).catch(() => {
         setCustomerId(null);
         setAddressId(null);
+        setCustomerStatus('Не удалось проверить клиента');
       });
     }
     if (!promocode.trim() || cityId === null) {
@@ -104,6 +111,7 @@ export const HeaderNewOrder = () => {
             onChange={setPhone}
             placeholder="999 999-99-99"
           />
+          {customerStatus && <span className="current-order__header-customer-status" role="status">{customerStatus}</span>}
           <Tooltip content={phoneInfo} placement="bottom">
             <button type="button" className="current-order__header-info-btn" aria-label="Информация">
               <Image src="/icons/info-base.svg" alt="" width={20} height={20} />
@@ -115,6 +123,16 @@ export const HeaderNewOrder = () => {
           Найти
         </Button>
       </div>
+      <CustomerCreateModal
+        phone={phone}
+        isOpen={customerCreateOpen}
+        onClose={() => setCustomerCreateOpen(false)}
+        onCreated={(result: CustomerCreateResult) => {
+          setCustomerId(result.customer.id);
+          setCustomerStatus(`Клиент добавлен: ${result.customer.name}`);
+          setCustomerCreateOpen(false);
+        }}
+      />
 
       <div className="current-order__header-promocode">
         <div className="current-order__header-promocode-input">

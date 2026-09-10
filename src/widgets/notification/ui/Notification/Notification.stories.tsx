@@ -18,8 +18,8 @@ export const Default: Story = {
     () => {
       useNotificationStore.setState({
         alerts: [
-          { id: '1', zoneName: 'Зона №1', variant: 'cafe-stopped' },
-          { id: '2', zoneName: 'Зона №2', variant: 'cafe-available' },
+          { id: '1', zoneName: 'Зона №1', variant: 'cafe.stopped' },
+          { id: '2', zoneName: 'Зона №2', variant: 'cafe.available' },
         ],
       });
     },
@@ -30,7 +30,7 @@ export const Default: Story = {
     return (
       <div className="notifications-wrapper">
         {alerts.map((alert) =>
-          alert.variant === 'cafe-stopped'
+          alert.variant === 'cafe.stopped'
             ? <CafeStoppedNotification key={alert.id} id={alert.id} zoneName={alert.zoneName} />
             : <CafeAvailableNotification key={alert.id} id={alert.id} zoneName={alert.zoneName} />
         )}
@@ -38,6 +38,5 @@ export const Default: Story = {
     );
   },
 };
-
 
 

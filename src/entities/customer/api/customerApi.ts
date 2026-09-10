@@ -1,8 +1,8 @@
 import { apiRequest } from '@/shared/api/http';
 import { queryString } from '@/shared/api/query';
-import { mapAddress, mapLookup, mapOrder } from './customerMapper';
+import { mapAddress, mapCustomer, mapLookup, mapOrder } from './customerMapper';
 import type { AddressDto, CustomerDto, LookupDto, OrderDto } from './customerMapper';
-import type { CustomerAddress, CustomerAddressInput, CustomerLookup, CustomerOrder } from '@/entities/customer/model/types';
+import type { CustomerAddress, CustomerAddressInput, CustomerCreateInput, CustomerCreateResult, CustomerLookup, CustomerOrder } from '@/entities/customer/model/types';
 
 const writeAddress = (input: CustomerAddressInput) => ({
   ...(input.cityId !== undefined ? { city_id: input.cityId } : {}), ...(input.streetId !== undefined ? { street_id: input.streetId } : {}),
@@ -12,6 +12,19 @@ const writeAddress = (input: CustomerAddressInput) => ({
 });
 
 export const customerApi = {
+  async create(input: CustomerCreateInput): Promise<CustomerCreateResult> {
+    const response = await apiRequest<{ data: { customer: CustomerDto; created: boolean } }>('/customers', {
+      method: 'POST',
+      body: {
+        phone: input.phone,
+        name: input.name,
+        ...(input.surname ? { surname: input.surname } : {}),
+        ...(input.gender ? { gender: input.gender } : {}),
+        ...(input.birthDate ? { birth_date: input.birthDate } : {}),
+      },
+    });
+    return { customer: mapCustomer(response.data.customer), created: response.data.created };
+  },
   async lookup(phone: string, cityId?: number): Promise<CustomerLookup> {
     const response = await apiRequest<{ data: LookupDto }>(`/customers/lookup${queryString({ phone, city_id: cityId })}`);
     return mapLookup(response.data);

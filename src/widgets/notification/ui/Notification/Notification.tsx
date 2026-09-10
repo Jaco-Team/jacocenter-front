@@ -3,12 +3,17 @@ import { NotificationProps, NotificationConfig } from "./Notification.types";
 import './Notification.style.css';
 import { useNotificationStore } from "@/entities/notifications/store/Notification/Notification";
 
+const cssClassByVariant = {
+  'cafe.stopped': 'cafe-stopped',
+  'cafe.available': 'cafe-available',
+} as const;
+
 const withNotification = ({ variant, text }: NotificationConfig) => {
   return function Notification({ id, zoneName }: NotificationProps) {
     const removeAlert = useNotificationStore((state) => state.removeAlert);
     
     return (
-      <div className={`notification-container ${variant}`}>
+      <div className={`notification-container ${cssClassByVariant[variant]}`}>
         <div className="notification-text">
           <Text variant="heading-l-regular-20">{zoneName}</Text>
           <Text variant="heading-l-regular-20">{text}</Text>
@@ -20,12 +25,12 @@ const withNotification = ({ variant, text }: NotificationConfig) => {
 };
 
 export const CafeStoppedNotification = withNotification({
-  variant: "cafe-stopped",
+  variant: "cafe.stopped",
   text: "Внимание! Прием заказов временно приостановлен!",
 });
 
 export const CafeAvailableNotification = withNotification({
-  variant: "cafe-available",
+  variant: "cafe.available",
   text: "Приём заказов возобновлён! Спасибо за ожидание!",
 });
 

@@ -52,6 +52,19 @@ export type CustomerLookup = {
   addresses: CustomerAddress[];
 };
 
+export type CustomerCreateInput = {
+  phone: string;
+  name: string;
+  surname?: string;
+  gender?: string;
+  birthDate?: string;
+};
+
+export type CustomerCreateResult = {
+  customer: Customer;
+  created: boolean;
+};
+
 export type CustomerAddressInput = {
   cityId?: number;
   streetId?: number;

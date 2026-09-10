@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
+import type { NotificationVariant } from '@/entities/notifications/model/types';
+
 export interface NotificationAlert {
   id: string;
   zoneName: string;
-  variant: 'cafe-stopped' | 'cafe-available';
+  variant: NotificationVariant;
 }
 
 interface NotificationStore {

@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { AuthProvider } from "@/features/auth/ui/AuthProvider/AuthProvider";
 import { QueryProvider } from "@/shared/api/QueryProvider";
+import { NotificationHost } from "@/widgets/notification/ui/NotificationHost/NotificationHost";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -27,7 +28,10 @@ export default function RootLayout({
         className={`${roboto.variable} antialiased`}
       >
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+            <NotificationHost />
+          </AuthProvider>
         </QueryProvider>
         {process.env.NEXT_PUBLIC_YMAPS_API_KEY ? (
           <Script
