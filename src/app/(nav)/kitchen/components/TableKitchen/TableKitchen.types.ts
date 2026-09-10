@@ -1,6 +1,8 @@
 import { OrderStatusKey, OrderTypeKey } from "@/widgets/orders/utils/constants";
 
 export type KitchenOrder = {
+  id: number;
+  pointId: number;
   number: number;
   status: OrderStatusKey;
   type: OrderTypeKey;
@@ -18,4 +20,8 @@ export type KitchenOrder = {
   promisedAt: string;
   receivedAt: string;
   isPreorder?: boolean;
+};
+
+export type TableKitchenProps = {
+  orders: KitchenOrder[];
 };

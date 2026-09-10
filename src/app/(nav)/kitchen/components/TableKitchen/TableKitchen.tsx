@@ -6,10 +6,9 @@ import { getKitchenColumns } from "./TableKitchen.columns";
 import { orderStatus, STATUS_TABS } from "@/widgets/orders/utils/constants";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
 import { ColumnFilter } from "@/features/orders/ui/ColumnFilter/ColumnFilter";
-import { mockKitchenOrders } from "../../data/kitchenOrders.mock";
-import { KitchenOrder } from "./TableKitchen.types";
+import { KitchenOrder, TableKitchenProps } from "./TableKitchen.types";
 
-export const TableKitchen = () => {
+export const TableKitchen = ({ orders }: TableKitchenProps) => {
   const {
     foundOrderNumber,
     statusFilter,
@@ -17,13 +16,11 @@ export const TableKitchen = () => {
     setStatusFilter,
     setTypeFilter,
     visibleColumns,
-    selectedCafe,
     statusTab,
     typeTab,
     sortKey,
     sortDir,
     toggleSort,
-    refreshKey,
   } = useKitchenStore();
 
   const [activeColumn, setActiveColumn] = useState<"status" | "type" | null>(null);
@@ -35,8 +32,7 @@ export const TableKitchen = () => {
   const filteredOrders = useMemo(() => {
     const statusTabConfig = STATUS_TABS.find((tab) => tab.id === statusTab);
 
-    let list = mockKitchenOrders.filter((order) => {
-      const matchesCafe = !selectedCafe || order.cafe === selectedCafe;
+    let list = orders.filter((order) => {
       const matchesStatusFilter = statusFilter[orderStatus[order.status]?.label];
       const matchesTypeFilter = typeFilter[orderStatus[order.type]?.label];
 
@@ -51,13 +47,7 @@ export const TableKitchen = () => {
 
       const matchesTypeTab = typeTab === "all" || order.type === typeTab;
 
-      return (
-        matchesCafe &&
-        matchesStatusFilter &&
-        matchesTypeFilter &&
-        matchesStatusTab &&
-        matchesTypeTab
-      );
+      return matchesStatusFilter && matchesTypeFilter && matchesStatusTab && matchesTypeTab;
     });
 
     if (sortKey && sortDir) {
@@ -70,16 +60,7 @@ export const TableKitchen = () => {
     }
 
     return list;
-  }, [
-    selectedCafe,
-    statusFilter,
-    typeFilter,
-    statusTab,
-    typeTab,
-    sortKey,
-    sortDir,
-    refreshKey,
-  ]);
+  }, [orders, statusFilter, typeFilter, statusTab, typeTab, sortKey, sortDir]);
 
   const foundRow =
     foundOrderNumber === null

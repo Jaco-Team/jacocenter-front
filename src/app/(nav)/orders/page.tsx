@@ -147,7 +147,7 @@ const mapOrder = (order: OrderDto): Order => ({
   promisedAt: formatTime(order.give_data_time || order.date_time_preorder),
   amount: order.order_price,
   payment: order.payment_type === 1 ? "нал" : "б/н",
-  driver: "—",
+  driver: order.driver ?? "—",
   isPreorder: order.is_preorder,
 });
 
