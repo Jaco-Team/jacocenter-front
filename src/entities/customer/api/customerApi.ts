@@ -17,6 +17,7 @@ export const customerApi = {
       method: 'POST',
       body: {
         phone: input.phone,
+        city_id: input.cityId,
         name: input.name,
         ...(input.surname ? { surname: input.surname } : {}),
         ...(input.gender ? { gender: input.gender } : {}),

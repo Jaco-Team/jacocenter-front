@@ -12,12 +12,12 @@ describe('customerApi', () => {
     } }), { status: 201 }));
     vi.stubGlobal('fetch', fetchMock);
 
-    await expect(customerApi.create({ phone: '+7 (927) 123-45-67', name: 'Иван', surname: 'Иванов', birthDate: '1990-01-01' })).resolves.toMatchObject({
+    await expect(customerApi.create({ phone: '+7 (927) 123-45-67', cityId: 1, name: 'Иван', surname: 'Иванов', birthDate: '1990-01-01' })).resolves.toMatchObject({
       created: true,
       customer: { id: 17, name: 'Иван', phone: '79271234567' },
     });
     expect(fetchMock.mock.calls[0][0]).toBe(`${API_BASE_URL}/customers`);
-    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ phone: '+7 (927) 123-45-67', name: 'Иван', surname: 'Иванов', birth_date: '1990-01-01' });
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ phone: '+7 (927) 123-45-67', city_id: 1, name: 'Иван', surname: 'Иванов', birth_date: '1990-01-01' });
   });
 
   it('maps lookup data and encodes the phone query', async () => {

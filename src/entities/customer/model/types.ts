@@ -54,6 +54,7 @@ export type CustomerLookup = {
 
 export type CustomerCreateInput = {
   phone: string;
+  cityId: number;
   name: string;
   surname?: string;
   gender?: string;

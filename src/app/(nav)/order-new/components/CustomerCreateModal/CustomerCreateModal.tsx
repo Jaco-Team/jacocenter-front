@@ -8,12 +8,13 @@ import './CustomerCreateModal.styles.css';
 
 type Props = {
   phone: string;
+  cityId: number;
   isOpen: boolean;
   onClose: () => void;
   onCreated: (result: CustomerCreateResult) => void;
 };
 
-export const CustomerCreateModal = ({ phone, isOpen, onClose, onCreated }: Props) => {
+export const CustomerCreateModal = ({ phone, cityId, isOpen, onClose, onCreated }: Props) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [gender, setGender] = useState('');
@@ -32,7 +33,7 @@ export const CustomerCreateModal = ({ phone, isOpen, onClose, onCreated }: Props
     const normalizedName = name.trim();
     if (!normalizedName) { setError('Укажите имя клиента'); return; }
     setSaving(true); setError(null);
-    const input: CustomerCreateInput = { phone, name: normalizedName };
+    const input: CustomerCreateInput = { phone, cityId, name: normalizedName };
     if (surname.trim()) input.surname = surname.trim();
     if (gender.trim()) input.gender = gender.trim();
     if (birthDate) input.birthDate = birthDate;

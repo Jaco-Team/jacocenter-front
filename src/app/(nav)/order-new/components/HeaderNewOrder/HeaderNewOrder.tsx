@@ -125,6 +125,7 @@ export const HeaderNewOrder = () => {
       </div>
       <CustomerCreateModal
         phone={phone}
+        cityId={cityId ?? 0}
         isOpen={customerCreateOpen}
         onClose={() => setCustomerCreateOpen(false)}
         onCreated={(result: CustomerCreateResult) => {

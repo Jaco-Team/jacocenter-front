@@ -7,6 +7,7 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     phone: '+7 (927) 123-45-67',
+    cityId: 1,
     isOpen: true,
     onClose: () => undefined,
     onCreated: () => undefined,
