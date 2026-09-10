@@ -5,7 +5,7 @@
 }
 
 .current-order__header-row {
-  @apply flex items-center gap-3;
+  @apply grid grid-cols-[196px_minmax(0,1fr)_76px] items-center gap-3;
 }
 
 .current-order__header-city {
@@ -17,11 +17,11 @@
 }
 
 .current-order__header-phone {
-  @apply flex items-center gap-2 w-auto flex-shrink-0;
+  @apply flex min-w-0 w-full items-center gap-2;
 }
 
 .current-order__header-phone .phone-root {
-  @apply w-[196px];
+  @apply w-full min-w-0;
 }
 
 .current-order__header-phone .input-field {
@@ -59,5 +59,5 @@
 }
 
 .current-order__header-button {
-  @apply w-[76px] h-[44px] flex-shrink-0;
+  @apply w-[76px] h-[44px] justify-self-end;
 }

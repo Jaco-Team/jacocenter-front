@@ -15,6 +15,10 @@ import { OrderCatalogStep } from "./components/OrderCatalogStep/OrderCatalogStep
 import { cafes } from "../delivery-map/data/constants";
 import { submitOrder } from "@/entities/order-creation/api/orderCreationWorkflow";
 import { ApiError } from "@/shared/api/http";
+import { customerApi } from "@/entities/customer/api/customerApi";
+import { deliveryApi } from "@/entities/delivery/api/deliveryApi";
+import { citiesApi } from "@/entities/city/api/citiesApi";
+import { pointsApi } from "@/entities/point/api/pointsApi";
 
 export default function CurrentOrderPage() {
   const step = useOrderStore((s) => s.step);
@@ -58,28 +62,67 @@ export default function CurrentOrderPage() {
 
   const handleConfirm = async () => {
     setConfirmError(null);
-    const selectedPointId = deliveryType === "delivery" ? delivery.pointId : pointId;
     const typeOrder = deliveryType === "delivery" ? 1 : 2;
-    if (!cityId || !customerId || !selectedPointId) {
-      const error = new Error("Заполните город, телефон клиента и точку получения");
-      setConfirmError(error.message);
-      throw error;
-    }
-    if (deliveryType === "delivery" && !addressId) {
-      const error = new Error("Для доставки нужен сохранённый адрес клиента");
-      setConfirmError(error.message);
-      throw error;
-    }
-
     setIsSubmitting(true);
     try {
+      const selectedCityId = cityId ?? (await citiesApi.list()).find((city) => city.name === useOrderStore.getState().city)?.id;
+      if (!selectedCityId) throw new Error("Не удалось определить город заказа");
+
+      const lookup = customerId ? null : await customerApi.lookup(phone, selectedCityId);
+      const selectedCustomerId = customerId ?? lookup?.customer?.id;
+      if (!selectedCustomerId) throw new Error("Клиент не найден. Нажмите «Найти» или проверьте телефон");
+
+      const customerAddresses = lookup?.addresses ?? await customerApi.addresses(selectedCustomerId, selectedCityId);
+      let selectedPointId = deliveryType === "delivery" ? delivery.pointId : pointId;
+      let selectedAddressId = deliveryType === "delivery" ? addressId : null;
+      let selectedStreetId = deliveryType === "delivery" ? delivery.streetId ?? undefined : undefined;
+
+      if (deliveryType === "delivery") {
+        const parsedAddress = splitStreetAndHome(delivery.address);
+        if (!parsedAddress) throw new Error("Укажите улицу и дом в поле адреса");
+
+        if (!selectedStreetId || !selectedPointId) {
+          const streets = await deliveryApi.streets(selectedCityId, parsedAddress.street);
+          const matchedStreet = streets.find((street) => normalizeHome(street.home) === normalizeHome(parsedAddress.home));
+          selectedStreetId = selectedStreetId ?? matchedStreet?.id;
+          selectedPointId = selectedPointId ?? matchedStreet?.pointId ?? null;
+        }
+
+        const matchingAddress = customerAddresses.find((savedAddress) =>
+          (selectedStreetId === undefined || savedAddress.streetId === selectedStreetId)
+          && normalizeHome(savedAddress.home) === normalizeHome(parsedAddress.home)
+          && savedAddress.cityId === selectedCityId,
+        );
+        selectedAddressId = selectedAddressId ?? matchingAddress?.id ?? null;
+        selectedPointId = selectedPointId ?? matchingAddress?.delivery.pointId ?? null;
+        if (!selectedAddressId && selectedStreetId) {
+          const createdAddress = await customerApi.createAddress(selectedCustomerId, {
+            cityId: selectedCityId,
+            streetId: selectedStreetId,
+            apartment: delivery.apartment || undefined,
+            entrance: delivery.entrance || undefined,
+            floor: delivery.floor || undefined,
+            comment: payment.comment || undefined,
+            isMain: false,
+          });
+          selectedAddressId = createdAddress.id;
+          selectedPointId = selectedPointId ?? createdAddress.delivery.pointId;
+        }
+        if (!selectedAddressId) throw new Error("Не удалось сохранить адрес клиента");
+      } else if (!selectedPointId) {
+        const points = await pointsApi.list(selectedCityId);
+        selectedPointId = points.find((point) => point.address === pickup.cafe || point.name === pickup.cafe)?.id ?? null;
+      }
+
+      if (!selectedPointId) throw new Error("Не удалось определить точку получения");
+
       await submitOrder({
-        cityId,
+        cityId: selectedCityId,
         pointId: selectedPointId,
-        customerId,
+        customerId: selectedCustomerId,
         typeOrder,
-        addressId: deliveryType === "delivery" ? addressId ?? undefined : undefined,
-        streetId: deliveryType === "delivery" ? delivery.streetId ?? undefined : undefined,
+        addressId: deliveryType === "delivery" ? selectedAddressId ?? undefined : undefined,
+        streetId: deliveryType === "delivery" ? selectedStreetId : undefined,
         promoCode: promocode || undefined,
         phone: phone || undefined,
         items: items.map((item) => ({ itemId: Number(item.id), quantity: item.count })),
@@ -223,4 +266,16 @@ export default function CurrentOrderPage() {
       />
     </div>
   );
+}
+
+function splitStreetAndHome(value: string): { street: string; home: string } | null {
+  const normalized = value.trim().replace(/,\s*$/, "");
+  const match = normalized.match(/^(.+?)[,\s]+(\d+[А-Яа-яA-Za-z]?(?:[/-]\d+[А-Яа-яA-Za-z]?)?)$/);
+  if (!match) return null;
+  const street = match[1].trim().replace(/,\s*$/, "").trim();
+  return street ? { street, home: match[2] } : null;
+}
+
+function normalizeHome(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, "");
 }
