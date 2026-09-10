@@ -11,6 +11,8 @@ export const mockKitchenOrders: KitchenOrder[] = Array.from({ length: 200 }, (_,
   const status = statuses[i % statuses.length];
 
   return {
+    id: i + 800000,
+    pointId: (i % 4) + 1,
     number: i + 800000,
     city: cityOptions[i % 2],
     cafe: cafeOptions[i % 4],

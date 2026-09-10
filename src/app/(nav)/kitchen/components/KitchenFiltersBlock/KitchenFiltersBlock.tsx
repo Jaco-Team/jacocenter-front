@@ -13,19 +13,24 @@ import {
   StatusTabId,
   TypeTabId,
 } from "@/widgets/orders/utils/constants";
-import { cafeOptions, mockKitchenOrders } from "../../data/kitchenOrders.mock";
+import type { KitchenOrder } from "../TableKitchen/TableKitchen.types";
 
 const REFRESH_SECONDS = 60;
 
-export const KitchenFiltersBlock = () => {
+type KitchenFiltersBlockProps = {
+  points: Array<{ id: number; address: string }>;
+  orders: KitchenOrder[];
+};
+
+export const KitchenFiltersBlock = ({ points, orders }: KitchenFiltersBlockProps) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
 
   const {
     visibleColumns,
     setVisibleColumns,
-    selectedCafe,
-    setSelectedCafe,
+    selectedPointId,
+    setSelectedPointId,
     statusTab,
     typeTab,
     setStatusTab,
@@ -56,8 +61,7 @@ export const KitchenFiltersBlock = () => {
     const tab = STATUS_TABS.find((item) => item.id === tabId);
     if (!tab) return 0;
 
-    return mockKitchenOrders.filter((order) => {
-      if (selectedCafe && order.cafe !== selectedCafe) return false;
+    return orders.filter((order) => {
       if (tabId === "preorder") return Boolean(order.isPreorder) && order.status !== "cancel";
       if (tabId === "active") return tab.statuses.includes(order.status) && !order.isPreorder;
       return tab.statuses.includes(order.status);
@@ -123,12 +127,12 @@ export const KitchenFiltersBlock = () => {
 
       <div className="filters-block__row">
         <ul className="cafe-filters-list">
-          {cafeOptions.map((cafe) => (
-            <li key={cafe}>
+          {points.map((point) => (
+            <li key={point.id}>
               <CafeFilterTab
-                cafe={cafe}
-                isActive={selectedCafe === cafe}
-                onSelect={() => setSelectedCafe(cafe)}
+                cafe={point.address}
+                isActive={selectedPointId === point.id}
+                onSelect={() => setSelectedPointId(point.id)}
               />
             </li>
           ))}

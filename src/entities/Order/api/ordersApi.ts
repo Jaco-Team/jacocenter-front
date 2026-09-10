@@ -37,6 +37,8 @@ export type OrderDto = {
   status: number;
   status_label: string;
   payment_type: number;
+  driver_id: number;
+  driver: string | null;
   is_preorder: boolean;
   date_time_order: string | null;
   date_time_preorder: string | null;
@@ -75,7 +77,7 @@ export const ordersApi = {
     return apiRequest<ResourceCollection<CityDto>>("/cities", { method: "GET" });
   },
 
-  points(cityId: number) {
+  points(cityId?: number) {
     return apiRequest<ResourceCollection<PointDto>>(
       withQuery("/points", { city_id: cityId }),
       { method: "GET" },
@@ -99,5 +101,23 @@ export const ordersApi = {
       withQuery(`/orders/${orderId}`, { point_id: pointId }),
       { method: "GET" },
     );
+  },
+
+  kitchenList({ pointId, date, perPage = 100 }: OrdersQuery) {
+    return apiRequest<SuccessResponse<{ items: OrderDto[]; total: number; per_page: number }>>(
+      withQuery("/kitchen/orders", {
+        point_id: pointId,
+        date_from: date,
+        date_to: date,
+        per_page: perPage,
+      }),
+      { method: "GET" },
+    );
+  },
+
+  kitchenShow(orderId: number) {
+    return apiRequest<SuccessResponse<OrderDto>>(`/kitchen/orders/${orderId}`, {
+      method: "GET",
+    });
   },
 };

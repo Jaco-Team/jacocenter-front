@@ -4,6 +4,10 @@
   @apply flex items-center justify-between gap-4 min-h-[48px];
 }
 
+.header-kitchen-left {
+  @apply flex items-center gap-4;
+}
+
 .header-kitchen-title {
   @apply text-text-base shrink-0;
 }

@@ -1,31 +1,103 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/shared/ui/Button/Button";
 import { Input } from "@/shared/ui/Input/Input";
 import { Text } from "@/shared/ui/Typography/Typography";
-import "./HeaderKitchen.style.css";
+import { SelectTown } from "@/shared/ui/SelectTown/SelectTown";
+import { CityDto, ordersApi } from "@/entities/Order/api/ordersApi";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
+import { StatusTabId } from "@/widgets/orders/utils/constants";
+import type { KitchenOrder } from "../TableKitchen/TableKitchen.types";
+import "./HeaderKitchen.style.css";
 
-export const HeaderKitchen = () => {
+type HeaderKitchenProps = {
+  cities: Array<Pick<CityDto, "id" | "name">>;
+  orders: KitchenOrder[];
+};
+
+export const HeaderKitchen = ({ cities, orders }: HeaderKitchenProps) => {
   const {
     orderNumber,
     foundOrderNumber,
     searched,
+    cityId,
+    setCityId,
     setOrderNumber,
     clearOrderNumber,
-    search,
+    setFoundOrder,
   } = useKitchenStore();
+  const [isSearching, setIsSearching] = useState(false);
+
+  const selectedCity = cities.find((city) => city.id === cityId);
+
+  const search = async () => {
+    const query = orderNumber.trim();
+    if (!query) return;
+
+    const localMatch = orders.find((order) => String(order.number) === query);
+    if (localMatch) {
+      setFoundOrder({
+        foundOrderNumber: localMatch.number,
+        searched: true,
+        selectedPointId: localMatch.pointId,
+        statusTab: statusTabForOrder(localMatch),
+      });
+      return;
+    }
+
+    const orderId = Number(query);
+    if (!Number.isFinite(orderId) || orderId <= 0) {
+      setFoundOrder({ foundOrderNumber: null, searched: true });
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const { data } = await ordersApi.kitchenShow(orderId);
+      let nextStatusTab: StatusTabId = "active";
+      if (data.status === 6) nextStatusTab = "completed";
+      else if (data.is_preorder) nextStatusTab = "preorder";
+
+      const { data: allPoints } = await ordersApi.points();
+      const point = allPoints.find((item) => item.id === data.point_id);
+
+      setFoundOrder({
+        foundOrderNumber: data.id,
+        searched: true,
+        cityId: point?.city_id,
+        selectedPointId: data.point_id,
+        statusTab: nextStatusTab,
+      });
+    } catch {
+      setFoundOrder({ foundOrderNumber: null, searched: true });
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") search();
+    if (e.key === "Enter") void search();
   };
 
   return (
     <div className="header-kitchen-container">
-      <Text variant="body-l-medium-20" className="header-kitchen-title">
-        Кухня
-      </Text>
+      <div className="header-kitchen-left">
+        <Text variant="body-l-medium-20" className="header-kitchen-title">
+          Кухня
+        </Text>
+        <SelectTown
+          options={cities.map((city) => city.name)}
+          value={selectedCity?.name}
+          onSelect={(name) => {
+            const city = cities.find((item) => item.name === name);
+            setCityId(city?.id ?? null);
+          }}
+          dropdownClassName="w-full left-0"
+          className="w-[196px] shrink-0"
+        />
+      </div>
 
       <div className="header-kitchen-search">
         <div className="relative">
@@ -50,9 +122,10 @@ export const HeaderKitchen = () => {
           variant="base"
           theme="primary"
           size="sm"
-          onClick={search}
+          onClick={() => void search()}
           className="header-kitchen-search-btn"
           aria-label="Найти заказ"
+          disabled={isSearching}
         >
           <Image
             src="/icons/search.svg"
@@ -65,6 +138,13 @@ export const HeaderKitchen = () => {
       </div>
     </div>
   );
+};
+
+const statusTabForOrder = (order: KitchenOrder): StatusTabId => {
+  if (order.status === "cancel") return "cancelled";
+  if (order.status === "completed") return "completed";
+  if (order.isPreorder) return "preorder";
+  return "active";
 };
 
 const ClearButton = ({ onClick, className = "" }: { onClick: () => void; className?: string }) => (
