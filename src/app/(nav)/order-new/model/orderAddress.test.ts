@@ -7,6 +7,8 @@ describe('order address parser', () => {
     ['Чапаева, 47', { street: 'Чапаева', home: '47' }],
     ['Ленина 12а', { street: 'Ленина', home: '12а' }],
     ['Мира 10/2', { street: 'Мира', home: '10/2' }],
+    ['Ворошилова, 11к1с1', { street: 'Ворошилова', home: '11к1с1' }],
+    ['Ленина 7 корп. 2', { street: 'Ленина', home: '7к2' }],
   ])('parses %s', (input, expected) => {
     expect(splitStreetAndHome(input)).toEqual(expected);
   });
