@@ -25,7 +25,16 @@ describe('reference-data API clients', () => {
     const fetchMock = fetchJson({ st: true, data: [{ id: 4, city_id: 7, name: 'Центр', address: 'ул. Ленина, 1', base: 'base' }] });
 
     await expect(pointsApi.list(7)).resolves.toEqual([
-      { id: 4, cityId: 7, city: null, name: 'Центр', address: 'ул. Ленина, 1', base: 'base' },
+      {
+        id: 4,
+        cityId: 7,
+        city: null,
+        name: 'Центр',
+        address: 'ул. Ленина, 1',
+        base: 'base',
+        latitude: null,
+        longitude: null,
+      },
     ]);
     expect(fetchMock.mock.calls[0][0]).toBe(`${API_BASE_URL}/points?city_id=7`);
   });

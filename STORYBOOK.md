@@ -6,6 +6,11 @@ Storybook является каталогом UI-компонентов, виз�
 
 Документ является единой точкой хранения правил, ограничений, текущих проблем и задач, связанных со Storybook.
 
+Storybook организован как UI kit, а не как копия маршрутов. В каталоге сначала
+идут foundation и shared primitives, затем entities/features/widgets и только
+после них экранные композиции. Stories описывают публичный UI-контракт слоя;
+они не являются местом для бизнес-логики или интеграционных запросов.
+
 ## Текущая конфигурация
 
 - Storybook 10 на `@storybook/nextjs-vite`.
@@ -35,6 +40,17 @@ npm run build-storybook
 5. Не импортируйте page-local runtime mocks в production-компоненты. Fixtures для Storybook хранятся рядом с историей или в отдельном Storybook-only каталоге.
 6. Имена title следуют FSD-структуре, например `Shared/Button`, `OrderNew/DeliveryTab`, `Widgets/Order/Cart`.
 7. Новая история по умолчанию получает `tags: ['autodocs']`, если для компонента не указана обоснованная причина исключения.
+
+### Таксономия каталога
+
+- `Shared UI/*` — foundation tokens и переиспользуемые primitives;
+- `Entities/*` — визуальное представление доменной сущности;
+- `Features/*` — одно пользовательское действие или stateful control;
+- `Widgets/*` — составные блоки экранов;
+- `OrderNew/*`, `DeliveryMap/*`, `Orders/*`, `Kitchen/*` — изолированные
+  экранные композиции, не заменяющие stories нижних слоёв;
+- `Example/*` — временные демонстрационные stories Storybook bootstrap и не
+  должны расширяться production-компонентами.
 
 ## Обязательные состояния
 
@@ -74,6 +90,11 @@ npm run build-storybook
 
 Миграция старых `.style.css`/`.styles.css` файлов, глобальных селекторов и дублирующихся токенов выполняется отдельными refactor-шагами и не должна смешиваться с подключением API.
 
+Foundation tokens представлены в `Shared UI/Foundations`. Эта story является
+визуальной инвентаризацией текущих CSS custom properties, а не вторым источником
+значений. При добавлении токена сначала меняется `globals.css`, затем foundation
+story и только после этого компонент.
+
 ## Текущий охват
 
 В репозитории сейчас около 61 story-файла, 58 CSS-файлов и более 100 TSX-компонентов. Истории есть у большинства shared primitives и части widgets/features, однако покрытие неполное.
@@ -105,6 +126,9 @@ empty/disabled, delivery/pickup, cash/card и saved-time состояния. К�
 - Storybook пока не является CI-gate для полноты историй.
 - В проекте есть legacy-истории в `src/stories`, которые нужно постепенно привести к текущей FSD-навигации.
 - Полные page stories не должны подменять stories для reusable-компонентов.
+- В legacy-каталоге есть неоднородные импорты (`@storybook/react`, `@storybook/nextjs`,
+  `@storybook/nextjs-vite`). Новые stories используют `@storybook/react-vite`; старые
+  истории мигрируются точечно, когда меняется соответствующий компонент.
 
 ## Definition of done для UI-компонента
 
@@ -127,6 +151,11 @@ empty/disabled, delivery/pickup, cash/card и saved-time состояния. К�
 5. Устранить `react-imask` warning и документировать стабильный Docker Storybook workflow.
 6. Ввести автоматическую проверку отсутствующей colocated story для reusable UI.
 7. После стабилизации поведения выполнить отдельный refactor CSS naming/tokens.
+
+Текущий результат: foundation story и базовые order-new stories добавлены;
+следующий слой — MSW fixtures для API-driven components и portable interaction
+tests, после чего release-критичные a11y checks можно перевести с `todo` на
+`error`.
 
 ## Figma и UI design system
 

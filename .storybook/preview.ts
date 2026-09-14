@@ -6,6 +6,11 @@ const preview: Preview = {
     nextjs: {
       appDirectory: true,
     },
+    options: {
+      storySort: {
+        order: ['Shared UI', 'Entities', 'Features', 'Widgets', 'OrderNew', 'DeliveryMap', 'Orders', 'Kitchen', 'Example'],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
