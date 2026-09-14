@@ -109,7 +109,9 @@ story и только после этого компонент.
 - loading/empty/error states для API-driven UI;
 - auth boundaries и состояния восстановления сессии;
 - модальные сценарии confirm/delete/success с ошибками и повторной отправкой;
-- keyboard, narrow viewport и accessibility сценарии.
+- keyboard, narrow viewport и accessibility сценарии. Для `HeaderNewOrder` и
+  `DeliveryTab` базовые keyboard/focus сценарии уже добавлены; остальные
+  интерактивные истории требуют такого же точечного покрытия.
 
 В order-new runtime уже используются API-backed catalog/address/customer/cart
 flows и bottom notification toast. Эти компоненты должны получить deterministic
@@ -123,16 +125,19 @@ Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь испол
 MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
 API.
 
-`HeaderNewOrder` покрывает lookup-состояния `CustomerFound`, `CustomerNotFound`
-и `LookupError`; not-found сценарий проверяет открытие формы добавления клиента,
-а error-сценарий оставляет оператора в текущем draft для повторной попытки.
+`HeaderNewOrder` покрывает lookup-состояния `CustomerFound`,
+`CustomerWithSavedAddress`, `CustomerNotFound` и `LookupError`. Сценарий
+сохранённого адреса проверяет выбор адреса текущего города и его идентификатора
+в draft. Not-found сценарий проверяет открытие формы добавления клиента, а
+error-сценарий оставляет оператора в текущем draft для повторной попытки.
 
 `DeliveryTab` покрывает адресную валидацию success, out-of-zone и network-error;
 каждый сценарий использует MSW override и проверяет операторское сообщение, не
 обращаясь к реальному API.
 
 Заполненные delivery/pickup/catalog stories дополнительно имеют narrow viewport
-вариант; новые order-new stories явно объявляют текущий a11y режим. Перевод
+вариант; `DeliveryTab` также имеет play-сценарий клавиатурной навигации от поля
+адреса к проверке адреса. Новые order-new stories явно объявляют текущий a11y режим. Перевод
 release-критичных историй с `todo` на `error` выполняется после устранения
 legacy-нарушений во всём каталоге.
 

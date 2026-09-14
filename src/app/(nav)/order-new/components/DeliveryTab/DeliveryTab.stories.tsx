@@ -42,6 +42,25 @@ export const AddressReadyForValidation: Story = {
   ],
 };
 
+export const KeyboardNavigation: Story = {
+  loaders: [
+    async () => {
+      useOrderStore.getState().resetOrder();
+      return {};
+    },
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const address = canvas.getByLabelText('Улица, дом');
+    await userEvent.click(address);
+    await userEvent.type(address, 'Чапаева 47');
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Найти' })).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await expect(canvas.getByRole('button', { name: 'Найти' })).toBeDisabled();
+  },
+};
+
 export const ValidatedAddress: Story = {
   args: { activeTimeTab: 'nearest' },
   parameters: { viewport: { defaultViewport: 'mobile1' } },

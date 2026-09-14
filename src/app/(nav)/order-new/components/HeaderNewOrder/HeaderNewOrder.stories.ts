@@ -42,6 +42,42 @@ export const CustomerFound: Story = {
   },
 };
 
+export const CustomerWithSavedAddress: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('*/api/v1/customers/lookup', () => HttpResponse.json({
+          st: true,
+          data: {
+            phone: '+79991234567',
+            registered: true,
+            customer: { id: 406851, name: 'Иван Иванов', phone: '+79991234567' },
+            last_order: null,
+            last_order_state: '',
+            addresses: [{
+              id: 77,
+              cityId: 1,
+              cityName: 'Тольятти',
+              street: 'Чапаева',
+              home: '47',
+              apartment: '12',
+              isMain: true,
+            }],
+          },
+        })),
+      ],
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    useOrderStore.getState().resetOrder();
+    await userEvent.type(canvas.getByPlaceholderText('999 999-99-99'), '9991234567');
+    await userEvent.click(canvas.getByRole('button', { name: 'Найти' }));
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Клиент найден: Иван Иванов');
+    await expect.poll(() => useOrderStore.getState().addressId).toBe(77);
+  },
+};
+
 export const CustomerNotFound: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

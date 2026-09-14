@@ -231,14 +231,16 @@
    проверка зоны, pickup-координаты и корректные состояния ошибки/повтора.
    Handoff из карты в order-new с геокодированным адресом и координатами
    реализован; Storybook покрывает valid/out-of-zone/network-error validation.
-   Остаются saved-address edge cases и ручная E2E-проверка.
+   Storybook покрывает выбор сохранённого адреса текущего города; остаются
+   адреса другого города, отсутствие сохранённых адресов и ручная E2E-проверка.
 3. Сформировать Storybook coverage для order-new, customer lookup/create,
    address validation, cart confirmation и red/green bottom toast; базовые
    stories для `ByTimeTab`, `NearestTab` и `PaymentBlock` добавлены, остаются
    MSW fixtures для API-driven компонентов добавлены для delivery, pickup и
    catalog; portable `play`-проверки payment/time flows, customer lookup
-   (found/not-found/error) и narrow viewport варианты добавлены. Остаются
-   keyboard/a11y states и CI gate.
+   (found/not-found/error) и narrow viewport варианты добавлены. Keyboard/focus
+   сценарий для адреса и поиска, а также CI gate добавлены; остаётся расширить
+   точечные проверки для модальных и toast-состояний.
 4. Вынести оставшиеся presentation-only значения в явные API states и убрать
    случайные номера/локальные authoritative totals. Runtime fallback времени
    удалён; ModalTimeSelect использует только API slots.
