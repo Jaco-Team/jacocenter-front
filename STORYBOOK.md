@@ -120,6 +120,12 @@ empty/disabled, delivery/pickup, cash/card и saved-time состояния. Д�
 которые сразу выполняют API-запросы (`DeliveryTab`, `PickupTab`, `OrderCatalogStep`),
 ожидают MSW fixtures, чтобы Storybook не зависел от runtime API.
 
+Общие deterministic handlers находятся в `.storybook/handlers.ts` и подключены
+через `msw-storybook-addon` с `onUnhandledRequest: 'bypass'`. Они покрывают
+города, точки, каталог, зоны и cart validation; production API и credentials
+в Storybook не используются. История, которой нужен другой ответ, переопределяет
+handler локально через `parameters.msw.handlers`.
+
 ## Известные проблемы
 
 - В build Storybook есть предупреждение `unable to find package.json for react-imask`; сборка сейчас завершается успешно, но предупреждение нужно устранить.

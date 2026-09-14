@@ -1,8 +1,11 @@
 import type { Preview } from '@storybook/nextjs-vite';
+import { mswLoader } from 'msw-storybook-addon/csf3';
 import '../src/app/globals.css';
+import { handlers } from './handlers';
 
 const preview: Preview = {
   parameters: {
+    msw: handlers,
     nextjs: {
       appDirectory: true,
     },
@@ -25,6 +28,7 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  loaders: [mswLoader()],
 };
 
 export default preview;
