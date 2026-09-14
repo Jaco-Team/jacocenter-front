@@ -120,6 +120,10 @@ empty/disabled, delivery/pickup, cash/card и saved-time состояния. Д�
 которые сразу выполняют API-запросы (`DeliveryTab`, `PickupTab`, `OrderCatalogStep`),
 ожидают MSW fixtures, чтобы Storybook не зависел от runtime API.
 
+Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь используют общие
+MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
+API.
+
 Общие deterministic handlers находятся в `.storybook/handlers.ts` и подключены
 через `msw-storybook-addon` с `onUnhandledRequest: 'bypass'`. Они покрывают
 города, точки, каталог, зоны и cart validation; production API и credentials
