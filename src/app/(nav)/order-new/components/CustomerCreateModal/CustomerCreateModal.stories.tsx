@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { expect, userEvent } from 'storybook/test';
 import { CustomerCreateModal } from './CustomerCreateModal';
 
 const meta = {
@@ -23,5 +24,23 @@ export const Filled: Story = {
   play: async ({ canvas }) => {
     const name = canvas.getByLabelText('Имя');
     await name.focus();
+  },
+};
+
+export const KeyboardNavigation: Story = {
+  play: async ({ canvas }) => {
+    const name = canvas.getByLabelText('Имя');
+    await name.focus();
+    await expect(name).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByLabelText('Фамилия')).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByLabelText('Пол')).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByLabelText('Дата рождения')).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Отмена' })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Сохранить' })).toHaveFocus();
   },
 };

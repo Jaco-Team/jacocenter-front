@@ -67,3 +67,23 @@ export const DisabledUntilTimeSelected: Story = {
     },
   ],
 };
+
+export const KeyboardNavigation: Story = {
+  args: { activeTimeTab: 'nearest', isTimeSaved: false },
+  loaders: [
+    async () => {
+      useOrderStore.setState({ payment: { method: 'cash', cashAmount: '', comment: '' } });
+      return {};
+    },
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const changeInput = canvas.getByLabelText('Сдача с');
+    await changeInput.focus();
+    await expect(changeInput).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Безналичный расчёт' })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByLabelText('Комментарий курьеру')).toHaveFocus();
+  },
+};

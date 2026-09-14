@@ -58,3 +58,16 @@ export const SelectedTime: Story = {
     await expect(canvas.getByText('Время доставки сохранено')).toBeInTheDocument();
   },
 };
+
+export const KeyboardNavigation: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const date = canvas.getByLabelText('Дата');
+    await date.focus();
+    await expect(date).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Календарь' })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByLabelText('Время')).toHaveFocus();
+  },
+};
