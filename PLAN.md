@@ -38,7 +38,7 @@
 | Notifications API | завершено на API-слое | `entities/notifications` | typed client, mapper, read actions, tests; widget mounting pending |
 | Catalog runtime screen | завершено | `order-new` | API catalog/query подключены |
 | New order workflow | верификация и hardening | `order-new` | draft, validate, confirm, address/map, toast |
-| Orders, kitchen | отдельный разработчик | frozen | не изменять без согласования |
+| Orders, kitchen | API integration complete; UI boundary owned by separate developer | frozen UI | runtime lists use `/orders` and `/kitchen/orders` |
 | Review and UI smoke | review pass | read-only | findings without UI edits |
 
 Каждый срез принимается только после проверки реального backend-контракта, тестов transport/mapping и отсутствия изменений в frozen scope.
@@ -127,7 +127,7 @@
 
 - runtime API подключён для авторизации, справочников, clients, delivery map и promos;
 - TanStack Query добавлен как optional server-state слой; новый order-creation catalog использует его, legacy screens не зависят от миграции;
-- `orders` и `kitchen` всё ещё используют собственные legacy/mock-срезы в frozen scope; `order-new` использует API workflow, но часть presentation-only состояний требует отдельной проверки;
+- `orders` и `kitchen` используют typed API clients и server list/detail responses; их UI refactor и interaction changes остаются frozen до согласования владельца;
 - API DTO и UI DTO смешаны в `entities/Order`, отсутствуют явные mapper-границы;
 - состояние workflow распределено между page-компонентами и Zustand stores;
 - order workflow требует расширения тестового набора; runtime smoke уже выполнен.

@@ -86,6 +86,7 @@ Transport авторизации и управление сессией реал
 API, истёкшие сессии очищаются, а refresh/logout имеют recovery-поведение.
 `order-new` подключён к catalog, customer lookup/create, address validation,
 cart validation, draft/confirm, map coordinates и notification toast.
-Страницы `orders` и `kitchen` остаются отдельной frozen-областью и не считаются
-полностью переведёнными на новый API. Детальная граница и следующий порядок
-работы описаны в [PLAN.md](./PLAN.md).
+Страницы `orders` и `kitchen` уже используют typed `/orders` и
+`/kitchen/orders` clients. Их UI/refactor boundary остаётся frozen из-за
+параллельной работы владельца, но это не означает runtime mock-данные.
+Детальная граница и следующий порядок работы описаны в [PLAN.md](./PLAN.md).
