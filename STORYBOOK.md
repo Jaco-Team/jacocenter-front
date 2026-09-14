@@ -49,8 +49,8 @@ npm run build-storybook
 - `Widgets/*` — составные блоки экранов;
 - `OrderNew/*`, `DeliveryMap/*`, `Orders/*`, `Kitchen/*` — изолированные
   экранные композиции, не заменяющие stories нижних слоёв;
-- `Example/*` — временные демонстрационные stories Storybook bootstrap; они не
-  являются runtime fixtures и не должны расширяться production-компонентами.
+- Generated Storybook bootstrap stories удалены; каталог начинается с FSD UI kit
+  и не содержит tutorial components.
 
 ## Обязательные состояния
 
@@ -145,9 +145,8 @@ handler локально через `parameters.msw.handlers`.
 - Только малая часть историй использует `play`; интерактивное покрытие недостаточно.
 - Явные `parameters.a11y` почти не используются.
 - Storybook пока не является CI-gate для полноты историй.
-- В проекте остаются legacy bootstrap-истории в `src/stories`; новые stories
-  размещаются только рядом с FSD-компонентом, а bootstrap-каталог подлежит
-  отдельному удалению после согласования.
+- В `src/stories/assets` могут оставаться неиспользуемые bootstrap-ресурсы; они
+  не импортируются и подлежат отдельной очистке после проверки потребности.
 - Полные page stories не должны подменять stories для reusable-компонентов.
 - В legacy-каталоге есть неоднородные импорты (`@storybook/react`, `@storybook/nextjs`,
   `@storybook/nextjs-vite`). Новые stories используют `@storybook/react-vite`; старые

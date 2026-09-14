@@ -11,7 +11,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Shared UI', 'Entities', 'Features', 'Widgets', 'OrderNew', 'DeliveryMap', 'Orders', 'Kitchen', 'Example'],
+        order: ['Shared UI', 'Entities', 'Features', 'Widgets', 'OrderNew', 'DeliveryMap', 'Orders', 'Kitchen'],
       },
     },
     controls: {
