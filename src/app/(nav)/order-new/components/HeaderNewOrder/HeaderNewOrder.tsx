@@ -74,8 +74,10 @@ export const HeaderNewOrder = () => {
         setCustomerId(result.customer?.id ?? null);
         setFoundCustomer(result.customer);
         setCustomerStatus(result.customer ? `Клиент найден: ${result.customer.name || result.customer.phone}` : 'Клиент не найден');
-        const address = result.addresses.find((item) => item.cityId === citySnapshot) ?? result.addresses[0];
-        setAddressId(address?.id ?? null);
+        // A lookup address is only a customer hint. The operator may enter a
+        // different address in the current draft, so do not bind a saved
+        // address until that exact street/house has been validated.
+        setAddressId(null);
         if (!result.customer) setCustomerCreateOpen(true);
       }).catch(() => {
         if (requestId !== lookupRequest.current || phoneSnapshot !== useOrderStore.getState().phone) return;

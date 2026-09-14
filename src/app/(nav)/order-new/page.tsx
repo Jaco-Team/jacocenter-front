@@ -185,7 +185,7 @@ export default function CurrentOrderPage() {
           && normalizeHome(savedAddress.home) === normalizeHome(parsedAddress.home)
           && savedAddress.cityId === selectedCityId,
         );
-        selectedAddressId = selectedAddressId ?? matchingAddress?.id ?? null;
+        selectedAddressId = matchingAddress?.id ?? null;
         selectedPointId = selectedPointId ?? matchingAddress?.delivery.pointId ?? null;
         if (!selectedAddressId && selectedStreetId) {
           const createdAddress = await customerApi.createAddress(selectedCustomerId, {
