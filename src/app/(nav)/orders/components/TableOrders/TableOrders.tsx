@@ -207,7 +207,7 @@ export const TableOrders = ({ orders }: TableOrdersProps) => {
         deliveryTime={orderDetails?.date_time_preorder || orderDetails?.give_data_time || "Не указано"}
         clientPhone={orderDetails?.phone || selectedOrder?.phone || "Не указан"}
         address={orderDetails?.type_order_addr_new || formatAddress(orderDetails?.address) || selectedOrder?.address || "Не указан"}
-        intercom="Не указан"
+        intercom={orderDetails?.house_verified ? "Работает" : "Не указан"}
         payment={paymentLabel(orderDetails?.payment_type)}
         comment={orderDetails?.comment ?? undefined}
         items={(orderDetails?.items ?? []).map((item) => ({
