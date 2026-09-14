@@ -67,7 +67,7 @@
 }
 
 .current-order__customer-summary {
-  @apply flex items-center justify-between gap-3 rounded-xl bg-bg-base-light px-3 py-2 text-text-base;
+  @apply flex items-center justify-between gap-3 px-3 py-2 text-text-base;
 }
 
 .current-order__customer-summary-main {
