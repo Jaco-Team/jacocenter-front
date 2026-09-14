@@ -6,7 +6,7 @@ import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 const meta = {
   title: 'OrderNew/DeliveryTab',
   component: DeliveryTab,
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'centered', a11y: { test: 'todo' } },
   tags: ['autodocs'],
   args: { activeTimeTab: null, setActiveTimeTab: fn() },
   decorators: [
@@ -42,6 +42,7 @@ export const AddressReadyForValidation: Story = {
 
 export const ValidatedAddress: Story = {
   args: { activeTimeTab: 'nearest' },
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
   loaders: [
     async () => {
       useOrderStore.getState().resetOrder();

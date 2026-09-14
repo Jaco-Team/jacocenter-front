@@ -124,6 +124,11 @@ Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь испол
 MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
 API.
 
+Заполненные delivery/pickup/catalog stories дополнительно имеют narrow viewport
+вариант; новые order-new stories явно объявляют текущий a11y режим. Перевод
+release-критичных историй с `todo` на `error` выполняется после устранения
+legacy-нарушений во всём каталоге.
+
 Preorder slots больше не имеют runtime fallback из mock-данных: `ModalTimeSelect`
 рендерит только API-provided slots, а отсутствие слотов показывает явное empty
 state. Детерминированный пример времени теперь живёт только в его story.

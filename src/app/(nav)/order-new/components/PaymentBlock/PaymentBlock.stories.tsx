@@ -6,7 +6,7 @@ import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 const meta = {
   title: 'OrderNew/PaymentBlock',
   component: PaymentBlock,
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'centered', a11y: { test: 'todo' } },
   tags: ['autodocs'],
   decorators: [
     (Story) => (

@@ -6,7 +6,7 @@ import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 const meta = {
   title: 'OrderNew/PickupTab',
   component: PickupTab,
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'centered', a11y: { test: 'todo' } },
   tags: ['autodocs'],
   args: { activeTimeTab: null, setActiveTimeTab: fn() },
   decorators: [
@@ -33,6 +33,7 @@ export const Empty: Story = {
 
 export const SelectedCafe: Story = {
   args: { activeTimeTab: 'nearest' },
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
   loaders: [
     async () => {
       useOrderStore.getState().resetOrder();

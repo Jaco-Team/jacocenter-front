@@ -6,7 +6,7 @@ import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 const meta = {
   title: 'OrderNew/OrderCatalogStep',
   component: OrderCatalogStep,
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'centered', a11y: { test: 'todo' } },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -23,6 +23,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Catalog: Story = {
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
   loaders: [
     async () => {
       useOrderStore.getState().resetOrder();
