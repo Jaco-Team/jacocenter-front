@@ -14,7 +14,7 @@ Storybook организован как UI kit, а не как копия мар
 ## Текущая конфигурация
 
 - Storybook 10 на `@storybook/nextjs-vite`.
-- Истории собираются из `src/**/*.stories.@(js|jsx|mjs|ts|tsx)` и MDX.
+- Истории собираются из `src/**/*.stories.@(js|jsx|mjs|ts|tsx)`; MDX-каталог не используется.
 - `src/app/globals.css` подключается в `.storybook/preview.ts`.
 - Статические файлы берутся из `public`.
 - Подключены addons Docs, a11y, Vitest, Chromatic и onboarding.
@@ -27,9 +27,12 @@ Storybook организован как UI kit, а не как копия мар
 ```bash
 npm run storybook
 npm run build-storybook
+npm run check:ui
 ```
 
 `build-storybook` должен завершаться успешно. Предупреждения сохраняются в разделе известных проблем и не должны скрываться в CI.
+`check:ui` объединяет этот build с unit/component tests и является единым
+локальным quality gate для UI-изменений.
 
 ## Правила размещения историй
 
@@ -116,10 +119,6 @@ Storybook coverage.
 Stories добавлены для `ByTimeTab`, `NearestTab` и `PaymentBlock`, включая
 empty/disabled, delivery/pickup, cash/card и saved-time состояния. Для payment
 и time flows добавлены portable `play`-проверки пользовательских действий.
-Компоненты,
-которые сразу выполняют API-запросы (`DeliveryTab`, `PickupTab`, `OrderCatalogStep`),
-ожидают MSW fixtures, чтобы Storybook не зависел от runtime API.
-
 Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь используют общие
 MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
 API.
@@ -144,13 +143,14 @@ handler локально через `parameters.msw.handlers`.
 - В build Storybook есть предупреждение `unable to find package.json for react-imask`; сборка сейчас завершается успешно, но предупреждение нужно устранить.
 - Только малая часть историй использует `play`; интерактивное покрытие недостаточно.
 - Явные `parameters.a11y` почти не используются.
-- Storybook пока не является CI-gate для полноты историй.
+- Storybook пока не является CI-gate для полноты историй; обязательный локальный gate
+  для изменений UI — `npm run build-storybook` вместе с `npm run test`.
 - В `src/stories/assets` могут оставаться неиспользуемые bootstrap-ресурсы; они
   не импортируются и подлежат отдельной очистке после проверки потребности.
 - Полные page stories не должны подменять stories для reusable-компонентов.
-- В legacy-каталоге есть неоднородные импорты (`@storybook/react`, `@storybook/nextjs`,
-  `@storybook/nextjs-vite`). Новые stories используют `@storybook/react-vite`; старые
-  истории мигрируются точечно, когда меняется соответствующий компонент.
+- Next-зависимые stories используют renderer `@storybook/nextjs-vite`, согласованный
+  с framework; полностью изолированные primitives используют `@storybook/react-vite`.
+  Запрещены legacy renderers `@storybook/react` и `@storybook/nextjs`.
 
 ## Definition of done для UI-компонента
 
@@ -174,10 +174,10 @@ handler локально через `parameters.msw.handlers`.
 6. Ввести автоматическую проверку отсутствующей colocated story для reusable UI.
 7. После стабилизации поведения выполнить отдельный refactor CSS naming/tokens.
 
-Текущий результат: foundation story и базовые order-new stories добавлены;
-следующий слой — MSW fixtures для API-driven components и portable interaction
-tests, после чего release-критичные a11y checks можно перевести с `todo` на
-`error`.
+Текущий результат: foundation story, MSW fixtures, portable interaction и
+narrow viewport states для базового order-new набора добавлены. Следующий слой
+— расширение keyboard/a11y сценариев и перевод release-критичных историй с
+`todo` на `error` после устранения legacy-нарушений.
 
 ## Figma и UI design system
 

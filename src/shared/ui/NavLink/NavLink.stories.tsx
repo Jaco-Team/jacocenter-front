@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { NavLink } from './NavLink';
 import WriteIcon from '@/../public/icons/write.svg?react';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { AuthForm } from './AuthForm';
 import { Input } from '@/shared/ui/Input/Input';
 import { Typography } from '../../../shared/ui/Typography/Typography';

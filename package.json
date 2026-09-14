@@ -8,6 +8,7 @@
     "start": "next start",
     "test": "vitest run --config vitest.unit.config.ts",
     "test:watch": "vitest --config vitest.unit.config.ts",
+    "check:ui": "npm run test && npm run build-storybook",
     "lint": "eslint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

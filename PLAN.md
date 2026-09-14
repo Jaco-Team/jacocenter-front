@@ -235,8 +235,8 @@
    address validation, cart confirmation и red/green bottom toast; базовые
    stories для `ByTimeTab`, `NearestTab` и `PaymentBlock` добавлены, остаются
    MSW fixtures для API-driven компонентов добавлены для delivery, pickup и
-   catalog; базовые portable `play`-проверки payment/time flows добавлены,
-   остаются narrow viewport/keyboard/a11y states.
+   catalog; portable `play`-проверки payment/time flows и narrow viewport
+   варианты добавлены. Остаются keyboard/a11y states и CI gate.
 4. Вынести оставшиеся presentation-only значения в явные API states и убрать
    случайные номера/локальные authoritative totals. Runtime fallback времени
    удалён; ModalTimeSelect использует только API slots.

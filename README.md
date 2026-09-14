@@ -71,6 +71,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```bash
 npm run build
 npm run test
+npm run check:ui
 ```
 
 Docker-вариант:
@@ -79,6 +80,10 @@ Docker-вариант:
 docker compose -f docker-compose.dev.yml run --rm frontend npm run build
 docker compose -f docker-compose.dev.yml run --rm frontend npm run test
 ```
+
+`check:ui` — единый UI quality gate: он запускает component/unit tests и
+production Storybook build. Его следует выполнять перед изменениями shared,
+feature и widget UI; Storybook stories не должны обращаться к реальному API.
 
 ## Текущий статус интеграции
 

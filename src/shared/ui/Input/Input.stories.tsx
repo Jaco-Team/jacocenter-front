@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Input } from "./Input";
-import { Meta, StoryObj } from "@storybook/nextjs";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 const meta: Meta<typeof Input> = {
   title: "Shared/Input",

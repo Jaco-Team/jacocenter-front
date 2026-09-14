@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/nextjs';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { CardDish } from './CardDish';
 
 const meta: Meta<typeof CardDish> = {
@@ -38,5 +38,4 @@ export const Short: Story = {
     description: 'Филадельфия 40 шт.'
   }
 }
-
 

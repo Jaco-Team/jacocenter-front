@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/nextjs";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
@@ -73,4 +73,3 @@ export const IconMiddle: Story = {
 export const IconSmall: Story = {
   args: { size: 'icon-sm' },
 }
-
