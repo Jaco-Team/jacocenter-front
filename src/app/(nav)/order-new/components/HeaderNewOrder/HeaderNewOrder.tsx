@@ -12,7 +12,7 @@ import { useOrderCreationCity } from "@/entities/order-creation/api/orderCreatio
 import { promoApi } from "@/entities/promo/api/promoApi";
 import { customerApi } from "@/entities/customer/api/customerApi";
 import { CustomerCreateModal } from "../CustomerCreateModal/CustomerCreateModal";
-import type { CustomerCreateResult } from "@/entities/customer/model/types";
+import type { Customer, CustomerCreateResult } from "@/entities/customer/model/types";
 
 export const HeaderNewOrder = () => {
   const {
@@ -33,6 +33,7 @@ export const HeaderNewOrder = () => {
   const [promoValid, setPromoValid] = useState<boolean | null>(null);
   const [customerCreateOpen, setCustomerCreateOpen] = useState(false);
   const [customerStatus, setCustomerStatus] = useState<string | null>(null);
+  const [foundCustomer, setFoundCustomer] = useState<Customer | null>(null);
   const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
   const lookupRequest = useRef(0);
 
@@ -52,6 +53,7 @@ export const HeaderNewOrder = () => {
     setCustomerId(null);
     setAddressId(null);
     setCustomerStatus(null);
+    setFoundCustomer(null);
     setCustomerLookupLoading(false);
   };
 
@@ -64,11 +66,13 @@ export const HeaderNewOrder = () => {
     setCustomerId(null);
     setAddressId(null);
     setCustomerStatus(null);
+    setFoundCustomer(null);
     if (phoneSnapshot) {
       setCustomerLookupLoading(true);
       void customerApi.lookup(phoneSnapshot, citySnapshot ?? undefined).then((result) => {
         if (requestId !== lookupRequest.current || phoneSnapshot !== useOrderStore.getState().phone || citySnapshot !== useOrderStore.getState().cityId) return;
         setCustomerId(result.customer?.id ?? null);
+        setFoundCustomer(result.customer);
         setCustomerStatus(result.customer ? `Клиент найден: ${result.customer.name || result.customer.phone}` : 'Клиент не найден');
         const address = result.addresses.find((item) => item.cityId === citySnapshot) ?? result.addresses[0];
         setAddressId(address?.id ?? null);
@@ -76,6 +80,7 @@ export const HeaderNewOrder = () => {
       }).catch(() => {
         if (requestId !== lookupRequest.current || phoneSnapshot !== useOrderStore.getState().phone) return;
         setCustomerId(null);
+        setFoundCustomer(null);
         setAddressId(null);
         setCustomerStatus('Не удалось проверить клиента');
       }).finally(() => {
@@ -124,6 +129,7 @@ export const HeaderNewOrder = () => {
           setCustomerId(null);
           setAddressId(null);
           setCustomerStatus(null);
+          setFoundCustomer(null);
           setCustomerLookupLoading(false);
           setPromoValid(null);
           setPromoDescription(null);
@@ -154,10 +160,24 @@ export const HeaderNewOrder = () => {
         onClose={() => setCustomerCreateOpen(false)}
         onCreated={(result: CustomerCreateResult) => {
           setCustomerId(result.customer.id);
+          setFoundCustomer(result.customer);
           setCustomerStatus(`Клиент добавлен: ${result.customer.name}`);
           setCustomerCreateOpen(false);
         }}
       />
+
+      {foundCustomer && (
+        <section className="current-order__customer-summary" aria-label="Информация о клиенте">
+          <div className="current-order__customer-summary-main">
+            <span className="current-order__customer-summary-name">{foundCustomer.name || "Без имени"}</span>
+            <span className="current-order__customer-summary-phone">{foundCustomer.phone}</span>
+          </div>
+          <dl className="current-order__customer-summary-stats">
+            <div><dt>Заказов</dt><dd>{foundCustomer.ordersCount}</dd></div>
+            <div><dt>Сумма заказов</dt><dd>{foundCustomer.ordersSum.toLocaleString("ru-RU")} ₽</dd></div>
+          </dl>
+        </section>
+      )}
 
       <div className="current-order__header-promocode">
         <div className="current-order__header-promocode-input">

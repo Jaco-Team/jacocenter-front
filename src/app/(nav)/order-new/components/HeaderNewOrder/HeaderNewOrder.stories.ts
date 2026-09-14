@@ -25,7 +25,7 @@ export const CustomerFound: Story = {
           data: {
             phone: '+79991234567',
             registered: true,
-            customer: { id: 406851, name: 'Иван Иванов', phone: '+79991234567' },
+            customer: { id: 406851, name: 'Иван Иванов', phone: '+79991234567', orders_count: 7, orders_sum: 18450 },
             last_order: null,
             last_order_state: '',
             addresses: [],
@@ -39,6 +39,9 @@ export const CustomerFound: Story = {
     await userEvent.type(canvas.getByPlaceholderText('999 999-99-99'), '9991234567');
     await userEvent.click(canvas.getByRole('button', { name: 'Найти' }));
     await expect(await canvas.findByRole('status')).toHaveTextContent('Клиент найден: Иван Иванов');
+    const summary = canvas.getByRole('region', { name: 'Информация о клиенте' });
+    await expect(summary).toHaveTextContent('7');
+    await expect(summary).toHaveTextContent('18 450 ₽');
   },
 };
 
@@ -51,7 +54,7 @@ export const CustomerWithSavedAddress: Story = {
           data: {
             phone: '+79991234567',
             registered: true,
-            customer: { id: 406851, name: 'Иван Иванов', phone: '+79991234567' },
+            customer: { id: 406851, name: 'Иван Иванов', phone: '+79991234567', orders_count: 2, orders_sum: 4900 },
             last_order: null,
             last_order_state: '',
             addresses: [{
