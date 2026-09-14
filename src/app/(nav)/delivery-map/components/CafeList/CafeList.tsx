@@ -48,10 +48,14 @@ export const CafeList = ({ cities, cafes, loading = false, error = null }: CafeL
   }, [isCitiesOpen]);
 
   const handleConfirm = () => {
-    if (deliveryType === "delivery" && searchResult?.inDeliveryZone) {
+    if (deliveryType === "delivery" && searchResult) {
       setDelivery({ 
         address: searchResult.address,
-        cafeId: searchResult.cafeId,
+        streetId: null,
+        pointId: null,
+        cafeId: null,
+        coordinates: [searchResult.coords[0], searchResult.coords[1]],
+        addressCheckStatus: null,
       });
     }
 
@@ -73,7 +77,9 @@ export const CafeList = ({ cities, cafes, loading = false, error = null }: CafeL
         onClick={handleConfirm}
         className="shrink-0 h-14 bg-primary text-base rounded-xl cursor-pointer whitespace-pre-line flex items-center justify-center text-center"
       >
-        <Text variant="body-m-medium-16">{"Перейти\nк оформлению заказа"}</Text>
+        <Text variant="body-m-medium-16">
+          {deliveryType === "delivery" && searchResult ? "Выбрать адрес" : "Перейти\nк оформлению заказа"}
+        </Text>
       </Button>
 
       <div className="flex-1 min-h-0 bg-base rounded-xl text-text-secondary px-3 py-4 flex flex-col gap-3">

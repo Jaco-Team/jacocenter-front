@@ -193,7 +193,7 @@ export const Map = ({ cafes, deliveryZones, acceptedAddress = null, selectedPick
           <YMapMarker coordinates={mapSearchResult.coords}>
             <SearchMarker
               address={mapSearchResult.address}
-              inDeliveryZone={searchResult?.inDeliveryZone === true || acceptedAddress !== null}
+              inDeliveryZone={searchResult?.inDeliveryZone !== false || acceptedAddress !== null}
             />
           </YMapMarker>
         )}
