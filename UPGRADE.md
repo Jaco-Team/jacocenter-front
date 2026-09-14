@@ -59,7 +59,13 @@ Transport должен централизованно обеспечивать:
 2. Timeout, URL normalization, типизированные transport errors и тесты — реализовано.
 3. Координированный refresh/retry — реализовано.
 4. TanStack Query добавлен как optional слой: legacy-код может продолжать работать через прежние clients/stores; новый order-creation catalog уже использует query hooks.
-5. Решение по build-time или runtime API configuration.
-6. Отдельное решение по HttpOnly-cookie auth.
+5. Build-time API configuration документирован и используется; для единого
+   образа между окружениями остаётся отдельное решение reverse proxy/runtime
+   config.
+6. TanStack Query внедрён точечно в новый order-new catalog/workflow; legacy
+   экраны не требуют немедленной миграции.
+7. HttpOnly-cookie auth и удаление sessionStorage остаются отдельным security
+   решением после согласования BFF/deployment topology.
 
-Документ не расширяет frozen scope заказов, кухни и создания заказа.
+Документ не расширяет frozen scope страниц заказов и кухни. `order-new` имеет
+отдельный согласованный scope интеграции и не должен менять соседние экраны.

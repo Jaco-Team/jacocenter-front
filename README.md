@@ -82,4 +82,10 @@ docker compose -f docker-compose.dev.yml run --rm frontend npm run test
 
 ## Текущий статус интеграции
 
-Transport авторизации и управление сессией реализованы: DTO маппятся на границе API, истёкшие сессии очищаются, а refresh/logout имеют recovery-поведение. Остальная миграция mock → API описана в [PLAN.md](./PLAN.md). Пока эти этапы не завершены, frozen-экраны заказов и кухни намеренно используют локальные mock-данные и не являются end-to-end API-клиентами.
+Transport авторизации и управление сессией реализованы: DTO маппятся на границе
+API, истёкшие сессии очищаются, а refresh/logout имеют recovery-поведение.
+`order-new` подключён к catalog, customer lookup/create, address validation,
+cart validation, draft/confirm, map coordinates и notification toast.
+Страницы `orders` и `kitchen` остаются отдельной frozen-областью и не считаются
+полностью переведёнными на новый API. Детальная граница и следующий порядок
+работы описаны в [PLAN.md](./PLAN.md).

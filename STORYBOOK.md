@@ -80,12 +80,22 @@ npm run build-storybook
 
 Приоритетные пробелы:
 
-- `order-new`: `DeliveryTab`, `PickupTab`, `ByTimeTab`, `NearestTab`, `PaymentBlock`, `OrderCatalogStep` и composition-сценарии;
+- `order-new`: `DeliveryTab`, `PickupTab`, `OrderCatalogStep` и composition-сценарии;
 - delivery map: `Map`, `CafeMarker`, `SearchInput`, `SearchMarker`, `ZoomControls`;
 - loading/empty/error states для API-driven UI;
 - auth boundaries и состояния восстановления сессии;
 - модальные сценарии confirm/delete/success с ошибками и повторной отправкой;
 - keyboard, narrow viewport и accessibility сценарии.
+
+В order-new runtime уже используются API-backed catalog/address/customer/cart
+flows и bottom notification toast. Эти компоненты должны получить deterministic
+stories без сетевых запросов; текущая ручная проверка runtime не заменяет
+Storybook coverage.
+
+Stories добавлены для `ByTimeTab`, `NearestTab` и `PaymentBlock`, включая
+empty/disabled, delivery/pickup, cash/card и saved-time состояния. Компоненты,
+которые сразу выполняют API-запросы (`DeliveryTab`, `PickupTab`, `OrderCatalogStep`),
+ожидают MSW fixtures, чтобы Storybook не зависел от runtime API.
 
 ## Известные проблемы
 

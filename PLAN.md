@@ -6,25 +6,29 @@
 
 ## Граница текущей работы
 
-Экран заказов и кухонный workflow находятся в работе у другого разработчика. До отдельного согласования не изменяем:
+Экран списка заказов и кухонный workflow находятся в работе у другого разработчика. До отдельного согласования не изменяем:
 
 - `app/(nav)/orders/**`;
 - `app/(nav)/kitchen/**`;
-- `app/(nav)/order-new/**`;
 - `entities/Order/**` и связанные order/kitchen widgets/features.
+
+`order-new` теперь является активной областью интеграции. Его изменения должны
+оставаться изолированными и не менять контракты страниц `orders` и `kitchen`.
 
 Общий transport и независимые shared-типы можно расширять только так, чтобы не менять поведение этих экранов.
 
 ## Приоритет работ
 
-1. Сначала подключаем API к mock-срезам вне заказов и кухни через typed clients и mappers, сохраняя текущие UI-модели.
+1. Сначала подключаем API к доступным срезам через typed clients и mappers, сохраняя текущие UI-модели.
 2. Для каждого подключённого среза сразу добавляем unit/component-тесты success/loading/empty/error и access-denied состояний.
 3. После прохождения поведения удаляем заменённые runtime mocks и выполняем FSD-рефакторинг, не затрагивая чужой order/kitchen scope.
 4. В конце проводим общую интеграционную проверку Docker и полный аудит контрактов.
 
 ## Текущая волна работ
 
-Статус: первая non-order API wave завершена; order/kitchen/new-order scope заморожен.
+Статус на 2026-09-14: справочники и клиентские API подключены; основной
+`order-new` workflow подключён к API и прошёл локальную ручную проверку.
+`orders` и `kitchen` остаются отдельной границей владельца.
 
 | Срез | Владелец | Граница | Результат |
 | --- | --- | --- | --- |
@@ -32,8 +36,9 @@
 | Cities, points, catalog, allergens | завершено на API-слое | `entities` reference-data only | typed clients, mappers, tests |
 | Customer lookup/history, delivery map, client promos | завершено | customer/delivery/promo + existing widgets | runtime wiring, states, tests |
 | Notifications API | завершено на API-слое | `entities/notifications` | typed client, mapper, read actions, tests; widget mounting pending |
-| Catalog runtime screen | ожидает снятия frozen boundary | order-new scope | client готов, UI не менять |
-| Orders, kitchen, new order | отдельный разработчик | frozen | не изменять |
+| Catalog runtime screen | завершено | `order-new` | API catalog/query подключены |
+| New order workflow | верификация и hardening | `order-new` | draft, validate, confirm, address/map, toast |
+| Orders, kitchen | отдельный разработчик | frozen | не изменять без согласования |
 | Review and UI smoke | review pass | read-only | findings without UI edits |
 
 Каждый срез принимается только после проверки реального backend-контракта, тестов transport/mapping и отсутствия изменений в frozen scope.
@@ -43,7 +48,7 @@
 - delivery API возвращает доступные улицы, точки и отдельные валидированные polygon coordinates; карта не должна рисовать выдуманные границы из legacy fixtures;
 - проверка адреса остаётся источником истины для доступности адреса до появления отдельного geometry-контракта;
 - `/promos` возвращает `name` промокода, но не отдельные `code` и customer-specific `isApplied`; frontend не подменяет эти поля догадками;
-- catalog API подключён на entity-уровне, но runtime catalog находится внутри frozen `order-new` scope.
+- catalog API подключён на entity-уровне и используется runtime-каталогом `order-new`.
 
 ## Legacy-поведение клиента и заказа (jaco-center-new)
 
@@ -122,11 +127,11 @@
 
 - runtime API подключён для авторизации, справочников, clients, delivery map и promos;
 - TanStack Query добавлен как optional server-state слой; новый order-creation catalog использует его, legacy screens не зависят от миграции;
-- orders, kitchen и new-order используют page-local mock-данные в frozen scope; client history detail использует mock payload до появления order-detail контракта;
+- `orders` и `kitchen` всё ещё используют собственные legacy/mock-срезы в frozen scope; `order-new` использует API workflow, но часть presentation-only состояний требует отдельной проверки;
 - API DTO и UI DTO смешаны в `entities/Order`, отсутствуют явные mapper-границы;
 - состояние workflow распределено между page-компонентами и Zustand stores;
-- order workflow остаётся без полного набора тестов до снятия frozen boundary;
-- notifications client готов, но durable polling и mounting в layout требуют отдельного UI решения;
+- order workflow требует расширения тестового набора; runtime smoke уже выполнен.
+- notifications client и order-new toast готовы; durable polling и глобальное mounting в layout требуют отдельного UI решения;
 - для runtime-состояний нужны единые loading, empty, retry и authorization states;
 - production public env нужно задавать во время сборки образа.
 
@@ -216,6 +221,26 @@
 - Docker build и runtime smoke test против локального API;
 - CI: TypeScript, build, unit/component tests, case-sensitive import audit и Docker image build;
 - документация local API, production API, CORS и frontend-only secrets.
+
+## Ближайшая повестка
+
+1. Закрыть проверку результата заказа: убедиться, что подтверждённый заказ
+   появляется в `orders` и `kitchen` после согласования их API-срезов, не меняя
+   чужие страницы.
+2. Завершить адресный workflow `order-new`: сохранённые адреса, повторная
+   проверка зоны, pickup-координаты и корректные состояния ошибки/повтора.
+3. Сформировать Storybook coverage для order-new, customer lookup/create,
+   address validation, cart confirmation и red/green bottom toast; базовые
+   stories для `ByTimeTab`, `NearestTab` и `PaymentBlock` добавлены, остаются
+   MSW fixtures для API-driven компонентов и narrow viewport/keyboard/a11y
+   states.
+4. Вынести оставшиеся presentation-only значения в явные API states и убрать
+   случайные номера/локальные authoritative totals.
+5. После стабилизации поведения выполнить DTO/UI mapper cleanup и точечный
+   FSD-refactor без изменения UI `orders`/`kitchen`.
+6. Затем провести Docker-based FE/API integration matrix и release checklist:
+   auth recovery, duplicate submit, unavailable item, invalid address,
+   pickup/delivery, mobile layout и offline Redis degradation.
 
 ## Definition of done
 
