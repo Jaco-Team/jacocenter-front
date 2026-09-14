@@ -24,6 +24,9 @@ docker compose -f docker-compose.dev.yml up --build
 Dev-контейнер публикует приложение на `http://localhost:3000`, монтирует исходники для hot reload и хранит `node_modules` и `.next` в именованных volumes. Браузер обращается к API через host URL, поэтому `localhost:8083` корректен, когда API опубликован своим Compose-стеком.
 Контейнер имеет healthcheck по HTTP; состояние можно проверить командой
 `docker compose -f docker-compose.dev.yml ps`.
+Если порт `3000` занят host-разработкой, запускайте проверочный контейнер с
+`FRONTEND_PORT=3001`; публичный API URL при этом остаётся browser-доступным
+host URL.
 
 Остановка:
 

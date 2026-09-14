@@ -249,8 +249,10 @@
 6. Затем провести Docker-based FE/API integration matrix и release checklist:
    auth recovery, duplicate submit, unavailable item, invalid address,
    pickup/delivery, mobile layout и offline Redis degradation.
-   Compose healthchecks добавлены; остаётся прогнать матрицу на чистом Docker
-   запуске и зафиксировать browser/API результаты.
+   Compose healthchecks добавлены; dev-образ собран и контейнер проверен в
+   статусе `healthy` на альтернативном порту `3001`. Chrome подтвердил загрузку
+   приложения и штатный auth redirect; credentialed order-new E2E остаётся
+   отдельной проверкой после входа в браузере.
 
 ## Definition of done
 
