@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { CartItem } from '@/widgets/Order/ui/Cart/Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
-import { mockCities } from '@/app/(nav)/order-new/data/mocks';
 
 type DeliveryType = 'delivery' | 'pickup';
 type TimeMode = 'nearest' | 'by-time' | null;
@@ -87,7 +86,7 @@ interface OrderActions {
 const initialState: OrderState = {
   step: ORDER_STEP.CART,
   items: [],
-  city: mockCities[0],
+  city: 'Тольятти',
   cityId: null,
   phone: '',
   customerId: null,

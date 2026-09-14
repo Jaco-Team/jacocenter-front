@@ -1,4 +1,9 @@
-import { SauceUtensilItem } from "@/app/(nav)/order-new/data/mocks";
+export interface SauceUtensilItem {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+}
 
 export interface ModalSaucesUtensilsProps {
   isOpen: boolean;

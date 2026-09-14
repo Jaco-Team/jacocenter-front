@@ -238,7 +238,8 @@
    catalog; базовые portable `play`-проверки payment/time flows добавлены,
    остаются narrow viewport/keyboard/a11y states.
 4. Вынести оставшиеся presentation-only значения в явные API states и убрать
-   случайные номера/локальные authoritative totals.
+   случайные номера/локальные authoritative totals. Runtime fallback времени
+   удалён; ModalTimeSelect использует только API slots.
 5. После стабилизации поведения выполнить DTO/UI mapper cleanup и точечный
    FSD-refactor без изменения UI `orders`/`kitchen`.
 6. Затем провести Docker-based FE/API integration matrix и release checklist:

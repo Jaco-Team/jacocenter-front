@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { NavPanel } from './NavPanel';
-import { navPanelMock } from '../utils/mock';
+import { navItems } from '../model/navItems';
 
-const routes = navPanelMock.map(item => item.href);
+const routes = navItems.map(item => item.href);
 
 type NavPanelStoryArgs = React.ComponentProps<typeof NavPanel> & {
   pathname: string;

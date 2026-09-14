@@ -4,7 +4,6 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { useState } from "react";
 import "./ModalTimeSelect.style.css";
 import { ModalTimeSelectProps } from "./ModalTimeSelect.types";
-import { timeSlots } from "../../utils/mocks";
 import { Slot } from "../Slot/Slot";
 import type { PreorderSlot } from "@/entities/delivery/model/types";
 
@@ -78,8 +77,8 @@ export const ModalTimeSelect = ({ isOpen, onClose, onTimeSelect, slots, isLoadin
             <Text variant="label-s-regular-12">Выберите период доставки</Text>
             {isLoading && <Text>Загрузка доступного времени…</Text>}
             {error && <Text>{error}</Text>}
-            {!isLoading && !error && <ul className="time-slots-list">
-              {(periodSlots ? periodSlots[activeDayPeriod].map((slot) => ({ value: `${slot.start} - ${slot.end}`, label: displaySlot(slot), disabled: slot.disabled })) : timeSlots[activeDayPeriod].map((slot) => ({ value: slot, label: slot, disabled: false }))).map((slot) => (
+            {!isLoading && !error && periodSlots && periodSlots[activeDayPeriod].length > 0 && <ul className="time-slots-list">
+              {periodSlots[activeDayPeriod].map((slot) => ({ value: `${slot.start} - ${slot.end}`, label: displaySlot(slot), disabled: slot.disabled })).map((slot) => (
                 <li key={slot.value}>
                   <Slot 
                     variant="timeSlot"
@@ -91,6 +90,9 @@ export const ModalTimeSelect = ({ isOpen, onClose, onTimeSelect, slots, isLoadin
                 </li>
               ))}
             </ul>}
+            {!isLoading && !error && periodSlots && periodSlots[activeDayPeriod].length === 0 && (
+              <Text>Для выбранного периода доступного времени нет</Text>
+            )}
             <div className="time-slots-btns-group">
               <Button 
                 variant="base" 

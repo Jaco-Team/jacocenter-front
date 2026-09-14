@@ -1,5 +1,5 @@
 "use client";
-import { navPanelMock } from "../utils/mock";
+import { navItems } from '../model/navItems';
 import { NavLink } from "@/shared/ui/NavLink/NavLink";
 import Image from "next/image";
 import "./NavPanel.style.css";
@@ -29,7 +29,7 @@ export function NavPanel() {
       </div>
       <nav className="sidebar-nav">
         <ul className={`sidebar-list ${collapsed ? 'sidebar-list-collapsed' : ''}`}>
-          {navPanelMock.map((item) => (
+          {navItems.map((item) => (
             <li key={item.href}>
               <NavLink 
                 href={item.href}

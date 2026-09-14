@@ -124,6 +124,10 @@ Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь испол
 MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
 API.
 
+Preorder slots больше не имеют runtime fallback из mock-данных: `ModalTimeSelect`
+рендерит только API-provided slots, а отсутствие слотов показывает явное empty
+state. Детерминированный пример времени теперь живёт только в его story.
+
 Общие deterministic handlers находятся в `.storybook/handlers.ts` и подключены
 через `msw-storybook-addon` с `onUnhandledRequest: 'bypass'`. Они покрывают
 города, точки, каталог, зоны и cart validation; production API и credentials

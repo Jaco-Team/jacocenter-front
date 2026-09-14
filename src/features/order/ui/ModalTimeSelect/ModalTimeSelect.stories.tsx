@@ -1,6 +1,13 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModalTimeSelect } from "./ModalTimeSelect";
+import type { PreorderSlot } from "@/entities/delivery/model/types";
+
+const slots: PreorderSlot[] = [
+  { value: '10:00 - 10:30', start: '10:00', end: '10:30', disabled: false },
+  { value: '10:30 - 11:00', start: '10:30', end: '11:00', disabled: false },
+  { value: '18:00 - 18:30', start: '18:00', end: '18:30', disabled: true },
+];
 
 const meta: Meta<typeof ModalTimeSelect> = {
   title: "features/ModalTimeSelect",
@@ -40,6 +47,7 @@ export const Default: Story = {
             setSelectedTime(val);
             setIsOpen(false);
           }}
+          slots={slots}
         />
       </div>
     );
