@@ -22,6 +22,8 @@ docker compose -f docker-compose.dev.yml up --build
 ```
 
 Dev-контейнер публикует приложение на `http://localhost:3000`, монтирует исходники для hot reload и хранит `node_modules` и `.next` в именованных volumes. Браузер обращается к API через host URL, поэтому `localhost:8083` корректен, когда API опубликован своим Compose-стеком.
+Контейнер имеет healthcheck по HTTP; состояние можно проверить командой
+`docker compose -f docker-compose.dev.yml ps`.
 
 Остановка:
 
@@ -41,6 +43,9 @@ docker compose up -d
 ```bash
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8083/api/v1 docker compose build
 ```
+
+Production-контейнер также имеет healthcheck. После запуска дождитесь статуса
+`healthy` перед браузерной проверкой или подключением reverse proxy.
 
 Не помещайте API- или database-credentials во frontend-переменные. Здесь допустимы только публичный URL API и необязательный публичный ключ Yandex Maps.
 

@@ -249,6 +249,8 @@
 6. Затем провести Docker-based FE/API integration matrix и release checklist:
    auth recovery, duplicate submit, unavailable item, invalid address,
    pickup/delivery, mobile layout и offline Redis degradation.
+   Compose healthchecks добавлены; остаётся прогнать матрицу на чистом Docker
+   запуске и зафиксировать browser/API результаты.
 
 ## Definition of done
 
