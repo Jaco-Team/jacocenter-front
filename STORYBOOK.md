@@ -123,6 +123,10 @@ Stories `DeliveryTab`, `PickupTab` и `OrderCatalogStep` теперь испол
 MSW handlers и покрывают пустое/заполненное состояние без вызовов локального
 API.
 
+`HeaderNewOrder` покрывает lookup-состояния `CustomerFound`, `CustomerNotFound`
+и `LookupError`; not-found сценарий проверяет открытие формы добавления клиента,
+а error-сценарий оставляет оператора в текущем draft для повторной попытки.
+
 Заполненные delivery/pickup/catalog stories дополнительно имеют narrow viewport
 вариант; новые order-new stories явно объявляют текущий a11y режим. Перевод
 release-критичных историй с `todo` на `error` выполняется после устранения

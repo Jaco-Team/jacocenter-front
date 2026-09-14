@@ -25,6 +25,14 @@ export const handlers = [
     free_items: [],
   })),
   http.get('*/api/v1/delivery/zones', () => envelope([])),
+  http.get('*/api/v1/customers/lookup', () => envelope({
+    phone: '+79991234567',
+    registered: false,
+    customer: null,
+    last_order: null,
+    last_order_state: '',
+    addresses: [],
+  })),
   http.post('*/api/v1/cart/validate', async () => envelope({
     city_id: 1,
     point_id: 2,
