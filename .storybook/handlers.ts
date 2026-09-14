@@ -33,6 +33,16 @@ export const handlers = [
     last_order_state: '',
     addresses: [],
   })),
+  http.post('*/api/v1/delivery/address/validate', () => envelope({
+    valid: true,
+    city_id: 1,
+    street: 'Чапаева',
+    home: '47',
+    street_id: 2934,
+    point_id: 2,
+    latitude: 53.505389,
+    longitude: 49.414321,
+  })),
   http.post('*/api/v1/cart/validate', async () => envelope({
     city_id: 1,
     point_id: 2,

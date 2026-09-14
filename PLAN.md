@@ -230,7 +230,8 @@
 2. Завершить адресный workflow `order-new`: сохранённые адреса, повторная
    проверка зоны, pickup-координаты и корректные состояния ошибки/повтора.
    Handoff из карты в order-new с геокодированным адресом и координатами
-   реализован; остаются saved-address edge cases и ручная E2E-проверка.
+   реализован; Storybook покрывает valid/out-of-zone/network-error validation.
+   Остаются saved-address edge cases и ручная E2E-проверка.
 3. Сформировать Storybook coverage для order-new, customer lookup/create,
    address validation, cart confirmation и red/green bottom toast; базовые
    stories для `ByTimeTab`, `NearestTab` и `PaymentBlock` добавлены, остаются
