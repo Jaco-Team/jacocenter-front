@@ -232,8 +232,8 @@
 3. Сформировать Storybook coverage для order-new, customer lookup/create,
    address validation, cart confirmation и red/green bottom toast; базовые
    stories для `ByTimeTab`, `NearestTab` и `PaymentBlock` добавлены, остаются
-   MSW fixtures для API-driven компонентов и narrow viewport/keyboard/a11y
-   states.
+   MSW fixtures для API-driven компонентов; базовые portable `play`-проверки
+   payment/time flows добавлены, остаются narrow viewport/keyboard/a11y states.
 4. Вынести оставшиеся presentation-only значения в явные API states и убрать
    случайные номера/локальные authoritative totals.
 5. После стабилизации поведения выполнить DTO/UI mapper cleanup и точечный

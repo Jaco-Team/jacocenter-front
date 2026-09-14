@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { ByTimeTab } from './ByTimeTab';
 import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 
@@ -29,6 +30,13 @@ export const Empty: Story = {
       return {};
     },
   ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText('Дата')).toBeInTheDocument();
+    await expect(canvas.getByLabelText('Время')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('button', { name: 'Сохранить время' }));
+    await expect(canvas.getByRole('button', { name: 'Сохранить время' })).toBeInTheDocument();
+  },
 };
 
 export const SelectedTime: Story = {
@@ -43,4 +51,10 @@ export const SelectedTime: Story = {
       return {};
     },
   ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByDisplayValue('11.09.2026')).toBeInTheDocument();
+    await expect(canvas.getByDisplayValue('12:00 - 12:30')).toBeInTheDocument();
+    await expect(canvas.getByText('Время доставки сохранено')).toBeInTheDocument();
+  },
 };

@@ -114,7 +114,9 @@ stories без сетевых запросов; текущая ручная пр
 Storybook coverage.
 
 Stories добавлены для `ByTimeTab`, `NearestTab` и `PaymentBlock`, включая
-empty/disabled, delivery/pickup, cash/card и saved-time состояния. Компоненты,
+empty/disabled, delivery/pickup, cash/card и saved-time состояния. Для payment
+и time flows добавлены portable `play`-проверки пользовательских действий.
+Компоненты,
 которые сразу выполняют API-запросы (`DeliveryTab`, `PickupTab`, `OrderCatalogStep`),
 ожидают MSW fixtures, чтобы Storybook не зависел от runtime API.
 

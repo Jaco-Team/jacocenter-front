@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { PaymentBlock } from './PaymentBlock';
 import { useOrderStore } from '@/entities/Order/store/new-order/orderStore';
 
@@ -29,6 +30,13 @@ export const CashNearest: Story = {
       return {};
     },
   ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const changeInput = canvas.getByLabelText('Сдача с');
+    await userEvent.clear(changeInput);
+    await userEvent.type(changeInput, '5000');
+    await expect(changeInput).toHaveValue('5000');
+  },
 };
 
 export const CardPayment: Story = {
@@ -41,6 +49,11 @@ export const CardPayment: Story = {
       return {};
     },
   ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('button', { name: 'Безналичный расчёт' })).toBeInTheDocument();
+    await expect(canvas.getByLabelText('Комментарий курьеру')).toHaveValue('Позвонить за час');
+  },
 };
 
 export const DisabledUntilTimeSelected: Story = {
