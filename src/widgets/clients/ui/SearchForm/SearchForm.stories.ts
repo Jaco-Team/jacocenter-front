@@ -5,6 +5,7 @@ import { SearchForm } from './SearchForm';
 const meta = {
   title: 'Widgets/Clients/SearchForm',
   component: SearchForm,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

@@ -4,6 +4,7 @@ import { CafeList } from "./CafeList";
 const meta = {
   title: "Widgets/CafeList",
   component: CafeList,
+  tags: ['autodocs'],
   parameters: {
     layout: "centered",
   },

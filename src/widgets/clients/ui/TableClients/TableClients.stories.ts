@@ -4,6 +4,7 @@ import { TableClients } from './TableClients';
 const meta = {
   title: 'Widgets/Clients/TableClients',
   component: TableClients,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

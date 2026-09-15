@@ -15,6 +15,7 @@ const mock = [
 const meta = {
   title: 'Features/InputSearch',
   component: InputSearch,
+  tags: ['autodocs'],
   args: {
     placeholder: 'Поиск товара',
   },

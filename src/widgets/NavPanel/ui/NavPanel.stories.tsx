@@ -14,6 +14,7 @@ type NavPanelStoryArgs = React.ComponentProps<typeof NavPanel> & {
 const meta: Meta<NavPanelStoryArgs> = {
   title: 'Widgets/NavPanel',
   component: NavPanel,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },

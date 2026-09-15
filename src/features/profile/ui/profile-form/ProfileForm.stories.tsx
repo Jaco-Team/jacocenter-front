@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { useSessionStore } from '@/entities/auth/store/sessionStore/sessionStore';
 import { ProfileForm } from './ProfileForm';
@@ -19,6 +19,7 @@ const user = {
 const meta = {
   title: 'Features/Profile/ProfileForm',
   component: ProfileForm,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
   decorators: [
     (Story) => {

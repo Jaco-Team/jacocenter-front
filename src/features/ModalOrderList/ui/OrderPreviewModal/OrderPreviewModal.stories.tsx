@@ -23,6 +23,7 @@ const orderNumber = 800602;
 const meta = {
   title: 'Features/OrderPreviewModal',
   component: OrderPreviewModal,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

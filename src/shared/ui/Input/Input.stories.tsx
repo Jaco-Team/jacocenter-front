@@ -6,6 +6,7 @@ import { Meta, StoryObj } from "@storybook/nextjs-vite";
 const meta: Meta<typeof Input> = {
   title: "Shared/Input",
   component: Input,
+  tags: ['autodocs'],
   args: {
     value: "",
   },

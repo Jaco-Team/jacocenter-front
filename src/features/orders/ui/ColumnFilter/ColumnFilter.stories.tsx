@@ -10,6 +10,7 @@ const sourceOptions = ['Клиент', 'Кухня'];
 const meta = {
   title: 'Features/Orders/ColumnFilter',
   component: ColumnFilter,
+  tags: ['autodocs'],
   render: (args) => {
     const [options, setOptions] = useState(args.options);
 

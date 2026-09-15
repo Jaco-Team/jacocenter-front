@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { CafeCard } from "./CafeCard";
 
 const meta = {
-  title: "Features/CafeCard",
+  title: "DeliveryMap/CafeCard",
   component: CafeCard,
+  tags: ['autodocs'],
   args: {
     name: "Ворошилова 12А",
     zoneNumber: "1",

@@ -1,5 +1,6 @@
 import { Text } from "@/shared/ui/Typography/Typography";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { NotificationProps, NotificationConfig } from "./Notification.types";
 import './Notification.style.css';
 import { useNotificationStore } from "@/entities/notifications/store/Notification/Notification";
@@ -9,18 +10,36 @@ const cssClassByVariant = {
   'cafe.available': 'cafe-available',
 } as const;
 
+type NotificationFrameProps = {
+  children: ReactNode;
+  className?: string;
+  role?: 'alert' | 'status' | 'region';
+  closing?: boolean;
+  onClose: () => void;
+};
+
+const NotificationFrame = ({ children, className = '', role = 'status', closing = false, onClose }: NotificationFrameProps) => (
+  <div className={`notification-frame ${className}${closing ? ' notification-frame--closing' : ''}`} role={role}>
+    <div className="notification-frame__content">{children}</div>
+    <CloseButton onClick={onClose} />
+  </div>
+);
+
 const withNotification = ({ variant, text }: NotificationConfig) => {
   return function Notification({ id, zoneName }: NotificationProps) {
     const removeAlert = useNotificationStore((state) => state.removeAlert);
     
     return (
-      <div className={`notification-container ${cssClassByVariant[variant]}`}>
+      <NotificationFrame
+        className={`notification-container ${cssClassByVariant[variant]}`}
+        role="region"
+        onClose={() => removeAlert(id)}
+      >
         <div className="notification-text">
           <Text variant="heading-l-regular-20">{zoneName}</Text>
           <Text variant="heading-l-regular-20">{text}</Text>
         </div>
-        <CloseButton onClick={() => removeAlert(id)}/>
-      </div>
+      </NotificationFrame>
     );
   };
 };
@@ -67,16 +86,13 @@ export const FeedbackNotification = ({ id, message, variant }: { id: string; mes
   }, [dismiss]);
 
   return (
-    <div className={`feedback-notification feedback-notification--${variant}${isClosing ? ' feedback-notification--closing' : ''}`} role={variant === 'error' ? 'alert' : 'status'}>
+    <NotificationFrame
+      className={`feedback-notification feedback-notification--${variant}`}
+      role={variant === 'error' ? 'alert' : 'status'}
+      closing={isClosing}
+      onClose={dismiss}
+    >
       <span className="feedback-notification__message">{message}</span>
-      <button
-        type="button"
-        className="feedback-notification__close"
-        aria-label="Закрыть уведомление"
-        onClick={dismiss}
-      >
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
+    </NotificationFrame>
   );
 };

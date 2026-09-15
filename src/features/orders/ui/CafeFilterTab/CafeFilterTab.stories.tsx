@@ -5,6 +5,7 @@ import { useArgs } from 'storybook/internal/preview-api';
 const meta = {
   title: 'Features/Orders/CafeFilterTab',
   component: CafeFilterTab,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

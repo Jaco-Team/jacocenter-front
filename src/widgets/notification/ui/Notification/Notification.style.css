@@ -1,5 +1,20 @@
 @reference "../../../../app/globals.css";
 
+.notification-frame {
+  @apply relative;
+  animation: notification-slide-up 180ms ease-out both;
+  will-change: transform, opacity;
+}
+
+.notification-frame__content {
+  @apply min-w-0;
+}
+
+.notification-frame--closing {
+  animation: notification-slide-down 180ms ease-in both;
+  pointer-events: none;
+}
+
 .notification-container {
   @apply relative w-full flex items-center justify-center min-h-[68px] rounded-xl px-5;
 }
@@ -23,8 +38,6 @@
 .feedback-notification {
   @apply flex min-h-12 w-full items-center justify-between gap-4 rounded-xl px-5 py-3 text-base shadow-[0_6px_24px_rgba(0,0,0,0.22)];
   color: #fff;
-  animation: feedback-slide-up 180ms ease-out both;
-  will-change: transform, opacity;
 }
 
 .feedback-notification--error {
@@ -35,25 +48,16 @@
   background: rgb(83 169 61 / 94%);
 }
 
-.feedback-notification--closing {
-  animation: feedback-slide-down 180ms ease-in both;
-  pointer-events: none;
-}
-
 .feedback-notification__message {
   @apply min-w-0 flex-1 text-center text-sm font-medium;
 }
 
-.feedback-notification__close {
-  @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl leading-none text-white/90 transition hover:bg-white/15 hover:text-white;
-}
-
-@keyframes feedback-slide-up {
+@keyframes notification-slide-up {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes feedback-slide-down {
+@keyframes notification-slide-down {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(16px); }
 }

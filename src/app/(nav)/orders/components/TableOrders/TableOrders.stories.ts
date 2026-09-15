@@ -5,6 +5,7 @@ import { mockAllOrders } from '../../data/allOrders.mock';
 const meta = {
   title: 'Widgets/TableOrders',
   component: TableOrders,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

@@ -6,6 +6,7 @@ import { orderHistoryMock } from '../../data/mocks';
 const meta = {
   title: 'Widgets/OrdersHistory',
   component: OrdersHistory,
+  tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof OrdersHistory>;
 

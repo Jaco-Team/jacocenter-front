@@ -5,6 +5,7 @@ import { mockKitchenOrders } from '../../data/kitchenOrders.mock';
 const meta = {
   title: 'Widgets/HeaderKitchen',
   component: HeaderKitchen,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },

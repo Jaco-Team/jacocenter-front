@@ -4,6 +4,7 @@ import { PromocodeList } from './PromocodeList';
 const meta = {
   title: 'Widgets/Clients/PromocodeList',
   component: PromocodeList,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

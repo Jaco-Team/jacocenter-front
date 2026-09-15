@@ -4,6 +4,7 @@ import { ModalAccessDenied } from './ModalAccessDenied';
 const meta = { 
  title: 'Features/ModalAccessDenied',
   component: ModalAccessDenied,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
 } satisfies Meta<typeof ModalAccessDenied>;
 

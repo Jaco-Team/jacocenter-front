@@ -5,6 +5,7 @@ import { useState } from 'react';
 const meta = {
   title: 'Features/ModalOrderConfirm',
   component: ModalOrderConfirm,
+  tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof ModalOrderConfirm>;
 

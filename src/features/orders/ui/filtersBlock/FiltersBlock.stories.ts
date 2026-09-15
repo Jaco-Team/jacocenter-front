@@ -12,6 +12,7 @@ const points = [
 const meta = {
   title: 'Features/Orders/FiltersBlock',
   component: FiltersBlock,
+  tags: ['autodocs'],
   args: {
     points,
     orders: mockAllOrders,

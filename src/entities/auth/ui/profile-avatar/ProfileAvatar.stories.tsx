@@ -1,9 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ProfileAvatar } from './ProfileAvatar';
 
 const meta = {
   title: 'Entities/Auth/ProfileAvatar',
   component: ProfileAvatar,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
 } satisfies Meta<typeof ProfileAvatar>;
 

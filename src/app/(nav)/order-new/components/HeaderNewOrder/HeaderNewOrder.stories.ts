@@ -6,6 +6,7 @@ import { HeaderNewOrder } from './HeaderNewOrder';
 const meta = {
   title: 'Widgets/HeaderNewOrder',
   component: HeaderNewOrder,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },

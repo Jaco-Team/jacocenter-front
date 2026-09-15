@@ -5,6 +5,7 @@ import { mockKitchenOrders } from '../../data/kitchenOrders.mock';
 const meta = {
   title: 'Widgets/TableKitchen',
   component: TableKitchen,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

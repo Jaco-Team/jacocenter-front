@@ -5,6 +5,7 @@ import { useArgs } from 'storybook/preview-api';
 const meta = { 
  title: 'Features/ModalOrderDelete',
   component: ModalOrderDelete,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

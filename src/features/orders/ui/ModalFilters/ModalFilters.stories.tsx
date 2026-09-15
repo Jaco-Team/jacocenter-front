@@ -23,6 +23,7 @@ const columnsNames = [
 const meta = {
   title: 'Features/Orders/ModalFilters',
   component: ModalFilters,
+  tags: ['autodocs'],
 } satisfies Meta<typeof ModalFilters>;
 
 export default meta;

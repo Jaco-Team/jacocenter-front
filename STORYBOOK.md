@@ -165,6 +165,24 @@ handler локально через `parameters.msw.handlers`.
   с framework; полностью изолированные primitives используют `@storybook/react-vite`.
   Запрещены legacy renderers `@storybook/react` и `@storybook/nextjs`.
 
+## Аудит 2026-09-15
+
+Проверка выполнена в Chrome против локального Storybook на `localhost:6006`.
+После добавления общего `QueryProvider` stories, использующие TanStack Query,
+рендерятся без ошибки `No QueryClient set`. В foundation-документации ошибок и
+предупреждений браузера не обнаружено.
+
+Каталог содержит 69 story-файлов. Метаданные `autodocs` приведены к единому
+правилу; интерактивные сценарии остаются точечными и не считаются полным E2E
+покрытием. Розовые узлы в sidebar — это группы Storybook, созданные полями
+`title` с `/`, а не отдельные runtime-модули. Новые title должны следовать
+FSD-структуре и не создавать параллельные `Order`/`order` деревья.
+
+Критичный остаток для UI kit: истории map primitives, customer/order error
+states, notification host stacking/close/timeout и release-critical a11y
+проверки. Их добавление выполняется по `PLAN-refactor.md`; runtime orders и
+kitchen при этом остаются frozen.
+
 ## Definition of done для UI-компонента
 
 Компонент считается готовым, когда:

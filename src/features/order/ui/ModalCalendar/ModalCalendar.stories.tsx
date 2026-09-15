@@ -5,6 +5,7 @@ import { ModalCalendar } from "./ModalCalendar";
 const meta: Meta<typeof ModalCalendar> = {
   title: "Features/OrderScheduling/ModalCalendar",
   component: ModalCalendar,
+  tags: ['autodocs'],
   parameters: {
     layout: "centered",
   },

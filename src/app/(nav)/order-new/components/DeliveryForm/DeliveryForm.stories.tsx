@@ -4,6 +4,7 @@ import { DeliveryForm } from "./DeliveryForm";
 const meta: Meta<typeof DeliveryForm> = {
   title: "OrderNew/DeliveryForm",
   component: DeliveryForm,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },

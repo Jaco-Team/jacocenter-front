@@ -1,9 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { MetricsContent } from './OperatorMetrics';
 
 const meta = {
   title: 'Features/Profile/OperatorMetrics',
   component: MetricsContent,
+  tags: ['autodocs'],
   parameters: { layout: 'padded' },
   decorators: [(Story) => <section className="operator-metrics"><Story /></section>],
 } satisfies Meta<typeof MetricsContent>;

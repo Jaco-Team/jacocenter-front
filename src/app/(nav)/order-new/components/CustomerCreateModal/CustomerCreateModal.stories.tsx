@@ -5,6 +5,7 @@ import { CustomerCreateModal } from './CustomerCreateModal';
 const meta = {
   title: 'OrderNew/CustomerCreateModal',
   component: CustomerCreateModal,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
   args: {
     phone: '+7 (927) 123-45-67',

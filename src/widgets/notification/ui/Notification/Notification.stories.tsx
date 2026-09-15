@@ -6,6 +6,7 @@ import '../NotificationHost/NotificationHost.styles.css';
 const meta: Meta<typeof CafeStoppedNotification> = {
   title: 'Widgets/Notification',
   component: CafeStoppedNotification,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
