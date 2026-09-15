@@ -47,6 +47,9 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
         addressCheckStatus: result.valid ? "success" : "error",
         streetId: result.streetId ?? null,
         pointId: result.pointId ?? null,
+        coordinates: result.latitude != null && result.longitude != null
+          ? [result.longitude, result.latitude]
+          : null,
       });
       if (result.valid && activeTimeTab === null) setActiveTimeTab("nearest");
     } catch {
@@ -69,16 +72,17 @@ export const DeliveryTab = ({ activeTimeTab, setActiveTimeTab }: DeliveryTabProp
                 streetId: null,
                 pointId: null,
                 cafeId: null,
+                coordinates: null,
               })
             } 
-            label="Улица" 
+            label="Улица, дом"
             placeholder="Введите улицу, дом"
             helperText={addressCheckStatus === "success" ? "Адрес входит в зону доставки" : ""}
             error={addressCheckStatus === "error" ? "Адрес вне зоны доставки. Введите другой адрес" : ""}
             className="placeholder:ps-6"
           />
           {!address && <Image src="/icons/search.svg" alt="Поиск" width={20} height={20} className="icon-search"/>}
-  {address && <ClearButton onClick={() => updateVisibleAddress({ address: "", addressCheckStatus: null, streetId: null, pointId: null, cafeId: null, })} className="right-1 top-[24px]"/>}
+  {address && <ClearButton onClick={() => updateVisibleAddress({ address: "", addressCheckStatus: null, streetId: null, pointId: null, cafeId: null, coordinates: null })} className="right-1 top-[24px]"/>}
         </div>
         <div className="delivery-buttons-group">
           <Button 
