@@ -8,6 +8,7 @@ import { Text } from "@/shared/ui/Typography/Typography";
 import { SelectTown } from "@/shared/ui/SelectTown/SelectTown";
 import { CityDto, ordersApi } from "@/entities/Order/api/ordersApi";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
+import { useCityStore } from "@/entities/city/model/cityStore";
 import { StatusTabId } from "@/widgets/orders/utils/constants";
 import type { KitchenOrder } from "../TableKitchen/TableKitchen.types";
 import "./HeaderKitchen.style.css";
@@ -28,6 +29,7 @@ export const HeaderKitchen = ({ cities, orders }: HeaderKitchenProps) => {
     clearOrderNumber,
     setFoundOrder,
   } = useKitchenStore();
+  const setCity = useCityStore((state) => state.setCity);
   const [isSearching, setIsSearching] = useState(false);
 
   const selectedCity = cities.find((city) => city.id === cityId);
@@ -93,6 +95,7 @@ export const HeaderKitchen = ({ cities, orders }: HeaderKitchenProps) => {
           onSelect={(name) => {
             const city = cities.find((item) => item.name === name);
             setCityId(city?.id ?? null);
+            setCity({ cityId: city?.id ?? null, cityName: city?.name ?? null });
           }}
           dropdownClassName="w-full left-0"
           className="w-[196px] shrink-0"

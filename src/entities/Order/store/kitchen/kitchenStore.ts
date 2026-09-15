@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { format } from "date-fns";
 import { getKitchenColumns } from "@/app/(nav)/kitchen/components/TableKitchen/TableKitchen.columns";
 import { StatusTabId, TypeTabId } from "@/widgets/orders/utils/constants";
+import { useCityStore } from "@/entities/city/model/cityStore";
 
 type SortDir = "asc" | "desc" | null;
 
@@ -80,7 +81,10 @@ export const useKitchenStore = create<KitchenStore>((set) => ({
   refreshKey: 0,
 
   setSelectedPointId: (selectedPointId) => set({ selectedPointId }),
-  setCityId: (cityId) => set({ cityId, selectedPointId: null }),
+  setCityId: (cityId) => {
+    set({ cityId, selectedPointId: null });
+    useCityStore.setState({ cityId });
+  },
   setDate: (date) => set({ date }),
   setOrderNumber: (orderNumber) => set({ orderNumber, searched: false }),
   clearOrderNumber: () => set({ orderNumber: "", searched: false, foundOrderNumber: null }),

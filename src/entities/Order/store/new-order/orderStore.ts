@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { CartItem } from '@/widgets/Order/ui/Cart/Cart.types';
 import { ORDER_STEP } from '@/utils/constants';
+import { useCityStore } from '@/entities/city/model/cityStore';
 
 type DeliveryType = 'delivery' | 'pickup';
 type TimeMode = 'nearest' | 'by-time' | null;
@@ -161,8 +162,14 @@ export const useOrderStore = create<OrderStore>((set) => ({
 
 
   // Шапка
-  setCity: (city) => set({ city }),
-  setCityId: (cityId) => set({ cityId }),
+  setCity: (city) => {
+    set({ city, cityId: null });
+    useCityStore.setState({ cityName: city, cityId: null });
+  },
+  setCityId: (cityId) => {
+    set({ cityId });
+    useCityStore.setState({ cityId });
+  },
   setPhone: (phone) => set({ phone }),
   setCustomerId: (customerId) => set({ customerId }),
   setAddressId: (addressId) => set({ addressId }),
@@ -183,5 +190,12 @@ export const useOrderStore = create<OrderStore>((set) => ({
     set((state) => ({ time: { ...state.time, ...val } })),
 
   // Сброс
-  resetOrder: () => set(initialState),
+  resetOrder: () => {
+    const { cityId, cityName } = useCityStore.getState();
+    set({
+      ...initialState,
+      ...(cityId !== null ? { cityId } : {}),
+      ...(cityName ? { city: cityName } : {}),
+    });
+  },
 }));

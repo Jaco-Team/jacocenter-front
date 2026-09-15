@@ -8,6 +8,7 @@ import type { KitchenOrder } from "./components/TableKitchen/TableKitchen.types"
 import { CityDto, OrderDto, ordersApi, PointDto } from "@/entities/Order/api/ordersApi";
 import { useKitchenStore } from "@/entities/Order/store/kitchen/kitchenStore";
 import { ApiError } from "@/shared/api/http";
+import { useCityStore } from "@/entities/city/model/cityStore";
 
 export default function Kitchen() {
   const [cities, setCities] = useState<CityDto[]>([]);
@@ -32,7 +33,7 @@ export default function Kitchen() {
         if (!active) return;
         setCities(data);
         setError("");
-        const currentCityId = useKitchenStore.getState().cityId;
+        const currentCityId = useCityStore.getState().cityId ?? useKitchenStore.getState().cityId;
         setCityId(
           currentCityId && data.some((city) => city.id === currentCityId)
             ? currentCityId

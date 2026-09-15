@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { getOrdersColumns } from "@/app/(nav)/orders/components/TableOrders/TableOrders.columns";
 import { format } from "date-fns";
 import { StatusTabId, TypeTabId } from "@/widgets/orders/utils/constants";
+import { useCityStore } from "@/entities/city/model/cityStore";
 
 type SortDir = "asc" | "desc" | null;
 
@@ -79,7 +80,10 @@ export const useOrdersStore = create<OrdersStore>((set) => ({
   refreshKey: 0,
   setSelectedPointId: (selectedPointId) => set({ selectedPointId }),
   setDate: (date) => set({ date }),
-  setCityId: (cityId) => set({ cityId, selectedPointId: null }),
+  setCityId: (cityId) => {
+    set({ cityId, selectedPointId: null });
+    useCityStore.setState({ cityId });
+  },
   setPhone: (phone) => set({ phone }),
   setAddress: (address) => set({ address }),
   setSearchQuery: (searchQuery) => set({ searchQuery }),

@@ -10,6 +10,7 @@ import { Calendar } from '@/shared/ui/Calendar/Calendar';
 import { format } from 'date-fns';
 import { useDateMask } from '@/shared/hooks/useDateMask';
 import { useOrdersStore } from '@/entities/Order/store/orders/ordersStore';
+import { useCityStore } from '@/entities/city/model/cityStore';
 
 export const HeaderOrders = ({
   cities,
@@ -18,6 +19,7 @@ export const HeaderOrders = ({
 }: IHeaderOrdersProps) => {
 
   const { date, cityId, phone, address, setCityId, setDate, setPhone, setAddress } = useOrdersStore();
+  const setCity = useCityStore((state) => state.setCity);
   const selectedCity = cities.find((city) => city.id === cityId);
 
   const { ref: dateRef, setValue: setDateValue } = useDateMask(
@@ -55,6 +57,7 @@ export const HeaderOrders = ({
           onSelect={(name) => {
             const city = cities.find((item) => item.name === name);
             setCityId(city?.id ?? null);
+            setCity({ cityId: city?.id ?? null, cityName: city?.name ?? null });
           }}
           dropdownClassName='w-full left-0'
           className='w-[196px] shrink-0'

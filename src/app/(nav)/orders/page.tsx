@@ -8,6 +8,7 @@ import { CityDto, OrderDto, ordersApi, PointDto } from "@/entities/Order/api/ord
 import { useOrdersStore } from "@/entities/Order/store/orders/ordersStore";
 import type { Order } from "./components/TableOrders/TableOrders.types";
 import { ApiError } from "@/shared/api/http";
+import { useCityStore } from "@/entities/city/model/cityStore";
 
 export default function Orders() {
   const [cities, setCities] = useState<CityDto[]>([]);
@@ -31,7 +32,7 @@ export default function Orders() {
         if (!active) return;
         setCities(data);
         setError("");
-        const currentCityId = useOrdersStore.getState().cityId;
+        const currentCityId = useCityStore.getState().cityId ?? useOrdersStore.getState().cityId;
         setCityId(
           currentCityId && data.some((city) => city.id === currentCityId)
             ? currentCityId
