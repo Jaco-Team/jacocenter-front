@@ -9,6 +9,10 @@
 
 ## Подтверждённое состояние на 2026-09-15
 
+- Dev-контейнер frontend опубликован на `http://localhost:3000`; Storybook
+  запускается отдельным dev-контейнером на `http://localhost:6006`.
+- Критический набор frontend-тестов проходит в Docker: 103 теста в 26 файлах;
+  production Storybook build также проходит.
 - Storybook работает на `@storybook/nextjs-vite` и получает общий
   `QueryProvider` через preview decorator.
 - В каталоге 69 story-файлов; foundations, shared UI и основные order-new
@@ -20,6 +24,10 @@
 - `PLAN.md` ещё не закрыт: остаются runtime E2E, покрытие ошибок, API
   contract gaps и рефакторинг границ DTO/UI. Переименование старого плана в
   `to-delete-*` пока преждевременно.
+- Полный Chrome E2E остановлен на проверке каталога: локальный snapshot
+  содержит остановленное блюдо (`close_buy` для item `297` в point `1`). Это
+  проблема свежести тестовых данных, а не основание отключать серверную
+  проверку доступности.
 
 ## Порядок работ
 
@@ -53,6 +61,8 @@
 ### 4. Производственный quality gate
 
 - Docker: unit tests, Storybook build, Next build и smoke против local API;
+- Перед E2E проверить локальный snapshot: не обходить `stop`/availability
+  validation; обновить snapshot Chef или выбрать доступное блюдо.
 - case-sensitive import audit и проверка отсутствия duplicate-case paths;
 - bounded Chrome E2E: login, lookup/create customer, catalog, address, order
   confirm и появление заказа в списках;
