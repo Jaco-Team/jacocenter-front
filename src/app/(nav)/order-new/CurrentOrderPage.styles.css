@@ -3,6 +3,7 @@
 .current-order {
   @apply grid h-full min-h-0 max-h-full min-w-0 flex-1 gap-4;
   grid-template-columns: minmax(0, 3fr) minmax(320px, 2fr);
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .current-order > aside {
@@ -10,7 +11,7 @@
 }
 
 .current-order__main {
-  @apply flex min-w-0 flex-col;
+  @apply flex min-w-0 min-h-0 flex-col overflow-hidden;
 }
 
 .current-order__stop-order {
@@ -34,11 +35,11 @@
 }
 
 .current-order__search {
-  @apply my-3 relative;
+  @apply my-3 mx-2 relative;
 }
 
 .current-order__cards {
-  @apply flex-1 overflow-y-auto overflow-x-hidden;
+  @apply flex-1 min-h-0 max-h-[45dvh] overflow-y-auto overflow-x-hidden p-2;
 }
 
 @media (max-width: 900px) {

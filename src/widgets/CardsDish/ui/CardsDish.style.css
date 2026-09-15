@@ -1,5 +1,6 @@
  @reference "../../../app/globals.css";
 
  .cards-dish {
-    @apply grid grid-cols-4 gap-[12px];
+    @apply grid gap-[12px] justify-items-center;
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
  }

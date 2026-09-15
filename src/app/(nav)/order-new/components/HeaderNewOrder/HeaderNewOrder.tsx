@@ -204,7 +204,7 @@ export const HeaderNewOrder = () => {
             {promocodeInfo}
           </Text>
           <Tooltip content={promocodeInfo} placement="bottom">
-            <button type="button" className="current-order__header-info-btn" aria-label="Информация">
+            <button type="button" className="current-order__header-info-btn" aria-label="Информация о промокоде">
               <Image src="/icons/info-base.svg" alt="" width={20} height={20} />
             </button>
           </Tooltip>
