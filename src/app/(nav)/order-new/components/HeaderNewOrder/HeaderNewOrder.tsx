@@ -13,6 +13,8 @@ import { promoApi } from "@/entities/promo/api/promoApi";
 import { customerApi } from "@/entities/customer/api/customerApi";
 import { CustomerCreateModal } from "../CustomerCreateModal/CustomerCreateModal";
 import type { Customer, CustomerCreateResult } from "@/entities/customer/model/types";
+import { format, isValid, parseISO } from "date-fns";
+import { ru } from "date-fns/locale";
 
 export const HeaderNewOrder = () => {
   const {
@@ -121,6 +123,9 @@ export const HeaderNewOrder = () => {
   const promocodeError = isSubmitted && promocode && promoValid === false ? "Промокод не найден" : undefined;
 
   const phoneInfo = "Введите номер телефона клиента";
+  const formattedBirthDate = foundCustomer?.birthDate
+    ? formatCustomerBirthDate(foundCustomer.birthDate)
+    : null;
 
   return (
     <form onSubmit={handleSubmit} className="current-order__header">
@@ -171,7 +176,10 @@ export const HeaderNewOrder = () => {
       {foundCustomer && (
         <section className="current-order__customer-summary" aria-label="Информация о клиенте">
           <div className="current-order__customer-summary-main">
-            <span className="current-order__customer-summary-name">{foundCustomer.name || "Без имени"}</span>
+            <span className="current-order__customer-summary-name">
+              {foundCustomer.name || "Без имени"}
+              {formattedBirthDate && <span className="current-order__customer-summary-birth-date"> · {formattedBirthDate}</span>}
+            </span>
             <span className="current-order__customer-summary-phone">{foundCustomer.phone}</span>
           </div>
           <dl className="current-order__customer-summary-stats">
@@ -205,6 +213,11 @@ export const HeaderNewOrder = () => {
     </form>
   )
 }
+
+const formatCustomerBirthDate = (value: string): string | null => {
+  const parsed = parseISO(value);
+  return isValid(parsed) ? format(parsed, "d MMMM yyyy", { locale: ru }) : null;
+};
 
 const ClearButton = ({ onClick, className="" }: { onClick: () => void; className?: string }) => (
   <button type="button" className={`absolute flex items-center justify-center cursor-pointer w-10 h-10 ${className}`} onClick={onClick}>

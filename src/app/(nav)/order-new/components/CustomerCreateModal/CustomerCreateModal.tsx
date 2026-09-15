@@ -28,12 +28,9 @@ export const CustomerCreateModal = ({ phone, cityId, isOpen, onClose, onCreated 
 
   const close = () => { if (!saving) { reset(); onClose(); } };
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const normalizedName = name.trim();
-    if (!normalizedName) { setError('Укажите имя клиента'); return; }
+  const createCustomer = async (customerName: string) => {
     setSaving(true); setError(null);
-    const input: CustomerCreateInput = { phone, cityId, name: normalizedName };
+    const input: CustomerCreateInput = { phone, cityId, name: customerName };
     if (surname.trim()) input.surname = surname.trim();
     if (gender.trim()) input.gender = gender.trim();
     if (birthDate) input.birthDate = birthDate;
@@ -44,6 +41,17 @@ export const CustomerCreateModal = ({ phone, cityId, isOpen, onClose, onCreated 
       setSaving(false);
       setError(reason instanceof Error ? reason.message : 'Не удалось сохранить клиента');
     }
+  };
+
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const normalizedName = name.trim();
+    if (!normalizedName) { setError('Укажите имя клиента или выберите «Создать без имени»'); return; }
+    await createCustomer(normalizedName);
+  };
+
+  const createWithoutName = async () => {
+    await createCustomer('Не указал');
   };
 
   return (
@@ -58,6 +66,7 @@ export const CustomerCreateModal = ({ phone, cityId, isOpen, onClose, onCreated 
         <div className="customer-create-modal__actions">
           <Button type="button" variant="base" theme="secondary" onClick={close} disabled={saving}>Отмена</Button>
           <Button type="submit" variant="base" theme="primary" disabled={saving}>{saving ? 'Сохраняем…' : 'Сохранить'}</Button>
+          <Button type="button" variant="base" theme="secondary" onClick={createWithoutName} disabled={saving}>Создать без имени</Button>
         </div>
       </form>
     </Modal>

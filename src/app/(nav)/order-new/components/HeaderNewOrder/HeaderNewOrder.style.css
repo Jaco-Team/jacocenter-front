@@ -78,6 +78,10 @@
   @apply truncate text-sm font-medium;
 }
 
+.current-order__customer-summary-birth-date {
+  @apply font-normal text-text-secondary;
+}
+
 .current-order__customer-summary-phone {
   @apply text-xs text-text-secondary;
 }

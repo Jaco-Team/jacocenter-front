@@ -2,6 +2,7 @@ export type Customer = {
   id: number;
   name: string;
   phone: string;
+  birthDate: string | null;
   registeredAt: string | null;
   email: string | null;
   active: boolean;

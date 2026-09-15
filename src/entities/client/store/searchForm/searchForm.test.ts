@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe("client search store", () => {
   it("loads a customer from the API and exposes the selected id", async () => {
-    vi.spyOn(customerApi, "lookup").mockResolvedValue({ phone: "79990000000", registered: true, customer: { id: 8, name: "Иван", phone: "79990000000", registeredAt: null, email: null, active: true, spam: false, ordersCount: 2, ordersSum: 1000 }, lastOrder: null, lastOrderState: "", addresses: [] });
+  vi.spyOn(customerApi, "lookup").mockResolvedValue({ phone: "79990000000", registered: true, customer: { id: 8, name: "Иван", phone: "79990000000", birthDate: null, registeredAt: null, email: null, active: true, spam: false, ordersCount: 2, ordersSum: 1000 }, lastOrder: null, lastOrderState: "", addresses: [] });
     useSearchFormStore.getState().setPhone("+7 (999) 000-00-00");
     await useSearchFormStore.getState().search();
     expect(useSearchFormStore.getState().foundClientId).toBe(8);
