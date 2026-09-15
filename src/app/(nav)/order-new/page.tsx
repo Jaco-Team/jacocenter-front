@@ -157,13 +157,7 @@ export default function CurrentOrderPage() {
       const lookup = customerId ? null : await customerApi.lookup(phone, selectedCityId);
       let selectedCustomerId = customerId ?? lookup?.customer?.id;
       if (!selectedCustomerId) {
-        const created = await customerApi.create({
-          phone,
-          cityId: selectedCityId,
-          name: "Клиент",
-        });
-        selectedCustomerId = created.customer.id;
-        useOrderStore.getState().setCustomerId(selectedCustomerId);
+        throw new Error("Сначала найдите клиента и добавьте его через форму клиента");
       }
 
       const customerAddresses = lookup?.addresses ?? await customerApi.addresses(selectedCustomerId, selectedCityId);

@@ -107,7 +107,8 @@ feature и widget UI; Storybook stories не должны обращаться �
 
 Transport авторизации и управление сессией реализованы: DTO маппятся на границе
 API, истёкшие сессии очищаются, а refresh/logout имеют recovery-поведение.
-`order-new` подключён к catalog, customer lookup/create, address validation,
+`order-new` подключён к catalog, customer lookup и явному добавлению клиента через
+`CustomerCreateModal`, address validation,
 cart validation, draft/confirm, map coordinates и notification toast.
 Страницы `orders` и `kitchen` уже используют typed `/orders` и
 `/kitchen/orders` clients. Их UI/refactor boundary остаётся frozen из-за
@@ -117,3 +118,50 @@ cart validation, draft/confirm, map coordinates и notification toast.
 Личный кабинет оператора доступен на `/lk`: профиль загружается через `GET /auth/me`, а полное и короткое имя сохраняются через `PATCH /auth/me`. Показатели за выбранный период загружаются через `GET /auth/me/metrics` и суммируются по всем доступным сотруднику точкам. Для записи в Chef API должен запускаться с явно разрешённым `MAIN_DB_ALLOW_WRITES=true`.
 
 Вкладка `/clients` использует `GET /customers/lookup`, `GET /customers/{id}/orders`, `GET /orders/{id}?point_id=...` и `GET /promos`. Для запросов требуется авторизованная сессия оператора; отдельного API для повторения заказа сейчас нет.
+
+## Dev mode: shortcuts, fixtures и ограничения
+
+Локальный режим предназначен для разработки и проверки интерфейса на копии Chef
+данных. Он не является режимом обхода авторизации или бизнес-проверок.
+
+### API и база данных
+
+- `CALLCENTER_DEV_IGNORE_CLOSE_BUY=true` временно игнорирует устаревший
+  `close_buy` в локальной Chef-копии. Флаг действует только при `APP_ENV=local`;
+  staging и production принудительно используют обычную проверку доступности.
+- `MAIN_DB_ALLOW_WRITES=true` разрешает записи в Chef (`customers`, адреса,
+  профиль оператора и служебные password metadata). По умолчанию `false`.
+  Системная база `laravel_callcenter` при этом всё равно используется для
+  токенов, черновиков, outbox и состояния API.
+- `AUTO_MIGRATE=true` — локальный Compose по умолчанию применяет guarded
+  migrations только к `laravel_callcenter`. Для production/shared DB ставьте
+  `AUTO_MIGRATE=false` и применяйте migrations отдельно DBA.
+- `CHEF_DB_*`, `SYSTEM_DB_*` и `NEXT_PUBLIC_API_BASE_URL` выбирают реальные
+  подключения. Они не подменяются mock-сервисами автоматически; перед тестом
+  проверяйте `callcenter:db:identity` и effective API URL.
+
+### Frontend и Storybook
+
+- Storybook использует MSW handlers и типизированные fixtures для городов,
+  точек, каталога, доставки, клиентов, корзины и order draft workflow. Stories
+  не должны обращаться к production API или базе данных.
+- `OrderNew/Screen` содержит изолированные сценарии Empty Cart, Delivery Ready и
+  Confirm Success. Они seed-ят Zustand store и мокают draft → validation →
+  confirm; эти данные не попадают в runtime-приложение.
+- Unit/component tests используют `vi.stubGlobal('fetch')` и spies. Это только
+  тестовые замены транспорта.
+- `onUnhandledRequest: 'bypass'` оставлен для постепенной миграции stories:
+  незамоканный запрос уходит в настроенный API. Это не fallback для production и
+  не должно использоваться как способ скрыть ошибку интеграции.
+- Если `NEXT_PUBLIC_YMAPS_API_KEY` отсутствует, карта показывает явную ошибку
+  конфигурации. Координаты и карта не подменяются фиктивным runtime-виджетом.
+
+### Поведение создания клиента
+
+Если поиск по телефону не находит клиента, order-new открывает форму
+`CustomerCreateModal`. Заказ нельзя подтвердить без выбранного или явно
+созданного клиента. Автоматическое создание записи с именем `Клиент` удалено,
+чтобы не загрязнять Chef placeholder-пользователями.
+
+Старые локальные записи с именем `Клиент` могут оставаться в тестовой базе — это
+исторические данные предыдущего поведения, а не новые Storybook fixtures.
