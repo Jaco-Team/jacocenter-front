@@ -1,0 +1,71 @@
+@reference "../../../../app/globals.css";
+
+.profile-form {
+  @apply w-full rounded-2xl bg-base px-8 py-7;
+}
+
+.profile-form__header {
+  @apply mb-7 flex items-center gap-5;
+}
+
+.profile-form__identity {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+.profile-form__description {
+  @apply text-text-secondary;
+}
+
+.profile-form__login {
+  @apply text-text-subtle;
+}
+
+.profile-form__info {
+  @apply mb-7 grid grid-cols-2 gap-3;
+}
+
+.profile-form__info-item {
+  @apply flex min-h-16 items-center gap-3 rounded-xl bg-bg-base-light px-4 py-3;
+}
+
+.profile-form__info-label {
+  @apply block text-text-subtle;
+}
+
+.profile-form__info-value {
+  @apply block text-text-base;
+}
+
+.profile-form__fields {
+  @apply flex flex-col gap-5 border-t border-disabled pt-6;
+}
+
+.profile-form__actions {
+  @apply mt-2 flex flex-wrap gap-3;
+}
+
+.profile-form__error {
+  @apply text-error;
+}
+
+.profile-form__state {
+  @apply flex min-h-48 items-center justify-center text-text-secondary;
+}
+
+@media (max-width: 640px) {
+  .profile-form {
+    @apply px-4 py-5;
+  }
+
+  .profile-form__actions {
+    @apply flex-col;
+  }
+
+  .profile-form__header {
+    @apply items-start;
+  }
+
+  .profile-form__info {
+    @apply grid-cols-1;
+  }
+}

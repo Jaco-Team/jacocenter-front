@@ -22,10 +22,10 @@ describe('reference-data API clients', () => {
   });
 
   it('adds city_id only when listing points for a city', async () => {
-    const fetchMock = fetchJson({ st: true, data: [{ id: 4, city_id: 7, name: 'Центр', address: 'ул. Ленина, 1', base: 'base' }] });
+    const fetchMock = fetchJson({ st: true, data: [{ id: 4, city_id: 7, name: 'служебное', address: 'Кафе Центр', base: 'base' }] });
 
     await expect(pointsApi.list(7)).resolves.toEqual([
-      { id: 4, cityId: 7, city: null, name: 'Центр', address: 'ул. Ленина, 1', base: 'base' },
+      { id: 4, cityId: 7, city: null, name: 'Кафе Центр', address: 'Кафе Центр', base: 'base' },
     ]);
     expect(fetchMock.mock.calls[0][0]).toBe(`${API_BASE_URL}/points?city_id=7`);
   });

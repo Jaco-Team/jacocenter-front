@@ -1,0 +1,14 @@
+@reference "../../../../app/globals.css";
+
+.profile-avatar {
+  @apply inline-flex shrink-0 items-center justify-center rounded-full
+    font-medium uppercase text-button-primary-pressed;
+}
+
+.profile-avatar--sm {
+  @apply size-10 text-sm;
+}
+
+.profile-avatar--lg {
+  @apply size-16 text-2xl;
+}

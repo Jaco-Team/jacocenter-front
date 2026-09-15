@@ -13,7 +13,7 @@ describe('useSessionStore', () => {
       token: 'expired-token',
       token_type: 'Bearer',
       expires_at: '2020-01-01T00:00:00Z',
-      user: { id: 1, login: 'operator', name: 'Operator' },
+      user: { id: 1, login: 'operator', name: 'Operator', fullName: 'Operator', shortName: '' },
     });
 
     expect(useSessionStore.getState()).toMatchObject({
@@ -29,7 +29,7 @@ describe('useSessionStore', () => {
       token: 'fresh-token',
       token_type: 'Bearer',
       expires_at: '2099-01-01T00:00:00Z',
-      user: { id: 2, login: 'operator', name: 'Operator' },
+      user: { id: 2, login: 'operator', name: 'Operator', fullName: 'Operator', shortName: '' },
     });
     useSessionStore.setState({ token: 'old-token', expiresAt: '2099-01-01T00:00:00Z' });
 
@@ -48,12 +48,34 @@ describe('useSessionStore', () => {
     useSessionStore.setState({
       token: 'token',
       expiresAt: '2099-01-01T00:00:00Z',
-      user: { id: 1, login: 'operator', name: 'Operator' },
+      user: { id: 1, login: 'operator', name: 'Operator', fullName: 'Operator', shortName: '' },
       status: 'ready',
     });
 
     await useSessionStore.getState().logout();
 
     expect(useSessionStore.getState()).toMatchObject({ token: null, user: null, expiresAt: null, status: 'ready' });
+  });
+
+  it('updates profile data without replacing the authenticated session', () => {
+    useSessionStore.setState({
+      token: 'token',
+      expiresAt: '2099-01-01T00:00:00Z',
+      status: 'ready',
+    });
+
+    useSessionStore.getState().setUser({
+      id: 1,
+      login: 'operator',
+      name: 'Петя',
+      fullName: 'Пётр Петров',
+      shortName: 'Петя',
+    });
+
+    expect(useSessionStore.getState()).toMatchObject({
+      token: 'token',
+      expiresAt: '2099-01-01T00:00:00Z',
+      user: { name: 'Петя', fullName: 'Пётр Петров', shortName: 'Петя' },
+    });
   });
 });

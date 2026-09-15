@@ -22,7 +22,7 @@ export function mapPoint(dto: PointDto): Point {
     id: Number(dto.id),
     cityId: Number(dto.city_id),
     city,
-    name: String(dto.name ?? ''),
+    name: String((dto.address || dto.name || '').trim()),
     address: String(dto.address ?? ''),
     base: String(dto.base ?? ''),
   };

@@ -1,0 +1,116 @@
+@reference "../../../../app/globals.css";
+
+.operator-metrics {
+  @apply w-full rounded-2xl bg-base px-8 py-7;
+}
+
+.operator-metrics__header {
+  @apply mb-5 flex items-end justify-between gap-6;
+}
+
+.operator-metrics__subtitle,
+.operator-metrics__points,
+.operator-metrics__label,
+.operator-metrics__empty {
+  @apply text-text-secondary;
+}
+
+.operator-metrics__period {
+  @apply flex items-end gap-3;
+}
+
+.operator-metrics__period .input-root {
+  @apply w-40;
+}
+
+.operator-metrics__cards {
+  @apply mt-4 grid grid-cols-5 gap-3;
+}
+
+.operator-metrics__card {
+  @apply flex min-h-24 items-center gap-3 rounded-xl bg-bg-base-light p-4;
+}
+
+.operator-metrics__icon {
+  @apply flex size-11 shrink-0 items-center justify-center rounded-xl bg-base;
+}
+
+.operator-metrics__label,
+.operator-metrics__value {
+  @apply block;
+}
+
+.operator-metrics__details {
+  @apply mt-5 grid grid-cols-2 gap-4;
+}
+
+.operator-metrics__detail-card {
+  @apply rounded-xl border border-disabled p-5;
+}
+
+.operator-metrics__detail-grid {
+  @apply mt-4 grid grid-cols-2 gap-3 text-text-secondary;
+}
+
+.operator-metrics__promo-list {
+  @apply mt-3 flex max-h-52 flex-col gap-2 overflow-auto;
+}
+
+.operator-metrics__promo-list li {
+  @apply flex items-center justify-between gap-4 rounded-lg bg-bg-base-light px-3 py-2;
+}
+
+.operator-metrics__promo-list span span {
+  @apply block;
+}
+
+.operator-metrics__promo-deleted {
+  @apply line-through opacity-60;
+}
+
+.operator-metrics__state {
+  @apply flex min-h-40 flex-col items-center justify-center gap-3 text-text-secondary;
+}
+
+.operator-metrics__error {
+  @apply block text-error;
+}
+
+@media (max-width: 1280px) {
+  .operator-metrics__cards {
+    @apply grid-cols-3;
+  }
+}
+
+@media (max-width: 900px) {
+  .operator-metrics__header,
+  .operator-metrics__period {
+    @apply items-stretch;
+  }
+
+  .operator-metrics__header {
+    @apply flex-col;
+  }
+
+  .operator-metrics__details {
+    @apply grid-cols-1;
+  }
+}
+
+@media (max-width: 640px) {
+  .operator-metrics {
+    @apply px-4 py-5;
+  }
+
+  .operator-metrics__period {
+    @apply flex-col;
+  }
+
+  .operator-metrics__period .input-root {
+    @apply w-full;
+  }
+
+  .operator-metrics__cards {
+    @apply grid-cols-1;
+  }
+}
