@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModalOrderSuccess } from './ModalOrderSuccess';
 
 const meta = { 
- title: 'features/ModalOrderSuccess',
+ title: 'Features/ModalOrderSuccess',
   component: ModalOrderSuccess,
   tags:['autodocs'],
   parameters: { layout: 'centered' },

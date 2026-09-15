@@ -3,7 +3,7 @@ import { CardsDish } from './CardsDish';
 import { ICardDishProps } from '../../../shared/ui/CardDish/CardDish.types';
 
 const meta: Meta<typeof CardsDish> = {
-  title: 'widgets/CardsDish/ui',
+  title: 'Widgets/CardsDish',
   component: CardsDish,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

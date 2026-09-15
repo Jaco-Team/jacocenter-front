@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
+  title: 'Shared UI/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

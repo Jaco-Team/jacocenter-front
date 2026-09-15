@@ -4,8 +4,6 @@ import { Button } from "@/shared/ui/Button/Button";
 import { ModalOrderConfirmProps } from "./ModalOrderConfirm.types";
 import "./ModalOrderConfirm.styles.css";
 import { ModalOrderDelete } from "../ModalOrderDelete/ModalOrderDelete";
-// Kept for the product decision record: the success modal was replaced by the global toast.
-// import { ModalOrderSuccess } from "../ModalOrderSuccess/ModalOrderSuccess";
 import { useState } from "react";
 
 export const ModalOrderConfirm = ({
@@ -178,7 +176,6 @@ export const ModalOrderConfirm = ({
         </div>
       </Modal>
       <ModalOrderDelete isOpen={isDeleteOpen} onClose={handleCloseDelete} onCancelOrder={handleConfirmCancel}/>
-      {/* <ModalOrderSuccess isOpen={isSuccessOpen} onClose={handleCloseSuccess}/> */}
     </>
   );
 };

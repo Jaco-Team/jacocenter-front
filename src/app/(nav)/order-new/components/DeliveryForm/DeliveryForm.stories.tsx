@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DeliveryForm } from "./DeliveryForm";
 
 const meta: Meta<typeof DeliveryForm> = {
-  title: "Order-new/DeliveryForm",
+  title: "OrderNew/DeliveryForm",
   component: DeliveryForm,
   parameters: {
     layout: 'centered',

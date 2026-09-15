@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { CardDish } from './CardDish';
 
 const meta: Meta<typeof CardDish> = {
-  title: 'UI/CardDish',
+  title: 'Shared UI/CardDish',
   component: CardDish,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -38,4 +38,3 @@ export const Short: Story = {
     description: 'Филадельфия 40 шт.'
   }
 }
-

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SelectDate} from './SelectDate';
 
 const meta = {
-  title: 'UI/SelectDate',
+  title: 'Shared UI/SelectDate',
   component: SelectDate,
   tags: ['autodocs'],
   parameters: {

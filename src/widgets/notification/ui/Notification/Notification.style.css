@@ -1,7 +1,7 @@
 @reference "../../../../app/globals.css";
 
 .notification-container {
-  @apply w-full fixed top-0 z-10 flex items-center justify-center h-[68px];
+  @apply relative w-full flex items-center justify-center min-h-[68px] rounded-xl px-5;
 }
 
 .notification-text {
@@ -21,7 +21,7 @@
 }
 
 .feedback-notification {
-  @apply fixed bottom-5 left-0 right-0 z-[1100] mx-auto flex min-h-12 w-[min(80vw,960px)] items-center justify-between gap-4 rounded-xl px-5 py-3 text-base shadow-[0_6px_24px_rgba(0,0,0,0.22)];
+  @apply flex min-h-12 w-full items-center justify-between gap-4 rounded-xl px-5 py-3 text-base shadow-[0_6px_24px_rgba(0,0,0,0.22)];
   color: #fff;
   animation: feedback-slide-up 180ms ease-out both;
   will-change: transform, opacity;

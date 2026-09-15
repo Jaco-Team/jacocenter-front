@@ -37,8 +37,10 @@ export const CafeAvailableNotification = withNotification({
 
 const CloseButton = ({onClick}: {onClick: ()=> void}) => (
   <button
+    type="button"
     onClick={onClick}
     className="close-button"
+    aria-label="Закрыть уведомление"
   >
     <span className="absolute w-[1.5px] h-[20px] rotate-45  bg-current"/>
     <span className="absolute w-[1.5px] h-[20px] -rotate-45 bg-current"/>

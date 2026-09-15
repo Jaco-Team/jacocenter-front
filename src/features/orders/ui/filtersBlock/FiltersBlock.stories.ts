@@ -10,7 +10,7 @@ const points = [
 ];
 
 const meta = {
-  title: 'features/orders/FiltersBlock',
+  title: 'Features/Orders/FiltersBlock',
   component: FiltersBlock,
   args: {
     points,
@@ -22,4 +22,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-

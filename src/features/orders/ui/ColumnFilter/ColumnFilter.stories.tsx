@@ -8,7 +8,7 @@ const typeOptions = ['Доставка', 'Самовывоз', 'Зал'];
 const sourceOptions = ['Клиент', 'Кухня'];
 
 const meta = {
-  title: 'features/orders/ColumnFilter',
+  title: 'Features/Orders/ColumnFilter',
   component: ColumnFilter,
   render: (args) => {
     const [options, setOptions] = useState(args.options);

@@ -240,6 +240,68 @@ MCP-сеанс исчерпал лимит просмотра, поэтому з
    Next.js и Storybook визуально используют один CSS слой; migration оставляет
    существующие пользовательские сценарии неизменными.
 
+## Аудит Storybook 2026-09-15
+
+Проверка выполнена в запущенном Storybook `http://localhost:6006/` через Chrome.
+Foundation-документация открывается без ошибок, каталог содержит 66 story-файлов
+и правильно разделён по FSD-группам. При этом до текущего исправления
+`Widgets/HeaderNewOrder` падал с `No QueryClient set`: глобальный Storybook
+decorator теперь подключает тот же `QueryProvider`, что и Next-приложение.
+Это обязательная часть конфигурации для любых компонентов, использующих
+TanStack Query, а не локальный workaround отдельной story.
+
+Группы Storybook используют единый регистр и FSD-терминологию. Розовые деревья
+`order` и `orders` были не мусором и не двумя runtime-модулями: они возникали из
+metadata с нижним регистром (`features/order/*`, `features/orders/*` и
+`widgets/order/*`). Titles нормализованы в `Features/Order`, `Features/Orders`,
+`Widgets/Order` и `Widgets/Orders`; primitives теперь находятся в `Shared UI`.
+Чтобы не оставлять два неясных дерева `Order`, календарь и слоты выделены в
+`Features/OrderScheduling`, а корзина — в `Widgets/OrderCart`. Это metadata-only
+изменение: runtime FSD-пути и пользовательский интерфейс не меняются.
+
+Наблюдения аудита:
+
+- только 6 stories используют `play`, поэтому каталог пока преимущественно
+  статический; happy-path и негативные действия оператора не защищены;
+- 24 story-файла не имеют `tags: ['autodocs']`, из-за чего документация и
+  controls непоследовательны;
+- глобальная проверка a11y остаётся `todo`; release-критичные order-new,
+  customer lookup, address и notification stories ещё не являются CI-gate;
+- в Chrome Storybook сообщает предупреждения совместимости Storybook 11 для
+  `ariaLabel` у внутренних `Button`/`PopoverProvider`; их нужно устранить
+  обновлением конфигурации/зависимости, не заглушать;
+- `MapWidget` имеет только одну story и требует API key control; нужен
+  deterministic fallback/empty/error state без внешнего картографического API;
+- `Notification` показывает только один агрегированный default state; нужны
+  отдельные success/error, stacking, timeout, close и keyboard stories;
+- для delivery-map отсутствуют отдельные stories для карты, маркеров, поиска и
+  zoom controls; для order-new не хватает customer-create success/error,
+  cart validation, draft/confirm failure и duplicate-submit сценариев;
+- reusable `NotificationHost`, `Title`, `PreparedCell`, `OrderTypeIcon`,
+  `ModalSaucesUtensils` и некоторые call-center primitives не имеют colocated
+  stories. Auth providers и model-only файлы story не требуют.
+
+Приоритет следующего прохода:
+
+1. Добавить autodocs ко всем reusable stories и привести titles/renderer к
+   единому FSD-порядку.
+2. Вынести deterministic decorators/fixtures для Query, router и actions;
+   запретить неожиданные network requests после закрытия пробелов в MSW.
+3. Покрыть play-сценариями lookup клиента, создание клиента, адресную
+   валидацию, корзину, draft/confirm и notification lifecycle.
+4. Добавить delivery-map primitives и explicit map unavailable/empty/error
+   states; API key в stories не должен быть обязательным для рендера.
+5. Добавить release-critical a11y `error` точечно, затем включить этот gate в
+   CI после исправления текущих нарушений.
+6. После стабилизации поведения завершить token audit CSS и визуальные
+   regression checks. Не менять orders/kitchen runtime только ради покрытия.
+
+Текущий результат: Query-контекст исправлен глобально и проверен в Chrome на
+`HeaderNewOrder`, `DeliveryTab`, `ModalOrderConfirm` и `MapWidget`; application
+console errors в этих stories не воспроизводятся. Оставшиеся предупреждения и
+неполнота покрытия перечислены выше и являются work items, а не основанием
+объявлять UI kit production-ready.
+
 ## Запрещено
 
 - Подключать production API, Chef credentials, MariaDB или Redis к Storybook.

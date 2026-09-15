@@ -21,7 +21,7 @@ const columnsNames = [
 ]
 
 const meta = {
-  title: 'features/orders/ModalFilters',
+  title: 'Features/Orders/ModalFilters',
   component: ModalFilters,
 } satisfies Meta<typeof ModalFilters>;
 
@@ -54,4 +54,3 @@ export const Default: Story = {
     )
   },
 };
-

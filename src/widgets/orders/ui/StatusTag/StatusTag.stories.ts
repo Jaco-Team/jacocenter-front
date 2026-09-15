@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StatusTag } from './StatusTag';
 
 const meta = {
-  title: 'widgets/order/StatusTag',
+  title: 'Widgets/Orders/StatusTag',
   component: StatusTag,
   parameters: {
     layout: 'centered',
@@ -70,5 +70,4 @@ export const StatusInDelivery: Story = {
     status: 'inDelivery',
   },
 };
-
 

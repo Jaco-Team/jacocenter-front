@@ -3,7 +3,7 @@ import { Tooltip } from './Tooltip';
 import Image from 'next/image';
 
 const meta = {
-  title: 'shared/Tooltip',
+  title: 'Shared UI/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',

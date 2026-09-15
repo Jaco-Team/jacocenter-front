@@ -3,7 +3,7 @@ import { InputPhone } from './InputPhone';
 import { useState } from 'react';
 
 const meta = {
-  title: 'features/InputPhone',
+  title: 'Features/InputPhone',
   component: InputPhone,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],

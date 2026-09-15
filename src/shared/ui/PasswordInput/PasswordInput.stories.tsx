@@ -3,7 +3,7 @@ import { PasswordInput } from './PasswordInput';
 import { useState } from 'react';
 
 const meta: Meta<typeof PasswordInput> = {
-  title: 'UI/PasswordInput',
+  title: 'Shared UI/PasswordInput',
   component: PasswordInput,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

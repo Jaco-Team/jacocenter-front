@@ -3,7 +3,7 @@ import { CafeFilterTab } from './CafeFilterTab';
 import { useArgs } from 'storybook/internal/preview-api';
 
 const meta = {
-  title: 'features/orders/CafeFilterTab',
+  title: 'Features/Orders/CafeFilterTab',
   component: CafeFilterTab,
   parameters: {
     layout: 'centered',
@@ -34,4 +34,3 @@ export const Default: Story = {
     );
   },
 };
-

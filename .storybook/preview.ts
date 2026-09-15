@@ -1,5 +1,7 @@
 import type { Preview } from '@storybook/nextjs-vite';
+import { createElement } from 'react';
 import { mswLoader } from 'msw-storybook-addon/csf3';
+import { QueryProvider } from '../src/shared/api/QueryProvider';
 import '../src/app/globals.css';
 import { handlers } from './handlers';
 
@@ -28,6 +30,11 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  decorators: [
+    (Story) => (
+      createElement(QueryProvider, null, createElement(Story))
+    ),
+  ],
   loaders: [mswLoader()],
 };
 

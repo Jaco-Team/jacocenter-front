@@ -78,7 +78,7 @@ const mockItemsWithoutDiscount = [
 ];
 
 const meta: Meta= {
-  title: 'widgets/Order/Cart',
+  title: 'Widgets/OrderCart',
   component: Cart,
   parameters: {
     layout: 'centered',

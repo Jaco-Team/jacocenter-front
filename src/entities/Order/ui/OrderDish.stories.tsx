@@ -3,7 +3,7 @@ import { OrderDish } from './OrderDish';
 import { useState } from 'react';
 
 const meta: Meta<typeof OrderDish> = {
-  title: 'entities/Order/OrderDish',
+  title: 'Entities/Order/OrderDish',
   component: OrderDish,
   tags: ['autodocs'],
   argTypes: {

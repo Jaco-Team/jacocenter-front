@@ -10,7 +10,7 @@ const slots: PreorderSlot[] = [
 ];
 
 const meta: Meta<typeof ModalTimeSelect> = {
-  title: "features/ModalTimeSelect",
+  title: "Features/ModalTimeSelect",
   component: ModalTimeSelect,
   parameters: {
     layout: 'centered',

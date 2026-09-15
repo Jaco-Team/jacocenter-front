@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { PromocodeList } from './PromocodeList';
 
 const meta = {
-  title: 'widgets/PromocodeList',
+  title: 'Widgets/Clients/PromocodeList',
   component: PromocodeList,
   parameters: {
     layout: 'centered',

@@ -3,7 +3,7 @@ import { SelectBase } from './SelectBase';
 import { useState } from 'react';
 
 const meta = {
-  title: 'UI/SelectBase',
+  title: 'Shared UI/SelectBase',
   component: SelectBase,
   tags: ['autodocs'],
   parameters: {

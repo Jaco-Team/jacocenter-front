@@ -5,6 +5,7 @@ import { ORDER_STEP } from "@/utils/constants";
 import { Cart } from "@/widgets/Order/ui/Cart/Cart";
 import { OrderPreviewModal } from "@/features/ModalOrderList/ui/OrderPreviewModal/OrderPreviewModal";
 import { ModalOrderConfirm } from "@/features/order/ModalOrderConfirm/ModalOrderConfirm";
+import { ModalOrderSuccess } from "@/features/order/ModalOrderSuccess/ModalOrderSuccess";
 import { Tab } from "@/shared/ui/Tab/Tab";
 import { DeliveryForm } from "./components/DeliveryForm/DeliveryForm";
 import "./CurrentOrderPage.styles.css";
@@ -48,6 +49,7 @@ export default function CurrentOrderPage() {
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedOrderNumber, setConfirmedOrderNumber] = useState<number | null>(null);
   const [validatedCart, setValidatedCart] = useState<ValidatedCart | null>(null);
@@ -229,9 +231,9 @@ export default function CurrentOrderPage() {
         items: items.map((item) => ({ itemId: Number(item.id), quantity: item.count })),
       });
       setConfirmedOrderNumber(confirmedOrder.chefOrderId ?? confirmedOrder.id);
-      addFeedback(`Заказ №${confirmedOrder.chefOrderId ?? confirmedOrder.id} успешно оформлен`, 'success');
       setIsConfirmOpen(false);
       resetOrder();
+      setIsSuccessOpen(true);
       return true;
     } catch (error) {
       const message = error instanceof ApiError && error.code
@@ -355,6 +357,11 @@ export default function CurrentOrderPage() {
         totalPrice={totalPrice}
         deliveryPrice={deliveryPrice}
         promocode={promocode || undefined}
+      />
+
+      <ModalOrderSuccess
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
       />
     </div>
   );

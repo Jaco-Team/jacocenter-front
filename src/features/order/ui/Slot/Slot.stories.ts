@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Slot } from './Slot';
 
 const meta = {
-  title: 'features/order/Slot',
+  title: 'Features/OrderScheduling/Slot',
   component: Slot,
   parameters: {
     layout: 'centered',
@@ -20,4 +20,3 @@ export const DaySlot: Story = {
 export const TimeSlot: Story = {
   args: { variant: "timeSlot", isActive: false, onClick: () => {}, children: "10:00" },
 };
-

@@ -21,7 +21,7 @@ const totalPrice = sampleItems.reduce(
 const orderNumber = 800602;
 
 const meta = {
-  title: 'features/OrderPreviewModal',
+  title: 'Features/OrderPreviewModal',
   component: OrderPreviewModal,
   parameters: {
     layout: 'centered',

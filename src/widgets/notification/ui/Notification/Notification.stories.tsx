@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CafeStoppedNotification, CafeAvailableNotification } from './Notification';
 import { useNotificationStore } from '@/entities/notifications/store/Notification/Notification';
+import '../NotificationHost/NotificationHost.styles.css';
 
 const meta: Meta<typeof CafeStoppedNotification> = {
   title: 'Widgets/Notification',
@@ -28,7 +29,7 @@ export const Default: Story = {
     const alerts = useNotificationStore((state) => state.alerts);
 
     return (
-      <div className="notifications-wrapper">
+      <aside className="notification-host" aria-live="polite" aria-label="Уведомления">
         {alerts.map((alert) =>
           alert.variant === 'cafe.stopped'
             ? <CafeStoppedNotification key={alert.id} id={alert.id} zoneName={alert.zoneName} />
@@ -36,8 +37,7 @@ export const Default: Story = {
               ? <CafeAvailableNotification key={alert.id} id={alert.id} zoneName={alert.zoneName} />
               : null
         )}
-      </div>
+      </aside>
     );
   },
 };
-

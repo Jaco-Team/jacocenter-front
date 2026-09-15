@@ -1,2 +1,20 @@
-.notification-host { position: fixed; top: 16px; right: 16px; z-index: 1000; display: grid; gap: 8px; width: min(420px, calc(100vw - 32px)); pointer-events: none; }
+.notification-host {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 1100;
+  display: grid;
+  gap: 8px;
+  width: min(80vw, 960px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 .notification-host > * { pointer-events: auto; }
+
+@media (max-width: 640px) {
+  .notification-host {
+    bottom: 12px;
+    width: calc(100vw - 24px);
+  }
+}

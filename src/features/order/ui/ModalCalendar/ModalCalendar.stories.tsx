@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ModalCalendar } from "./ModalCalendar";
 
 const meta: Meta<typeof ModalCalendar> = {
-  title: "features/order/ModalCalendar",
+  title: "Features/OrderScheduling/ModalCalendar",
   component: ModalCalendar,
   parameters: {
     layout: "centered",

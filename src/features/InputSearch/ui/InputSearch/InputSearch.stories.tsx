@@ -13,7 +13,7 @@ const mock = [
 ];
 
 const meta = {
-  title: 'features/InputSearch',
+  title: 'Features/InputSearch',
   component: InputSearch,
   args: {
     placeholder: 'Поиск товара',

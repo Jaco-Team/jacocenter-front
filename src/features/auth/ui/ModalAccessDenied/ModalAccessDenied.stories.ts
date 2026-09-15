@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModalAccessDenied } from './ModalAccessDenied';
 
 const meta = { 
- title: 'features/ModalAccessDenied',
+ title: 'Features/ModalAccessDenied',
   component: ModalAccessDenied,
   parameters: { layout: 'centered' },
 } satisfies Meta<typeof ModalAccessDenied>;

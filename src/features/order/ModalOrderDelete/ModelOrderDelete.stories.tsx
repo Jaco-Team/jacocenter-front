@@ -3,7 +3,7 @@ import { ModalOrderDelete } from './ModalOrderDelete';
 import { useArgs } from 'storybook/preview-api';
 
 const meta = { 
- title: 'features/ModalOrderDelete',
+ title: 'Features/ModalOrderDelete',
   component: ModalOrderDelete,
   parameters: {
     layout: 'centered',

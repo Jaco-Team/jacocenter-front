@@ -3,7 +3,7 @@ import { Typography } from './Typography';
 import type { TypographyVariant } from './Typography.types';
 
 const meta = {
-  title: 'UI/Typography',
+  title: 'Shared UI/Typography',
   component: Typography,
   parameters: {
     layout: 'centered',

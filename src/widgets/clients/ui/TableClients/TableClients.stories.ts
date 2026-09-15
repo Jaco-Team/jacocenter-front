@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TableClients } from './TableClients';
 
 const meta = {
-  title: 'widgets/TableClients',
+  title: 'Widgets/Clients/TableClients',
   component: TableClients,
   parameters: {
     layout: 'centered',
