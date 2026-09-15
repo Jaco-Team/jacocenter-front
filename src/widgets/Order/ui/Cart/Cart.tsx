@@ -120,7 +120,7 @@ export function Cart({
         variant="base"
         theme="primary"
         onClick={onNext}
-        className="mt-3 h-[44px] shtink-0"
+        className="mt-3 h-[44px] shrink-0"
       >
         <Text
           variant="body-m-medium-16" className="text-bg-base-light">{step === ORDER_STEP.CART ? "Далее" : "Оформить заказ"}</Text>

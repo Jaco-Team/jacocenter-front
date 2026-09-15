@@ -1,8 +1,12 @@
 @reference "../../../app/globals.css";
 
 .current-order {
-  @apply grid h-full min-w-0 gap-4;
+  @apply grid h-full min-h-0 max-h-full min-w-0 flex-1 gap-4;
   grid-template-columns: minmax(0, 3fr) minmax(320px, 2fr);
+}
+
+.current-order > aside {
+  @apply min-h-0;
 }
 
 .current-order__main {
