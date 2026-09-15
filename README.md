@@ -103,3 +103,7 @@ cart validation, draft/confirm, map coordinates и notification toast.
 `/kitchen/orders` clients. Их UI/refactor boundary остаётся frozen из-за
 параллельной работы владельца, но это не означает runtime mock-данные.
 Детальная граница и следующий порядок работы описаны в [PLAN.md](./PLAN.md).
+
+Личный кабинет оператора доступен на `/lk`: профиль загружается через `GET /auth/me`, а полное и короткое имя сохраняются через `PATCH /auth/me`. Показатели за выбранный период загружаются через `GET /auth/me/metrics` и суммируются по всем доступным сотруднику точкам. Для записи в Chef API должен запускаться с явно разрешённым `MAIN_DB_ALLOW_WRITES=true`.
+
+Вкладка `/clients` использует `GET /customers/lookup`, `GET /customers/{id}/orders`, `GET /orders/{id}?point_id=...` и `GET /promos`. Для запросов требуется авторизованная сессия оператора; отдельного API для повторения заказа сейчас нет.

@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { NavPanel } from './NavPanel';
 import { navItems } from '../model/navItems';
 
-const routes = navItems.map(item => item.href);
+import { useSessionStore } from '@/entities/auth/store/sessionStore/sessionStore';
+
+const routes = [...navItems.map(item => item.href), '/lk'];
 
 type NavPanelStoryArgs = React.ComponentProps<typeof NavPanel> & {
   pathname: string;
@@ -21,6 +24,20 @@ const meta: Meta<NavPanelStoryArgs> = {
       description: 'Текущий URL',
     },
   },
+  loaders: [
+    () => {
+      useSessionStore.setState({
+        user: {
+          id: 12,
+          login: 'operator',
+          name: 'Иван',
+          fullName: 'Иван Иванов',
+          shortName: 'Иван',
+        },
+        status: 'ready',
+      });
+    },
+  ],
 };
 
 export default meta;
@@ -31,21 +48,42 @@ export const Default: Story = {
   args: {
     pathname: '/clients',
   },
-  decorators: [
-    (Story, context) => {
-      context.parameters.nextjs = {
-        appDirectory: true,
-        navigation: {
-          pathname: context.args.pathname,
-        },
-      };
-
-      return <Story key={context.args.pathname} />;
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/clients',
+      },
     },
-  ],
+  },
   render: () => (
     <div className="bg-bg-base">
       <NavPanel />
     </div>
   ),
+};
+export const PersonalAccountActive: Story = {
+  args: { pathname: '/lk' },
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/lk',
+      },
+    },
+  },
+  render: () => (
+    <div className="bg-bg-base">
+      <NavPanel />
+    </div>
+  ),
+};
+
+export const Collapsed: Story = {
+  ...Default,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Свернуть меню' }));
+    await expect(canvas.getByRole('button', { name: 'Развернуть меню' })).toBeInTheDocument();
+  },
 };

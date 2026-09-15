@@ -12,6 +12,7 @@ type SessionState = {
   expiresAt: string | null;
   status: SessionStatus;
   setSession: (session: AuthSession) => void;
+  setUser: (user: AuthUser) => void;
   clearSession: () => void;
   bootstrap: () => Promise<void>;
   login: (login: string, password: string) => Promise<void>;
@@ -70,6 +71,8 @@ export const useSessionStore = create<SessionState>()(
         });
         scheduleRefresh();
       },
+
+      setUser: (user) => set({ user }),
 
       clearSession: () => {
         clearRefreshTimer();
